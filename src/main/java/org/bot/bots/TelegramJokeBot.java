@@ -10,8 +10,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  * Класс телеграм бота
  */
 public class TelegramJokeBot extends TelegramLongPollingBot {
-
-
     /**
      * Токен телеграм бота
      */
@@ -23,6 +21,7 @@ public class TelegramJokeBot extends TelegramLongPollingBot {
 
     /**
      *Метод, который получает сообщение от пользователя и отправляет ему новое в ответ
+     * @param update обновление из api
      */
     @Override
     public void onUpdateReceived(Update update) {
@@ -46,27 +45,13 @@ public class TelegramJokeBot extends TelegramLongPollingBot {
         }
     }
 
-    /**
-     * Получить имя бота
-     */
     @Override
     public String getBotUsername() {
         return BOT_NAME;
     }
 
-    /**
-     * Получить токен бота
-     */
     @Override
     public String getBotToken() {
         return TOKEN;
-    }
-
-    /**
-     * Парсер сообщений, отправляемых пользователем
-     */
-    private String parseMessage(String message){
-        // TODO
-        return null;
     }
 }
