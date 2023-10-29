@@ -15,17 +15,9 @@ public class Joke {
      */
     private String text;
 
-    /**
-     * Получить id анекдота
-     */
     public Integer getId() {
         return id;
     }
-
-    /**
-     * Получить текст анекдота
-     * @return
-     */
     public String getText() {
         return text;
     }
