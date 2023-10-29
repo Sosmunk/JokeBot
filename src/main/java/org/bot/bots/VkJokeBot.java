@@ -18,6 +18,7 @@ public class VkJokeBot extends LongPollBot implements JokeBot {
     @Override
     public void onMessageNew(MessageNew messageNew) {
         try {
+            // TODO: Функционал работы с анекдотами
             Message message = messageNew.getMessage();
             if (message.hasText()) {
                 String response = "Ваше сообщение " + message.getText();
