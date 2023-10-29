@@ -1,5 +1,6 @@
 package org.bot.bots;
 
+import org.bot.dto.CommandData;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -9,7 +10,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 /**
  * Класс телеграм бота
  */
-public class TelegramJokeBot extends TelegramLongPollingBot {
+public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
     /**
      * Токен телеграм бота
      */
@@ -25,8 +26,8 @@ public class TelegramJokeBot extends TelegramLongPollingBot {
      */
     @Override
     public void onUpdateReceived(Update update) {
-        // TODO
         try {
+            // TODO: Функционал работы с анекдотами
             if (update.hasMessage() && update.getMessage().hasText()){
                 Message textInMessage = update.getMessage();
                 String chatId = textInMessage.getChatId().toString();
@@ -53,5 +54,11 @@ public class TelegramJokeBot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         return TOKEN;
+    }
+
+    @Override
+    public CommandData parseMessage(String text) {
+        // TODO
+        return null;
     }
 }
