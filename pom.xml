@@ -43,6 +43,18 @@
         </dependency>
 
         <dependency>
+            <groupId>com.vk.api</groupId>
+            <artifactId>sdk</artifactId>
+            <version>1.0.15</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.yvasyliev</groupId>
+            <artifactId>java-vk-bots-longpoll-api</artifactId>
+            <version>4.1.8</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
             <version>${slf4j-jdk14.version}</version>
