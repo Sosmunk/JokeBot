@@ -6,9 +6,9 @@ package org.bot.commands;
 
 public class StartCommand implements BotCommand {
     /**
-     * Выполнить команду /start
-     * @param args
-     * @return
+     * Получить приветствие (/start)
+     * @param args аргументы команды
+     * @return приветствие
      */
     @Override
     public String executeCommand(String args) {

@@ -6,9 +6,9 @@ package org.bot.commands;
 
 public class JokeCommand implements BotCommand {
     /**
-     * Выполнить команду /joke
-     * @param args
-     * @return
+     * Получить случайную шутку (/joke)
+     * @param args аргументы команды
+     * @return случайная шутка
      */
     @Override
     public String executeCommand(String args) {

@@ -6,9 +6,9 @@ package org.bot.commands;
 
 public class HelpCommand implements BotCommand {
     /**
-     * Выполнить команду /help
-     * @param args
-     * @return
+     * Получить справку о работе бота (/help)
+     * @param args аргументы команды
+     * @return справка
      */
     @Override
     public String executeCommand(String args) {
