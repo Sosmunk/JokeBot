@@ -4,11 +4,12 @@ import api.longpoll.bots.LongPollBot;
 import api.longpoll.bots.exceptions.VkApiException;
 import api.longpoll.bots.model.events.messages.MessageNew;
 import api.longpoll.bots.model.objects.basic.Message;
+import org.bot.dto.CommandData;
 
 /**
  * VK Бот для работы с анекдотами
  */
-public class VkJokeBot extends LongPollBot {
+public class VkJokeBot extends LongPollBot implements JokeBot {
 
     /**
      * Метод, отвечающий за обработку сообщений, присланных пользователем
@@ -17,6 +18,7 @@ public class VkJokeBot extends LongPollBot {
     @Override
     public void onMessageNew(MessageNew messageNew) {
         try {
+            // TODO: Функционал работы с анекдотами
             Message message = messageNew.getMessage();
             if (message.hasText()) {
                 String response = "Ваше сообщение " + message.getText();
@@ -38,4 +40,11 @@ public class VkJokeBot extends LongPollBot {
     public String getAccessToken() {
         return System.getenv("VK_TOKEN");
     }
+
+    @Override
+    public CommandData parseMessage(String text) {
+        // TODO
+        return null;
+    }
+
 }
