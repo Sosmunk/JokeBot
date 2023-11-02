@@ -1,5 +1,6 @@
 package org.bot.bots;
 
+import org.bot.commands.CommandProcessor;
 import org.bot.dto.CommandData;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -11,6 +12,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  * Класс телеграм бота
  */
 public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
+    private final CommandProcessor commandProcessor;
+    public TelegramJokeBot() {
+        commandProcessor = new CommandProcessor();
+    }
+
     /**
      * Токен телеграм бота
      */
@@ -33,7 +39,13 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
                 String chatId = textInMessage.getChatId().toString();
                 SendMessage sendMessage = new SendMessage();
 
-                String response = "Ваше сообщение: " + textInMessage.getText();
+                // TODO: Функционал обработки команд
+                CommandData request = parseMessage(textInMessage.getText());
+                String result = commandProcessor.runCommand(request);
+                System.out.println(result);
+                //
+
+                 String response = "Ваше сообщение: " + textInMessage.getText();
 
                 sendMessage.setChatId(chatId);
                 sendMessage.setText(response);
