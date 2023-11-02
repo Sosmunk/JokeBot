@@ -11,7 +11,7 @@ public class StartCommand implements BotCommand {
      * @return приветствие
      */
     @Override
-    public String executeCommand(String args) {
+    public String execute(String args) {
         // TODO
         return null;
     }

@@ -9,5 +9,5 @@ public interface BotCommand {
      * @param args аргументы команды
      * @return строку с результатом выполнения команды
      */
-    String executeCommand(String args);
+    String execute(String args);
 }
