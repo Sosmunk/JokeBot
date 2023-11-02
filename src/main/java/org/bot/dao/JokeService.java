@@ -2,6 +2,9 @@ package org.bot.dao;
 
 import org.bot.Joke;
 
+/**
+ * Сервис для получения анекдотов из хранилища
+ */
 public interface JokeService {
     /**
      * Получить анекдот по id
