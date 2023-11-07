@@ -1,12 +1,13 @@
 package org.bot.bots;
 
 import org.bot.commands.CommandProcessor;
-import org.bot.dto.CommandData;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 /**
  * Класс телеграм бота
@@ -38,14 +39,10 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
                 Message textInMessage = update.getMessage();
                 String chatId = textInMessage.getChatId().toString();
                 SendMessage sendMessage = new SendMessage();
+                // TODO: Здесь нужно парсить сообщения, валидироваить и переводить их в CommandData
 
-                // TODO: Функционал обработки команд
-                CommandData request = parseMessage(textInMessage.getText());
-                String result = commandProcessor.runCommand(request);
-                System.out.println(result);
-                //
-
-                 String response = "Ваше сообщение: " + textInMessage.getText();
+                // TODO: Затем мы передаем CommandData в CommandProcessor и получаем response
+                String response = "Ваше сообщение: " + textInMessage.getText();
 
                 sendMessage.setChatId(chatId);
                 sendMessage.setText(response);
@@ -69,8 +66,12 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
     }
 
     @Override
-    public CommandData parseMessage(String text) {
-        // TODO
-        return null;
+    public void start() {
+        try {
+            TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+            telegramBotsApi.registerBot(this);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 }
