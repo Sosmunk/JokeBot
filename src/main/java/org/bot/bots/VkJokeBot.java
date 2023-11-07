@@ -4,11 +4,19 @@ import api.longpoll.bots.LongPollBot;
 import api.longpoll.bots.exceptions.VkApiException;
 import api.longpoll.bots.model.events.messages.MessageNew;
 import api.longpoll.bots.model.objects.basic.Message;
+import org.bot.commands.CommandProcessor;
+import org.bot.dao.JokeService;
 
 /**
  * VK Бот для работы с анекдотами
  */
 public class VkJokeBot extends LongPollBot implements JokeBot {
+
+    private final CommandProcessor commandProcessor;
+
+    public VkJokeBot(JokeService jokeService) {
+        this.commandProcessor = new CommandProcessor(jokeService);
+    }
 
     /**
      * Метод, отвечающий за обработку сообщений, присланных пользователем

@@ -1,6 +1,7 @@
 package org.bot.bots;
 
 import org.bot.commands.CommandProcessor;
+import org.bot.dao.JokeService;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,8 +15,8 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
  */
 public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
     private final CommandProcessor commandProcessor;
-    public TelegramJokeBot() {
-        commandProcessor = new CommandProcessor();
+    public TelegramJokeBot(JokeService jokeService) {
+        this.commandProcessor = new CommandProcessor(jokeService);
     }
 
     /**
