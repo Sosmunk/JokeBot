@@ -20,6 +20,8 @@
         <log4j-api.version>2.11.2</log4j-api.version>
         <log4j-core.version>2.11.2</log4j-core.version>
         <junit.version>4.13.2</junit.version>
+        <vk.api.version>1.0.15</vk.api.version>
+        <java.vk.bots.longpoll.api.version>4.1.8</java.vk.bots.longpoll.api.version>
     </properties>
 
     <dependencies>
@@ -45,13 +47,13 @@
         <dependency>
             <groupId>com.vk.api</groupId>
             <artifactId>sdk</artifactId>
-            <version>1.0.15</version>
+            <version>${vk.api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.github.yvasyliev</groupId>
             <artifactId>java-vk-bots-longpoll-api</artifactId>
-            <version>4.1.8</version>
+            <version>${java.vk.bots.longpoll.api.version}</version>
         </dependency>
 
         <dependency>
