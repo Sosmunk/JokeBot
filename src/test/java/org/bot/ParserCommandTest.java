@@ -41,7 +41,7 @@ public class ParserCommandTest {
     public void parserMessageGetJoke(){
         CommandData commandDataExpected = new CommandData("/getJoke","15");
         CommandData commandDataActual = parserCommand.parseMessage("/getJoke 15");
-        Long arg = Long.parseLong(commandDataActual.getArgs());
+        long arg = Long.parseLong(commandDataActual.getArgs());
         Assert.assertEquals("The command '/getJoke' do not match",commandDataExpected.getCommand(),commandDataActual.getCommand());
         Assert.assertEquals("Arguments don't match",commandDataExpected.getArgs(),commandDataActual.getArgs());
         Assert.assertTrue("Invalid arg", 0 <= arg && arg <= Long.MAX_VALUE);
