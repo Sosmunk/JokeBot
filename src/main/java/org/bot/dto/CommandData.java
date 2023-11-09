@@ -1,5 +1,7 @@
 package org.bot.dto;
 
+import java.util.Objects;
+
 /**
  * Хранит в себе данные о командах, поступающие от пользователя
  */
@@ -25,5 +27,18 @@ public class CommandData {
 
     public String getArgs() {
         return args;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CommandData that = (CommandData) o;
+        return Objects.equals(command, that.command) && Objects.equals(args, that.args);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(command, args);
     }
 }
