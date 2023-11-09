@@ -1,15 +1,13 @@
 package org.bot.bots;
 
-import org.bot.dto.CommandData;
-
 /**
  * Интерфейс, в котором должны
  */
 public interface JokeBot {
+    // TODO: sendMessage
+
     /**
-     * Выделяет из сообщения команду и её аргументы
-     * @param text текст сообщения
-     * @return {@link CommandData}
+     * Запуск бота
      */
-    CommandData parseMessage(String text);
+    void start();
 }

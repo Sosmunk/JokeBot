@@ -1,5 +1,6 @@
 package org.bot.commands;
 
+import org.bot.dao.JokeService;
 import org.bot.dto.CommandData;
 
 import java.util.HashMap;
@@ -16,15 +17,18 @@ public class CommandProcessor {
      */
     private final Map<String, BotCommand> commandMap;
 
-    public CommandProcessor() {
+    private final JokeService jokeService;
+
+    public CommandProcessor(JokeService jokeService) {
         commandMap = new HashMap<>();
+        this.jokeService = jokeService;
         init();
     }
 
     private void init() {
         commandMap.put("/start", new StartCommand());
         commandMap.put("/help", new HelpCommand());
-        commandMap.put("/joke", new JokeCommand());
+        commandMap.put("/joke", new JokeCommand(jokeService));
     }
 
     /**
