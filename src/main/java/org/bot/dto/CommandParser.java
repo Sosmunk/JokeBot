@@ -3,7 +3,7 @@ package org.bot.dto;
 /**
  * Класс парсера команд, вводимых пользователем
  */
-public class ParserCommand {
+public class CommandParser {
     /**
      * Возвращает отформатированное сообщение в виде CommandData
      * @param message сообщение пользователя

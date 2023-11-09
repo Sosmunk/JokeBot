@@ -2,7 +2,7 @@ package org.bot.bots;
 
 import org.bot.commands.CommandProcessor;
 import org.bot.dto.CommandData;
-import org.bot.dto.ParserCommand;
+import org.bot.dto.CommandParser;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -14,10 +14,10 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  */
 public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
     private final CommandProcessor commandProcessor;
-    private final ParserCommand parserCommand;
+    private final CommandParser commandParser;
     public TelegramJokeBot() {
         commandProcessor = new CommandProcessor();
-        parserCommand = new ParserCommand();
+        commandParser = new CommandParser();
     }
 
     /**
@@ -43,7 +43,7 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
                 SendMessage sendMessage = new SendMessage();
 
                 // TODO: Функционал обработки команд
-                CommandData request = parserCommand.parseMessage(textInMessage.getText());
+                CommandData request = commandParser.parseMessage(textInMessage.getText());
                 String result = commandProcessor.runCommand(request);
                 System.out.println(result);
                 //
