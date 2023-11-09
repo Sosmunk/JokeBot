@@ -18,4 +18,11 @@ public interface JokeService {
      * @return анекдот
      */
     Joke getRandomJoke();
+
+    /**
+     * Сохранить анекдот
+     * @param joke анекдот
+     * @return сохраненный анекдот
+     */
+    Joke saveJoke(Joke joke);
 }
