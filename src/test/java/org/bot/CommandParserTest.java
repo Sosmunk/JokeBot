@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Тест ParserCommand
@@ -18,47 +19,66 @@ public class CommandParserTest {
     /**
      * Проверка на null
      */
-
     @Test
-    public void parseMessageNotNull(){
+    public void parserMessageNotNull(){
         Assert.assertNotNull("Command is null!", commandParser.parseMessage("/start"));
-    }
-
-    /**
-     * Тест проверки количества аргументов команды /getJoke
-     */
-    @Test
-    public void parserGetJokeCountArgs(){
-        String[] args = commandParser.parseMessage("/getJoke 15").getArgs().split(" ");
-        Assert.assertEquals("Invalid count arguments",1,args.length);
     }
 
     /**
      * Тест корректного ввода команды /getJoke
      */
     @Test
-    public void parserGetJokeCorrectCommand(){
+    public void parserGetJokeCorrect(){
+        CommandData commandDataExpected = new CommandData("/getJoke","15");
+        CommandData commandDataActual = commandParser.parseMessage("/getJoke 15");
+        Assert.assertTrue(commandDataExpected.equals(commandDataActual));
+    }
+
+    /**
+     * Тест корректного ввода команды /getJoke
+     */
+    @Test
+    public void parserGetJokeNoCommand(){
         CommandData commandDataExpected = new CommandData("/getJoke","15");
         CommandData commandDataActual = commandParser.parseMessage("/getJoke 15");
         Assert.assertEquals("Invalid command",commandDataExpected.getCommand(),commandDataActual.getCommand());
     }
 
     /**
-     * Тест проверки корректности аргументов команды /getJoke
-     */
-    @Test
-    public void parserGetJokeInvalidArgs(){
-        long arg = Long.parseLong(commandParser.parseMessage("/getJoke -1").getArgs());
-        Assert.assertFalse("Invalid arg", 0 <= arg);
-    }
-
-    /**
-     * Проверка аргументов команды /getJoke на null
+     * Тест аргументов команды /getJoke на их отсутствие
      */
     @Test
     public void parserGetJokeNoArgs(){
-        CommandData commandDataExpected = new CommandData("/getJoke","15");
         CommandData commandDataActual = commandParser.parseMessage("/getJoke");
+        Assert.assertNull("Args is null!",commandDataActual.getArgs());
+    }
+
+    /**
+     * Тест корректного ввода команды /rate <id> <stars 1-5>
+     */
+    @Test
+    public void parserRateCorrect(){
+        CommandData commandDataExpected = new CommandData("/rate","15 5");
+        CommandData commandDataActual = commandParser.parseMessage("/rate 15 5");
+        Assert.assertTrue(commandDataExpected.equals(commandDataActual));
+    }
+
+    /**
+     * Тест корректного ввода команды /rate <id> <stars 1-5>
+     */
+    @Test
+    public void parserRateNoCommand(){
+        CommandData commandDataExpected = new CommandData("/rate","15 4");
+        CommandData commandDataActual = commandParser.parseMessage("/rate 15 4");
+        Assert.assertEquals("Invalid command",commandDataExpected.getCommand(),commandDataActual.getCommand());
+    }
+
+    /**
+     * Тест команды /rate <id> <stars 1-5> на отсутствие аругментов
+     */
+    @Test
+    public void parserRateNoArgs(){
+        CommandData commandDataActual = commandParser.parseMessage("/rate");
         Assert.assertNull("Args is null!",commandDataActual.getArgs());
     }
 
@@ -74,25 +94,5 @@ public class CommandParserTest {
             Assert.assertEquals("The commands do not match",commandDataExpected.getCommand(),commandDataActual.getCommand());
             Assert.assertEquals("Arguments don't match",commandDataExpected.getArgs(),commandDataActual.getArgs());
         }
-    }
-
-    /**
-     * Тест команды /rate
-     */
-    @Test
-    public void parserMessageRate(){
-        CommandData commandDataExpected = new CommandData("/rate","15 5");
-        CommandData commandDataActual = commandParser.parseMessage("/rate 15 5");
-        String[] args = commandDataActual.getArgs().split(" ");
-        Assert.assertEquals("The command '/rate' do not match",commandDataExpected.getCommand(),commandDataActual.getCommand());
-        Assert.assertEquals("Arguments don't match",commandDataExpected.getArgs(),commandDataActual.getArgs());
-        Assert.assertTrue("Invalid arg(id)",0 <= Long.parseLong(args[0]) && Long.parseLong(args[0]) <= Long.MAX_VALUE);
-        Assert.assertTrue("Invalid arg(rate)",0 < Long.parseLong(args[1]) && Long.parseLong(args[1]) < 6);
-    }
-    @Test
-    public void parserMessageCheckArgs(){
-        CommandData commandDataActual = commandParser.parseMessage("/getJoke 5");
-        String[] args = commandDataActual.getArgs().split(" ");
-        Assert.assertTrue("Invalid arguments",0 <= Long.parseLong(args[0]) &&  Long.parseLong(args[0]) <= Long.MAX_VALUE);
     }
 }
