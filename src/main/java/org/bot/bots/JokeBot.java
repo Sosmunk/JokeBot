@@ -1,13 +1,11 @@
 package org.bot.bots;
 
 /**
- * Интерфейс, в котором должны
+ * Интерфейс работы ботов
  */
-public interface JokeBot {
-    // TODO: sendMessage
+public interface JokeBot<T> {
+    void sendMessage(T chatId, String message);
 
-    /**
-     * Запуск бота
-     */
+    // Если этот метод здесь не нужен, то как нам запускать бота?
     void start();
 }
