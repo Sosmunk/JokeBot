@@ -15,7 +15,10 @@ public class GetJokeCommand implements BotCommand {
     }
 
     /**
-     * Получить шутку по id
+     * Получить анекдот по id
+     *
+     * @param args id анекдота
+     * @return Анекдот
      */
     @Override
     public String execute(String args) {
