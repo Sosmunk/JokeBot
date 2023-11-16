@@ -8,7 +8,7 @@ import org.bot.dao.JokeService;
  */
 
 public class JokeCommand implements BotCommand {
-    JokeService jokeService;
+    private final JokeService jokeService;
     public JokeCommand(JokeService jokeService) {
         this.jokeService = jokeService;
     }

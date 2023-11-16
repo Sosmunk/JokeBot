@@ -22,6 +22,7 @@ public class CommandProcessor {
         commandMap.put("/start", new StartCommand());
         commandMap.put("/help", new HelpCommand());
         commandMap.put("/joke", new JokeCommand(jokeService));
+        commandMap.put("/getJoke", new GetJokeCommand(jokeService));
     }
 
     /**
