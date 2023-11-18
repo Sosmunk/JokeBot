@@ -10,7 +10,7 @@ public class CommandParser {
      * @return CommandData сообщение
      */
     public CommandData parseMessage(String message){
-        if (message == null || message.isEmpty()) return new CommandData(null,null);
+        if (message == null || message.isEmpty() || message.isBlank()) return new CommandData(null,null);
         String[] messageParams = message.split(" ",2);
         return new CommandData(messageParams[0],(messageParams.length > 1) ? messageParams[1] : null);
     }
