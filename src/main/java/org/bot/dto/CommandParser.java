@@ -10,8 +10,8 @@ public class CommandParser {
      * @return CommandData сообщение
      */
     public CommandData parseMessage(String message){
+        if (message == null || message.isEmpty()) return new CommandData(null,null);
         String[] messageParams = message.split(" ",2);
-        CommandData commandData = new CommandData(messageParams[0],(messageParams.length > 1) ? messageParams[1] : null);
-        return commandData;
+        return new CommandData(messageParams[0],(messageParams.length > 1) ? messageParams[1] : null);
     }
 }
