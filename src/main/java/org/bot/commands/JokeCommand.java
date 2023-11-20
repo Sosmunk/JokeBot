@@ -2,7 +2,6 @@ package org.bot.commands;
 
 import org.bot.Joke;
 import org.bot.dao.JokeService;
-import org.bot.dao.JokeServiceImpl;
 
 /**
  * Команда /joke
@@ -10,8 +9,8 @@ import org.bot.dao.JokeServiceImpl;
 
 public class JokeCommand implements BotCommand {
     JokeService jokeService;
-    public JokeCommand() {
-        jokeService = JokeServiceImpl.getInstance();
+    public JokeCommand(JokeService jokeService) {
+        this.jokeService = jokeService;
     }
     /**
      * Получить случайную шутку (/joke)
