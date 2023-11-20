@@ -3,7 +3,7 @@ package org.bot;
 import org.bot.bots.BotLogic;
 import org.bot.bots.TelegramJokeBot;
 import org.bot.bots.VkJokeBot;
-import org.bot.dao.JokeService;
+import org.bot.commands.CommandProcessor;
 import org.bot.dao.JokeServiceImpl;
 
 /**
@@ -12,11 +12,12 @@ import org.bot.dao.JokeServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
-        JokeService jokeService = new JokeServiceImpl();
-        BotLogic telegramBotLogic = new BotLogic(new TelegramJokeBot(jokeService));
-        BotLogic vkBotLogic = new BotLogic(new VkJokeBot(jokeService));
-        telegramBotLogic.startBot();
-        vkBotLogic.startBot();
+        CommandProcessor commandProcessor = new CommandProcessor(new JokeServiceImpl());
+        TelegramJokeBot telegramJokeBot = new TelegramJokeBot(commandProcessor);
+        VkJokeBot vkJokeBot = new VkJokeBot(commandProcessor);
+        BotLogic botLogic = new BotLogic(telegramJokeBot, vkJokeBot);
+        telegramJokeBot.start();
+        vkJokeBot.start();
     }
 
 }

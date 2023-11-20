@@ -1,7 +1,6 @@
 package org.bot.bots;
 
 import org.bot.commands.CommandProcessor;
-import org.bot.dao.JokeService;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -13,10 +12,11 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 /**
  * Класс телеграм бота
  */
-public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
+public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<String> {
     private final CommandProcessor commandProcessor;
-    public TelegramJokeBot(JokeService jokeService) {
-        this.commandProcessor = new CommandProcessor(jokeService);
+
+    public TelegramJokeBot(CommandProcessor commandProcessor) {
+        this.commandProcessor = commandProcessor;
     }
 
     /**
@@ -34,25 +34,15 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
      */
     @Override
     public void onUpdateReceived(Update update) {
-        try {
-            // TODO: Функционал работы с анекдотами
-            if (update.hasMessage() && update.getMessage().hasText()){
-                Message textInMessage = update.getMessage();
-                String chatId = textInMessage.getChatId().toString();
-                SendMessage sendMessage = new SendMessage();
-                // TODO: Здесь нужно парсить сообщения, валидироваить и переводить их в CommandData
+        // TODO: Функционал работы с анекдотами
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            Message textInMessage = update.getMessage();
+            String chatId = textInMessage.getChatId().toString();
+            // TODO: Здесь нужно парсить сообщения, валидироваить и переводить их в CommandData
+            // TODO: Затем мы передаем CommandData в CommandProcessor и получаем response
+            String response = "Ваше сообщение: " + textInMessage.getText();
 
-                // TODO: Затем мы передаем CommandData в CommandProcessor и получаем response
-                String response = "Ваше сообщение: " + textInMessage.getText();
-
-                sendMessage.setChatId(chatId);
-                sendMessage.setText(response);
-
-                execute(sendMessage);
-            }
-        }
-        catch (TelegramApiException e) {
-            e.printStackTrace();
+            sendMessage(chatId, response);
         }
     }
 
@@ -64,6 +54,18 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
     @Override
     public String getBotToken() {
         return TOKEN;
+    }
+
+    @Override
+    public void sendMessage(String chatId, String message) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
+        sendMessage.setText(message);
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -17,18 +17,12 @@ public class CommandProcessor {
      */
     private final Map<String, BotCommand> commandMap;
 
-    private final JokeService jokeService;
-
     public CommandProcessor(JokeService jokeService) {
         commandMap = new HashMap<>();
-        this.jokeService = jokeService;
-        init();
-    }
-
-    private void init() {
         commandMap.put("/start", new StartCommand());
         commandMap.put("/help", new HelpCommand());
         commandMap.put("/joke", new JokeCommand(jokeService));
+        commandMap.put("/getJoke", new GetJokeCommand(jokeService));
     }
 
     /**
@@ -37,12 +31,11 @@ public class CommandProcessor {
      * @return сообщение пользователю
      */
     public String runCommand(CommandData commandData) {
-        try {
-            System.out.println(commandData);
-            BotCommand botCommand = commandMap.get(commandData.getCommand());
-            return botCommand.execute(commandData.getArgs());
-        } catch (NullPointerException e) {
-            return "Ой-ой, такой команды не существует";
+        System.out.println(commandData);
+        BotCommand botCommand = commandMap.get(commandData.getCommand());
+        if (botCommand == null) {
+            return "Команда не найдена";
         }
+        return botCommand.execute(commandData.getArgs());
     }
 }
