@@ -2,6 +2,7 @@ package org.bot.commands;
 
 import org.bot.dao.JokeService;
 import org.bot.dto.CommandData;
+import org.bot.dto.CommandParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +17,10 @@ public class CommandProcessor {
      * текст-команды : команда на выполнение
      */
     private final Map<String, BotCommand> commandMap;
+    private final CommandParser commandParser;
 
     public CommandProcessor(JokeService jokeService) {
+        this.commandParser = new CommandParser();
         commandMap = new HashMap<>();
         commandMap.put("/start", new StartCommand());
         commandMap.put("/help", new HelpCommand());
@@ -31,11 +34,14 @@ public class CommandProcessor {
      * @return сообщение пользователю
      */
     public String runCommand(CommandData commandData) {
-        System.out.println(commandData);
         BotCommand botCommand = commandMap.get(commandData.getCommand());
         if (botCommand == null) {
             return "Команда не найдена";
         }
         return botCommand.execute(commandData.getArgs());
+    }
+
+    public CommandData parseCommand(String command) {
+        return commandParser.parseMessage(command);
     }
 }
