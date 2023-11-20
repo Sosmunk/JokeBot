@@ -14,12 +14,6 @@ public class BotLogic {
     public BotLogic(TelegramJokeBot telegramJokeBot, VkJokeBot vkJokeBot) {
         this.telegramJokeBot = telegramJokeBot;
         this.vkJokeBot = vkJokeBot;
-
-        // Пока не знаю где правильно запускать ботов
-        // Не хочется делать ботов публичными
-        telegramJokeBot.start();
-        vkJokeBot.start();
-
     }
 
     //TODO: Отправка сообщений в нужного бота по расписанию

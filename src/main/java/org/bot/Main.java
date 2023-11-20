@@ -16,6 +16,8 @@ public class Main {
         TelegramJokeBot telegramJokeBot = new TelegramJokeBot(commandProcessor);
         VkJokeBot vkJokeBot = new VkJokeBot(commandProcessor);
         BotLogic botLogic = new BotLogic(telegramJokeBot, vkJokeBot);
+        telegramJokeBot.start();
+        vkJokeBot.start();
     }
 
 }
