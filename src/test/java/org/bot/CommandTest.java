@@ -1,8 +1,6 @@
 package org.bot;
 
 import org.bot.commands.CommandProcessor;
-import org.bot.dao.JokeService;
-import org.bot.dao.JokeServiceImpl;
 import org.bot.dto.CommandData;
 import org.junit.Assert;
 import org.junit.Test;
