@@ -6,8 +6,16 @@ import jakarta.persistence.*;
  * Модель анекдота
  */
 @Entity
-@Table(name="jokes")
+@Table(name = "jokes")
 public class Joke {
+
+    public Joke() {
+    }
+
+    public Joke(String text) {
+        this.text = text;
+    }
+
     /**
      * id анекдота
      */
@@ -15,6 +23,7 @@ public class Joke {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
+    @Column(columnDefinition = "TEXT")
     private String text;
 
     public Integer getId() {

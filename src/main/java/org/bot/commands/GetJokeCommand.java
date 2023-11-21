@@ -22,11 +22,26 @@ public class GetJokeCommand implements BotCommand {
      */
     @Override
     public String execute(String args) {
-        // TODO: Валидация аргументов
-        Joke joke = this.jokeService.getJoke(Integer.parseInt(args));
+        if (args == null) {
+            return "Введите \"/getJoke <номер анекдота>\"";
+        }
+        int jokeId;
+
+        try {
+            jokeId = Integer.parseInt(args);
+        } catch (NumberFormatException e) {
+            return """
+                    Неправильный номер команды! Ответ должен содержать только цифры.
+                    Например: "/getJoke 1"
+                    """;
+        }
+
+        Joke joke = this.jokeService.getJoke(jokeId);
+
         if (joke == null) {
             return "Анекдот не найден";
         }
-        return joke.getText();
+        
+        return String.format("Анекдот №%s%n", joke.getId()) + joke.getText();
     }
 }
