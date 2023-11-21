@@ -23,15 +23,20 @@ public class Joke {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
+    /**
+     * Текст анекдота
+     */
     @Column(columnDefinition = "TEXT")
     private String text;
 
     public Integer getId() {
         return id;
     }
+
     public String getText() {
         return text;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Singleton класс, отвечающий за взаимодействие с базой данных joke
+ * Сервис, отвечающий за взаимодействие с базой данных joke
  */
 public class JokeServiceImpl implements JokeService {
 
