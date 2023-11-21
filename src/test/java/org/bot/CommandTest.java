@@ -1,13 +1,13 @@
 package org.bot;
 
 import org.bot.commands.CommandProcessor;
-import org.bot.dao.JokeService;
-import org.bot.dao.JokeServiceImpl;
 import org.bot.dto.CommandData;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class CommandTest {
+    FakeService fakeService = new FakeService();
+
     /**
      * Тест команды /start
      */
@@ -45,22 +45,16 @@ public class CommandTest {
      */
     @Test
     public void testJokeCommand(){
-        // TODO : Запустить докер и попробовать
-        JokeService jokeService = new JokeServiceImpl();
-        CommandProcessor commandProcessor = new CommandProcessor(jokeService);
+        CommandProcessor commandProcessor = new CommandProcessor(fakeService);
+        fakeService.saveJoke(new Joke("""
+                — Заходит программист в лифт, а ему надо на 12—й этаж.
+                — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
+                """));
+
         CommandData commandData = new CommandData("/joke",null);
-        Assert.assertEquals("Wrong message","""
-                Тестировщик заходит в бар и заказывает:
-                                
-                кружку пива,
-                2 кружки пива,
-                0 кружек пива,
-                999999999 кружек пива,
-                ящерицу в стакане,
-                –1 кружку пива,
-                qwertyuip кружек пива.
-                                
-                Первый реальный клиент заходит в бар и спрашивает, где туалет. Бар вспыхивает пламенем, все погибают.
+        Assert.assertEquals("Invalid message",String.format("Анекдот №1%n")+"""
+                — Заходит программист в лифт, а ему надо на 12—й этаж.
+                — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
                 """,
                 commandProcessor.runCommand(commandData));
     }
@@ -70,24 +64,17 @@ public class CommandTest {
      */
     @Test
     public void testGetJokeCommand(){
-        // TODO : Запустить докер и попробовать
-        JokeService jokeService = new JokeServiceImpl();
-        CommandProcessor commandProcessor = new CommandProcessor(jokeService);
+        CommandProcessor commandProcessor = new CommandProcessor(fakeService);
+
+        fakeService.saveJoke(new Joke("""
+                — Заходит программист в лифт, а ему надо на 12—й этаж.
+                — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
+                """));
+
         CommandData commandData = new CommandData("/getJoke","1");
-        Assert.assertTrue("Incorrect input",commandData.getArgs().matches("[0-9]+"));
-        Assert.assertTrue("Incorrect input",Integer.parseInt(commandData.getArgs()) > 0);
-        Assert.assertEquals("Invalid message","""
-                Тестировщик заходит в бар и заказывает:
-                                
-                кружку пива,
-                2 кружки пива,
-                0 кружек пива,
-                999999999 кружек пива,
-                ящерицу в стакане,
-                –1 кружку пива,
-                qwertyuip кружек пива.
-                                
-                Первый реальный клиент заходит в бар и спрашивает, где туалет. Бар вспыхивает пламенем, все погибают.
+        Assert.assertEquals("Invalid message",String.format("Анекдот №1%n")+"""
+                — Заходит программист в лифт, а ему надо на 12—й этаж.
+                — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
                 """,
                 commandProcessor.runCommand(commandData));
     }
