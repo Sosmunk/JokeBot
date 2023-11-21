@@ -71,7 +71,7 @@ public class CommandTest {
                 — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
                 """));
 
-        CommandData commandData = new CommandData("/getJoke","0");
+        CommandData commandData = new CommandData("/getJoke","1");
         Assert.assertEquals("Invalid message",String.format("Анекдот №1%n")+"""
                 — Заходит программист в лифт, а ему надо на 12—й этаж.
                 — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.

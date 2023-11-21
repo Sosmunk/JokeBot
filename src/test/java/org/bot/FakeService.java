@@ -11,7 +11,7 @@ public class FakeService implements JokeService {
 
     @Override
     public Joke getJoke(Integer id) {
-        return jokes.get(id);
+        return jokes.get(id - 1);
     }
 
     @Override
