@@ -1,6 +1,7 @@
 package org.bot.bots;
 
 import org.bot.commands.CommandProcessor;
+import org.bot.dto.CommandData;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -34,15 +35,15 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<S
      */
     @Override
     public void onUpdateReceived(Update update) {
-        // TODO: Функционал работы с анекдотами
         if (update.hasMessage() && update.getMessage().hasText()) {
             Message textInMessage = update.getMessage();
             String chatId = textInMessage.getChatId().toString();
-            // TODO: Здесь нужно парсить сообщения, валидироваить и переводить их в CommandData
-            // TODO: Затем мы передаем CommandData в CommandProcessor и получаем response
-            String response = "Ваше сообщение: " + textInMessage.getText();
+            // TODO: Будет дублироваться, поправить
+            CommandData commandData = commandProcessor.parseCommand(textInMessage.getText());
+            String result = commandProcessor.runCommand(commandData);
+            // ---
 
-            sendMessage(chatId, response);
+            sendMessage(chatId, result);
         }
     }
 
