@@ -18,10 +18,12 @@ public class Main {
         JokeService jokeService = new JokeServiceImpl();
         dataLoader.populate(jokeService);
 
+        //TODO : создание клавиатуры (пока что только для тг бота)
+        KeyboardHandler keyboardHandler = new KeyboardHandler();
 
         CommandProcessor commandProcessor = new CommandProcessor(jokeService);
-        TelegramJokeBot telegramJokeBot = new TelegramJokeBot(commandProcessor);
-        VkJokeBot vkJokeBot = new VkJokeBot(commandProcessor);
+        TelegramJokeBot telegramJokeBot = new TelegramJokeBot(commandProcessor,keyboardHandler);
+        VkJokeBot vkJokeBot = new VkJokeBot(commandProcessor, keyboardHandler);
         BotLogic botLogic = new BotLogic(telegramJokeBot, vkJokeBot);
         telegramJokeBot.start();
         vkJokeBot.start();
