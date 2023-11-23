@@ -81,4 +81,10 @@ public class JokeServiceImpl implements JokeService {
         session.close();
         return joke;
     }
+
+    @Override
+    public Joke rateJoke(Integer id, Integer assesment) {
+        // TODO : добавить реализацию оценки шутки
+        return null;
+    }
 }

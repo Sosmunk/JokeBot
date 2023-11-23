@@ -26,4 +26,10 @@ public class FakeService implements JokeService {
         jokes.add(joke);
         return joke;
     }
+
+    @Override
+    public Joke rateJoke(Integer id, Integer assesment) {
+        // TODO : реализовать тест для оценивания шутки
+        return null;
+    }
 }

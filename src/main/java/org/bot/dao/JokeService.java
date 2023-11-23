@@ -25,4 +25,14 @@ public interface JokeService {
      * @return сохраненный анекдот
      */
     Joke saveJoke(Joke joke);
+
+    /**
+     * Оценить анекдот
+     * @param id id анекдота
+     * @param assesment оценка анекдота
+     * @return анекдот
+     * TODO : Проверить, правильно ли создан метод
+     */
+    Joke rateJoke(Integer id, Integer assesment);
+
 }
