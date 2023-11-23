@@ -4,6 +4,7 @@ import api.longpoll.bots.LongPollBot;
 import api.longpoll.bots.exceptions.VkApiException;
 import api.longpoll.bots.model.events.messages.MessageNew;
 import api.longpoll.bots.model.objects.basic.Message;
+import org.bot.KeyboardHandler;
 import org.bot.commands.CommandProcessor;
 import org.bot.dto.CommandData;
 
@@ -13,9 +14,11 @@ import org.bot.dto.CommandData;
 public class VkJokeBot extends LongPollBot implements JokeBot<Integer> {
 
     private final CommandProcessor commandProcessor;
+    private final KeyboardHandler keyboardHandler;
 
-    public VkJokeBot(CommandProcessor commandProcessor) {
+    public VkJokeBot(CommandProcessor commandProcessor, KeyboardHandler keyboardHandler) {
         this.commandProcessor = commandProcessor;
+        this.keyboardHandler = keyboardHandler;
     }
 
     /**
@@ -52,6 +55,7 @@ public class VkJokeBot extends LongPollBot implements JokeBot<Integer> {
             vk.messages.send()
                     .setPeerId(chatId)
                     .setMessage(message)
+                    // TODO : Здесь реализовать клавиатуру для VK бота
                     .execute();
         } catch (VkApiException e) {
             e.printStackTrace();

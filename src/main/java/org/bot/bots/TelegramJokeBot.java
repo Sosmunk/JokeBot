@@ -1,5 +1,6 @@
 package org.bot.bots;
 
+import org.bot.KeyboardHandler;
 import org.bot.commands.CommandProcessor;
 import org.bot.dto.CommandData;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -15,9 +16,11 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
  */
 public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<String> {
     private final CommandProcessor commandProcessor;
+    private final KeyboardHandler keyboardHandler;
 
-    public TelegramJokeBot(CommandProcessor commandProcessor) {
+    public TelegramJokeBot(CommandProcessor commandProcessor, KeyboardHandler keyboardHandler) {
         this.commandProcessor = commandProcessor;
+        this.keyboardHandler = keyboardHandler;
     }
 
     /**
@@ -62,6 +65,8 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<S
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         sendMessage.setText(message);
+        // TODO : Проверить работоспособность
+        sendMessage = keyboardHandler.setKeyboardTG(sendMessage.getChatId(),sendMessage.getText());
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
