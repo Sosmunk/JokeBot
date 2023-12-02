@@ -43,8 +43,18 @@ public class CommandParserTest {
      * Тест команды /rate <id> <stars 1-5> на отсутствие аругментов
      */
     @Test
-    public void parserRateNoArgs(){
+    public void parserRateNoArgs() {
         CommandData commandDataActual = commandParser.parseMessage("/rate");
-        Assert.assertNull("Args is null!",commandDataActual.getArgs());
+        Assert.assertNull("Args is null!", commandDataActual.getArgs());
+    }
+
+    /**
+     * Тестирование парсера на возврат null значений в полях, при передаче пустой строки
+     */
+    @Test
+    public void parseNoData() {
+        CommandData commandData = commandParser.parseMessage("");
+        Assert.assertNull(commandData.getCommand());
+        Assert.assertNull(commandData.getArgs());
     }
 }
