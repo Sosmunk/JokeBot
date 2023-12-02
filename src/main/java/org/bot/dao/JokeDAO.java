@@ -35,6 +35,12 @@ public class JokeDAO {
         this.sessionFactory = configuration.buildSessionFactory();
     }
 
+    /**
+     * Поиск анекдота в БД
+     *
+     * @param id id анекдота
+     * @return анекдот
+     */
     public Joke findJoke(Integer id) {
         Session session = sessionFactory.openSession();
         Joke joke = session.get(Joke.class, id);
@@ -42,6 +48,11 @@ public class JokeDAO {
         return joke;
     }
 
+    /**
+     * Поиск слуайного анекдота в БД
+     *
+     * @return анекдот
+     */
     public Joke findJokeByRandom() {
         Session session = sessionFactory.openSession();
 
@@ -58,8 +69,8 @@ public class JokeDAO {
         Root<Joke> jokeRoot = jokeQuery.from(Joke.class);
         jokeQuery.select(jokeRoot);
 
-        //Получаем список случайных шуток,
-        //где будет храниться одна шутка (из коробки только так)
+        //Получаем список случайных анекдотов,
+        //где будет храниться один анекдот (из коробки только так)
         int randomInt = random.nextInt(rowCount.intValue());
         Query<Joke> query = session.createQuery(jokeQuery);
         List<Joke> jokes = query.setFirstResult(randomInt).setMaxResults(1).getResultList();
@@ -69,6 +80,12 @@ public class JokeDAO {
         return jokes.get(0);
     }
 
+    /**
+     * Сохранение анекдота в БД
+     *
+     * @param joke анекдот
+     * @return анекдот с id в базе данных
+     */
     public Joke save(Joke joke) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
