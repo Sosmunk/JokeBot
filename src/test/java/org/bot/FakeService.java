@@ -11,6 +11,10 @@ public class FakeService implements JokeService {
 
     @Override
     public Joke getJoke(Integer id) {
+        System.out.println(jokes.size());
+        if (id < 0 || id >= jokes.size()) {
+            return null;
+        }
         return jokes.get(id - 1);
     }
 
