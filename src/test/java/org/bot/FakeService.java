@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Моковый сервис для тестирования функционала
+ * Моковый сервис для тестирования функционала CommandProcessor
  */
 public class FakeService implements JokeService {
     /**
