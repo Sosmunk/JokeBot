@@ -5,6 +5,9 @@ import org.bot.dto.CommandData;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Класс для тестирования обработки команд
+ */
 public class CommandTest {
 
     FakeService fakeService = new FakeService();
