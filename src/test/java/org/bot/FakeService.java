@@ -6,7 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Моковый сервис для тестирования функционала
+ */
 public class FakeService implements JokeService {
+    /**
+     * Структура данных, имитирующая БД
+     */
     List<Joke> jokes = new ArrayList<>();
 
     @Override
