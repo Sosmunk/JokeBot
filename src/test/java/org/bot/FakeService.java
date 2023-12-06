@@ -13,7 +13,7 @@ public class FakeService implements JokeService {
     /**
      * Структура данных, имитирующая БД
      */
-    List<Joke> jokes = new ArrayList<>();
+    private final List<Joke> jokes = new ArrayList<>();
 
     @Override
     public Joke getJoke(Integer id) {

@@ -11,7 +11,7 @@ import org.junit.Test;
 public class CommandTest {
 
     private final FakeService fakeService = new FakeService();
-    CommandProcessor commandProcessor = new CommandProcessor(fakeService);
+    private final CommandProcessor commandProcessor = new CommandProcessor(fakeService);
 
     private final String FIRST_JOKE = """
             — Заходит программист в лифт, а ему надо на 12—й этаж.
