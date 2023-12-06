@@ -6,11 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Моковый сервис для тестирования функционала CommandProcessor
+ */
 public class FakeService implements JokeService {
-    List<Joke> jokes = new ArrayList<>();
+    /**
+     * Структура данных, имитирующая БД
+     */
+    private final List<Joke> jokes = new ArrayList<>();
 
     @Override
     public Joke getJoke(Integer id) {
+        System.out.println(jokes.size());
+        if (id < 0 || id >= jokes.size()) {
+            return null;
+        }
         return jokes.get(id - 1);
     }
 

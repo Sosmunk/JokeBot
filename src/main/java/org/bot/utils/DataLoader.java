@@ -3,7 +3,17 @@ package org.bot.utils;
 import org.bot.Joke;
 import org.bot.dao.JokeService;
 
+/**
+ * Класс для загрузки первоначальных данных об анекдотах
+ * hibernate сейчас работает через create-drop, поэтому дублирование данных не страшно
+ */
 public class DataLoader {
+
+    /**
+     * Загрузить анекдоты в БД
+     *
+     * @param jokeService jokeService
+     */
     public void populate(JokeService jokeService) {
         jokeService.saveJoke(new Joke("""
                 Тестировщик заходит в бар и заказывает:

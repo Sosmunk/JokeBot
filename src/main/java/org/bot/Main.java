@@ -9,7 +9,7 @@ import org.bot.dao.JokeServiceImpl;
 import org.bot.utils.DataLoader;
 
 /**
- * Класс, включающий ботов
+ * Класс, для запуска программы
  */
 
 public class Main {
@@ -17,13 +17,9 @@ public class Main {
         DataLoader dataLoader = new DataLoader();
         JokeService jokeService = new JokeServiceImpl();
         dataLoader.populate(jokeService);
-
-        //TODO : создание клавиатуры (пока что только для тг бота)
-        KeyboardHandler keyboardHandler = new KeyboardHandler();
-
         CommandProcessor commandProcessor = new CommandProcessor(jokeService);
-        TelegramJokeBot telegramJokeBot = new TelegramJokeBot(commandProcessor,keyboardHandler);
-        VkJokeBot vkJokeBot = new VkJokeBot(commandProcessor, keyboardHandler);
+        TelegramJokeBot telegramJokeBot = new TelegramJokeBot(commandProcessor);
+        VkJokeBot vkJokeBot = new VkJokeBot(commandProcessor);
         BotLogic botLogic = new BotLogic(telegramJokeBot, vkJokeBot);
         telegramJokeBot.start();
         vkJokeBot.start();
