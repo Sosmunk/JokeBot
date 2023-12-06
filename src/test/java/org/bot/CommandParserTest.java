@@ -28,26 +28,6 @@ public class CommandParserTest {
         CommandData commandDataActual = commandParser.parseMessage("/getJoke");
         Assert.assertNull("Args is null!",commandDataActual.getArgs());
     }
-
-    /**
-     * Тест корректного ввода команды /rate <id> <stars 1-5>
-     */
-    @Test
-    public void parserRateCorrect(){
-        CommandData commandDataExpected = new CommandData("/rate","15 5");
-        CommandData commandDataActual = commandParser.parseMessage("/rate 15 5");
-        Assert.assertEquals("Invalid command!",commandDataExpected,commandDataActual);
-    }
-
-    /**
-     * Тест команды /rate <id> <stars 1-5> на отсутствие аругментов
-     */
-    @Test
-    public void parserRateNoArgs() {
-        CommandData commandDataActual = commandParser.parseMessage("/rate");
-        Assert.assertNull("Args is null!", commandDataActual.getArgs());
-    }
-
     /**
      * Тестирование парсера на возврат null значений в полях, при передаче пустой строки
      */

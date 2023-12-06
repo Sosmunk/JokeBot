@@ -25,10 +25,4 @@ public class JokeServiceImpl implements JokeService {
     public Joke saveJoke(Joke joke) {
         return jokeDAO.save(joke);
     }
-
-    @Override
-    public Joke rateJoke(Integer id, Integer assesment) {
-        // TODO : добавить реализацию оценки шутки
-        return null;
-    }
 }

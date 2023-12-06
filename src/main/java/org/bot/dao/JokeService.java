@@ -8,6 +8,7 @@ import org.bot.Joke;
 public interface JokeService {
     /**
      * Получить анекдот по id
+     *
      * @param id id анекдота
      * @return анекдот
      */
@@ -15,24 +16,16 @@ public interface JokeService {
 
     /**
      * Получить случайный анекдот
+     *
      * @return анекдот
      */
     Joke getRandomJoke();
 
     /**
      * Сохранить анекдот
+     *
      * @param joke анекдот
      * @return сохраненный анекдот
      */
     Joke saveJoke(Joke joke);
-
-    /**
-     * Оценить анекдот
-     * @param id id анекдота
-     * @param assesment оценка анекдота
-     * @return анекдот
-     * TODO : Проверить, правильно ли создан метод
-     */
-    Joke rateJoke(Integer id, Integer assesment);
-
 }
