@@ -41,7 +41,6 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<S
             // TODO: Будет дублироваться, поправить
             CommandData commandData = commandProcessor.parseCommand(textInMessage.getText());
             String result = commandProcessor.runCommand(commandData);
-            // ---
 
             sendMessage(chatId, result);
         }
@@ -62,7 +61,6 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<S
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         sendMessage.setText(message);
-        // TODO : Проверить работоспособность
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
