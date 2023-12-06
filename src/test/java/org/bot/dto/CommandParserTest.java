@@ -1,7 +1,5 @@
-package org.bot;
+package org.bot.dto;
 
-import org.bot.dto.CommandData;
-import org.bot.dto.CommandParser;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -26,7 +24,7 @@ public class CommandParserTest {
     @Test
     public void parserGetJokeNoArgs(){
         CommandData commandDataActual = commandParser.parseMessage("/getJoke");
-        Assert.assertNull("Args is null!",commandDataActual.getArgs());
+        Assert.assertNull("Args is null!",commandDataActual.args());
     }
     /**
      * Тестирование парсера на возврат null значений в полях, при передаче пустой строки
@@ -34,7 +32,7 @@ public class CommandParserTest {
     @Test
     public void parseNoData() {
         CommandData commandData = commandParser.parseMessage("");
-        Assert.assertNull(commandData.getCommand());
-        Assert.assertNull(commandData.getArgs());
+        Assert.assertNull(commandData.command());
+        Assert.assertNull(commandData.args());
     }
 }
