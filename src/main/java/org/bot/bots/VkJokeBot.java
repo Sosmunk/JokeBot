@@ -8,7 +8,7 @@ import org.bot.commands.CommandProcessor;
 import org.bot.dto.CommandData;
 
 /**
- * VK Бот для работы с анекдотами
+ * VK Бот для работы с шутками
  */
 public class VkJokeBot extends LongPollBot implements JokeBot<Integer> {
 
@@ -31,7 +31,6 @@ public class VkJokeBot extends LongPollBot implements JokeBot<Integer> {
             // Дублирование кода
             CommandData commandData = commandProcessor.parseCommand(message.getText());
             String result = commandProcessor.runCommand(commandData);
-            //
             sendMessage(message.getPeerId(), result);
         }
     }

@@ -5,6 +5,7 @@ import org.bot.dao.JokeService;
 
 /**
  * Команда /joke
+ * Получить случайную шутку
  */
 
 public class JokeCommand implements BotCommand {
@@ -12,11 +13,6 @@ public class JokeCommand implements BotCommand {
     public JokeCommand(JokeService jokeService) {
         this.jokeService = jokeService;
     }
-    /**
-     * Получить случайную шутку (/joke)
-     * @param args аргументы команды
-     * @return случайная шутка
-     */
     @Override
     public String execute(String args) {
         Joke joke = jokeService.getRandomJoke();

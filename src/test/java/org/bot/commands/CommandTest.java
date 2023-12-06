@@ -1,12 +1,13 @@
-package org.bot;
+package org.bot.commands;
 
-import org.bot.commands.CommandProcessor;
+import org.bot.FakeService;
+import org.bot.Joke;
 import org.bot.dto.CommandData;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Класс для тестирования обработки команд
+ * Тест обработки команд /help, /start, /joke, /getJoke &lt;id&gt;
  */
 public class CommandTest {
 
@@ -64,7 +65,7 @@ public class CommandTest {
     }
 
     /**
-     * Тест команды /getJoke <id>
+     * Тест команды /getJoke &lt;id>&gt;
      */
     @Test
     public void testGetJokeCommand(){
