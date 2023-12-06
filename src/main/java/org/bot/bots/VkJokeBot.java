@@ -25,7 +25,6 @@ public class VkJokeBot extends LongPollBot implements JokeBot<Integer> {
      */
     @Override
     public void onMessageNew(MessageNew messageNew) {
-        // TODO: Функционал работы с анекдотами
         Message message = messageNew.getMessage();
         if (message.hasText()) {
             // Дублирование кода
