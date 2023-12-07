@@ -5,7 +5,7 @@ import org.bot.dao.JokeService;
 
 /**
  * Команда /joke
- * Получить случайную шутку
+ * Получить случайный анекдот
  */
 
 public class JokeCommand implements BotCommand {
