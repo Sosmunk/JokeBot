@@ -17,7 +17,7 @@ public class FakeService implements JokeService {
 
     @Override
     public Joke getJoke(Integer id) {
-        if (id < 0 || id > jokes.size()) {
+        if (id < 0 || id > jokes.size() + 1) {
             return null;
         }
         return jokes.get(id - 1);
