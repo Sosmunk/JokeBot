@@ -5,10 +5,9 @@ import api.longpoll.bots.exceptions.VkApiException;
 import api.longpoll.bots.model.events.messages.MessageNew;
 import api.longpoll.bots.model.objects.basic.Message;
 import org.bot.commands.CommandProcessor;
-import org.bot.dto.CommandData;
 
 /**
- * VK Бот для работы с шутками
+ * Класс VK бота
  */
 public class VkJokeBot extends LongPollBot implements JokeBot<Integer> {
 
@@ -29,8 +28,7 @@ public class VkJokeBot extends LongPollBot implements JokeBot<Integer> {
         Message message = messageNew.getMessage();
         if (message.hasText()) {
             // Дублирование кода
-            CommandData commandData = commandProcessor.parseCommand(message.getText());
-            String result = commandProcessor.runCommand(commandData);
+            String result = commandProcessor.runCommand(message.getText());
             sendMessage(message.getPeerId(), result);
         }
     }

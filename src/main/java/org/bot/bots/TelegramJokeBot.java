@@ -1,7 +1,6 @@
 package org.bot.bots;
 
 import org.bot.commands.CommandProcessor;
-import org.bot.dto.CommandData;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -39,8 +38,7 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<S
             Message textInMessage = update.getMessage();
             String chatId = textInMessage.getChatId().toString();
             // TODO: Будет дублироваться, поправить
-            CommandData commandData = commandProcessor.parseCommand(textInMessage.getText());
-            String result = commandProcessor.runCommand(commandData);
+            String result = commandProcessor.runCommand(textInMessage.getText());
 
             sendMessage(chatId, result);
         }
