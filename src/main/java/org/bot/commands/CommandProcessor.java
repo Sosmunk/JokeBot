@@ -34,11 +34,11 @@ public class CommandProcessor {
      * @return сообщение пользователю
      */
     public String runCommand(String command) {
-        if (command == null || command.isEmpty()){
-            return "Команда не найдена";
-        }
         CommandData commandData = parseCommand(command);
         BotCommand botCommand = commandMap.get(commandData.command());
+        if (botCommand == null){
+            return "Команда не найдена";
+        }
         return botCommand.execute(commandData.args());
     }
 
