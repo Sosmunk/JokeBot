@@ -1,12 +1,12 @@
-package org.bot;
+package org.bot.commands;
 
-import org.bot.commands.CommandProcessor;
-import org.bot.dto.CommandData;
+import org.bot.FakeService;
+import org.bot.Joke;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Класс для тестирования обработки команд
+ * Тест обработки команд /help, /start, /joke, /getJoke &lt;id&gt;
  */
 public class CommandTest {
 
@@ -23,10 +23,10 @@ public class CommandTest {
      */
     @Test
     public void testStartCommand() {
-        CommandData commandData = new CommandData("/start", null);
+        String command = "/start";
         Assert.assertEquals("Wrong message", "Привет, я бот - любитель анекдотов." +
                         " Чтобы получить справку о работе со мной напишите /help.",
-                commandProcessor.runCommand(commandData));
+                commandProcessor.runCommand(command));
     }
 
     /**
@@ -34,7 +34,7 @@ public class CommandTest {
      */
     @Test
     public void testHelpCommand(){
-        CommandData commandData = new CommandData("/help",null);
+        String command = "/help";
         Assert.assertEquals("Wrong message", """
                         Вот всё что я умею:
                                         
@@ -45,7 +45,7 @@ public class CommandTest {
                             
                         👶🏼 Справка о командах бота (/help)
                         """,
-                commandProcessor.runCommand(commandData));
+                commandProcessor.runCommand(command));
     }
 
     /**
@@ -58,13 +58,13 @@ public class CommandTest {
                 — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
                 """));
 
-        CommandData commandData = new CommandData("/joke",null);
+        String command = "/joke";
         Assert.assertEquals("Invalid message", String.format("Анекдот №1%n") + FIRST_JOKE,
-                commandProcessor.runCommand(commandData));
+                commandProcessor.runCommand(command));
     }
 
     /**
-     * Тест команды /getJoke <id>
+     * Тест команды /getJoke &lt;id>&gt;
      */
     @Test
     public void testGetJokeCommand(){
@@ -73,9 +73,9 @@ public class CommandTest {
                 — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
                 """));
 
-        CommandData commandData = new CommandData("/getJoke", "1");
+        String command = "/getJoke 1";
         Assert.assertEquals("Invalid message", String.format("Анекдот №1%n") + FIRST_JOKE,
-                commandProcessor.runCommand(commandData));
+                commandProcessor.runCommand(command));
     }
 
     /**
@@ -83,8 +83,8 @@ public class CommandTest {
      */
     @Test
     public void getJokeNotFoundTest() {
-        CommandData getJokecommandData = new CommandData("/getJoke", "123");
-        Assert.assertEquals("Анекдот не найден", commandProcessor.runCommand(getJokecommandData));
+        String command = "/getJoke 123";
+        Assert.assertEquals("Анекдот не найден", commandProcessor.runCommand(command));
 
     }
 }

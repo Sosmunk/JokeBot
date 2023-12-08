@@ -30,18 +30,19 @@ public class CommandProcessor {
 
     /**
      * Выполнить пользовательскую команду
-     * @param commandData данные о команде из сообщения
+     * @param command команда из сообщения
      * @return сообщение пользователю
      */
-    public String runCommand(CommandData commandData) {
-        BotCommand botCommand = commandMap.get(commandData.getCommand());
-        if (botCommand == null) {
+    public String runCommand(String command) {
+        CommandData commandData = parseCommand(command);
+        BotCommand botCommand = commandMap.get(commandData.command());
+        if (botCommand == null){
             return "Команда не найдена";
         }
-        return botCommand.execute(commandData.getArgs());
+        return botCommand.execute(commandData.args());
     }
 
-    public CommandData parseCommand(String command) {
+    private CommandData parseCommand(String command) {
         return commandParser.parseMessage(command);
     }
 }
