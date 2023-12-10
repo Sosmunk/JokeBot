@@ -7,7 +7,7 @@ package org.bot.commands;
 
 public class StartCommand implements BotCommand {
     @Override
-    public String execute(String args) {
+    public String execute(String args, Long chatId) {
         return "Привет, я бот - любитель анекдотов. Чтобы получить справку о работе со мной напишите /help.";
     }
 }

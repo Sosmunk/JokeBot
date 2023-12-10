@@ -7,7 +7,7 @@ package org.bot.commands;
 
 public class HelpCommand implements BotCommand {
     @Override
-    public String execute(String args) {
+    public String execute(String args, Long chatId) {
         return """
                 Вот всё что я умею:
                                 

@@ -12,7 +12,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 /**
  * Класс телеграм бота
  */
-public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<String> {
+public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<Long> {
     private final CommandProcessor commandProcessor;
 
     public TelegramJokeBot(CommandProcessor commandProcessor) {
@@ -36,8 +36,8 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<S
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             Message textInMessage = update.getMessage();
-            String chatId = textInMessage.getChatId().toString();
-            String result = commandProcessor.runCommand(textInMessage.getText());
+            Long chatId = textInMessage.getChatId();
+            String result = commandProcessor.runCommand(textInMessage.getText(), chatId);
 
             sendMessage(chatId, result);
         }
@@ -54,7 +54,7 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<S
     }
 
     @Override
-    public void sendMessage(String chatId, String message) {
+    public void sendMessage(Long chatId, String message) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         sendMessage.setText(message);

@@ -14,8 +14,9 @@ public class GetJokeCommand implements BotCommand {
     public GetJokeCommand(JokeService jokeService) {
         this.jokeService = jokeService;
     }
+
     @Override
-    public String execute(String args) {
+    public String execute(String args, Long chatId) {
         if (args == null) {
             return "Введите \"/getJoke <номер анекдота>\"";
         }
@@ -35,7 +36,9 @@ public class GetJokeCommand implements BotCommand {
         if (joke == null) {
             return "Анекдот не найден";
         }
-        
+
+        // TODO: save last joke ID in chat
+
         return String.format("Анекдот №%s%n", joke.getId()) + joke.getText();
     }
 }

@@ -26,7 +26,7 @@ public class VkJokeBot extends LongPollBot implements JokeBot<Integer> {
     public void onMessageNew(MessageNew messageNew) {
         Message message = messageNew.getMessage();
         if (message.hasText()) {
-            String result = commandProcessor.runCommand(message.getText());
+            String result = commandProcessor.runCommand(message.getText(), message.getPeerId().longValue());
             sendMessage(message.getPeerId(), result);
         }
     }

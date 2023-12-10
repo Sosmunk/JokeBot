@@ -30,16 +30,17 @@ public class CommandProcessor {
 
     /**
      * Выполнить пользовательскую команду
+     *
      * @param command команда из сообщения
      * @return сообщение пользователю
      */
-    public String runCommand(String command) {
+    public String runCommand(String command, Long chatId) {
         CommandData commandData = parseCommand(command);
         BotCommand botCommand = commandMap.get(commandData.command());
-        if (botCommand == null){
+        if (botCommand == null) {
             return "Команда не найдена";
         }
-        return botCommand.execute(commandData.args());
+        return botCommand.execute(commandData.args(), chatId);
     }
 
     private CommandData parseCommand(String command) {

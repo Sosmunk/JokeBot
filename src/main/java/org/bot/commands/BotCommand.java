@@ -6,8 +6,9 @@ package org.bot.commands;
 public interface BotCommand {
     /**
      * Выполнить команду
+     *
      * @param args аргументы команды
      * @return строку с результатом выполнения команды
      */
-    String execute(String args);
+    String execute(String args, Long chatId);
 }
