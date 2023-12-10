@@ -6,6 +6,10 @@ import org.bot.utils.DataLoader;
  * Сервис, отвечающий за работу с данными об анекдотах
  */
 public class JokeServiceImpl implements JokeService {
+    /**
+     * JokeDAO добавлен для разделения бизнес-логики и логики работы с Hibernate
+     * В будущем понадобится усложнить бизнес-логику (работа с чатами)
+     */
     private final JokeDAO jokeDAO;
 
     public JokeServiceImpl(JokeDAO jokeDAO) {
