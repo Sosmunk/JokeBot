@@ -26,7 +26,7 @@ public class CommandTest {
         String command = "/start";
         Assert.assertEquals("Wrong message", "Привет, я бот - любитель анекдотов." +
                         " Чтобы получить справку о работе со мной напишите /help.",
-                commandProcessor.runCommand(command));
+                commandProcessor.runCommand(command, null));
     }
 
     /**
@@ -45,7 +45,7 @@ public class CommandTest {
                             
                         👶🏼 Справка о командах бота (/help)
                         """,
-                commandProcessor.runCommand(command));
+                commandProcessor.runCommand(command, null));
     }
 
     /**
@@ -57,7 +57,7 @@ public class CommandTest {
 
         String command = "/joke";
         Assert.assertEquals("Invalid message", String.format("Анекдот №1%n") + FIRST_JOKE,
-                commandProcessor.runCommand(command));
+                commandProcessor.runCommand(command, null));
     }
 
     /**
@@ -69,7 +69,7 @@ public class CommandTest {
 
         String command = "/getJoke 1";
         Assert.assertEquals("Invalid message", String.format("Анекдот №1%n") + FIRST_JOKE,
-                commandProcessor.runCommand(command));
+                commandProcessor.runCommand(command, null));
     }
 
     /**
@@ -78,7 +78,7 @@ public class CommandTest {
     @Test
     public void getJokeNotFoundTest() {
         String command = "/getJoke 123";
-        Assert.assertEquals("Анекдот не найден", commandProcessor.runCommand(command));
+        Assert.assertEquals("Анекдот не найден", commandProcessor.runCommand(command, null));
 
     }
 }
