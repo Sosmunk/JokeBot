@@ -37,7 +37,6 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<S
         if (update.hasMessage() && update.getMessage().hasText()) {
             Message textInMessage = update.getMessage();
             String chatId = textInMessage.getChatId().toString();
-            // TODO: Будет дублироваться, поправить
             String result = commandProcessor.runCommand(textInMessage.getText());
 
             sendMessage(chatId, result);

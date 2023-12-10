@@ -53,10 +53,7 @@ public class CommandTest {
      */
     @Test
     public void testJokeCommand(){
-        fakeService.saveJoke(new Joke("""
-                — Заходит программист в лифт, а ему надо на 12—й этаж.
-                — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
-                """));
+        fakeService.saveJoke(new Joke(FIRST_JOKE));
 
         String command = "/joke";
         Assert.assertEquals("Invalid message", String.format("Анекдот №1%n") + FIRST_JOKE,
@@ -68,10 +65,7 @@ public class CommandTest {
      */
     @Test
     public void testGetJokeCommand(){
-        fakeService.saveJoke(new Joke("""
-                — Заходит программист в лифт, а ему надо на 12—й этаж.
-                — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
-                """));
+        fakeService.saveJoke(new Joke(FIRST_JOKE));
 
         String command = "/getJoke 1";
         Assert.assertEquals("Invalid message", String.format("Анекдот №1%n") + FIRST_JOKE,
