@@ -4,7 +4,8 @@ import org.bot.Joke;
 import org.bot.dao.JokeService;
 
 /**
- * /getJoke
+ * Команда /getJoke &lt;id&gt;
+ * Получить анекдот по id
  */
 public class GetJokeCommand implements BotCommand {
 
@@ -13,13 +14,6 @@ public class GetJokeCommand implements BotCommand {
     public GetJokeCommand(JokeService jokeService) {
         this.jokeService = jokeService;
     }
-
-    /**
-     * Получить анекдот по id
-     *
-     * @param args id анекдота
-     * @return Анекдот
-     */
     @Override
     public String execute(String args) {
         if (args == null) {

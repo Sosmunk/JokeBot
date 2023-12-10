@@ -1,7 +1,7 @@
 package org.bot.commands;
 
 /**
- * Интерфейс, отвечающий за реализацию команд
+ * Команда бота
  */
 public interface BotCommand {
     /**
