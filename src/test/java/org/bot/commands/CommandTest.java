@@ -2,6 +2,7 @@ package org.bot.commands;
 
 import org.bot.FakeService;
 import org.bot.Joke;
+import org.bot.dto.CommandParser;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,11 +13,20 @@ public class CommandTest {
 
     private final FakeService fakeService = new FakeService();
     private final CommandProcessor commandProcessor = new CommandProcessor(fakeService);
+    private final CommandParser commandParser = new CommandParser();
 
     private final String FIRST_JOKE = """
             — Заходит программист в лифт, а ему надо на 12—й этаж.
             — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
             """;
+
+    /**
+     * Тест на отсутствие команды
+     */
+    @Test
+    public void testRunCommandWithNull() {
+        Assert.assertEquals("Команда не найдена", commandProcessor.runCommand(null));
+    }
 
     /**
      * Тест команды /start
@@ -61,7 +71,7 @@ public class CommandTest {
     }
 
     /**
-     * Тест команды /getJoke &lt;id>&gt;
+     * Тест команды /getJoke &lt;id&gt;
      */
     @Test
     public void testGetJokeCommand(){
@@ -79,6 +89,24 @@ public class CommandTest {
     public void getJokeNotFoundTest() {
         String command = "/getJoke 123";
         Assert.assertEquals("Анекдот не найден", commandProcessor.runCommand(command));
+    }
 
+    /**
+     * Тест команды /getJoke &lt;id&gt; на отсутствие букв в id
+     */
+    @Test
+    public void getJokeLettersInCommandTest(){
+        String args = commandParser.parseMessage("/getJoke 123").args();
+        Assert.assertTrue("Letters in arguments",args.matches("[0-9]+"));
+    }
+
+    /**
+     * Тест команды /getJoke &lt;id&gt; на правильный id
+     */
+    @Test
+    public void getJokeCorrectIdTest(){
+        int args = Integer.parseInt(
+                commandParser.parseMessage("/getJoke 123").args());
+        Assert.assertTrue("Invalid id", args > 0);
     }
 }
