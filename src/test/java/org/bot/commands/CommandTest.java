@@ -66,7 +66,7 @@ public class CommandTest {
         fakeService.saveJoke(new Joke(FIRST_JOKE));
 
         String command = "/joke";
-        Assert.assertEquals("Invalid message", String.format("Анекдот №1%n") + FIRST_JOKE,
+        Assert.assertEquals("Invalid message", "Анекдот №1\n" + FIRST_JOKE,
                 commandProcessor.runCommand(command));
     }
 
@@ -78,7 +78,7 @@ public class CommandTest {
         fakeService.saveJoke(new Joke(FIRST_JOKE));
 
         String command = "/getJoke 1";
-        Assert.assertEquals("Invalid message", String.format("Анекдот №1%n") + FIRST_JOKE,
+        Assert.assertEquals("Invalid message", "Анекдот №1\n" + FIRST_JOKE,
                 commandProcessor.runCommand(command));
     }
 
