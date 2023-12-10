@@ -8,8 +8,8 @@ import org.bot.utils.DataLoader;
 public class JokeServiceImpl implements JokeService {
     private final JokeDAO jokeDAO;
 
-    public JokeServiceImpl() {
-        this.jokeDAO = new JokeDAO();
+    public JokeServiceImpl(JokeDAO jokeDAO) {
+        this.jokeDAO = jokeDAO;
         DataLoader dataLoader = new DataLoader();
         dataLoader.populate(this);
     }
