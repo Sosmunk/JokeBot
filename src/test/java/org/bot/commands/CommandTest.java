@@ -1,6 +1,6 @@
 package org.bot.commands;
 
-import org.bot.FakeService;
+import org.bot.FakeJokeService;
 import org.bot.Joke;
 import org.bot.dto.CommandParser;
 import org.junit.Assert;
@@ -11,8 +11,8 @@ import org.junit.Test;
  */
 public class CommandTest {
 
-    private final FakeService fakeService = new FakeService();
-    private final CommandProcessor commandProcessor = new CommandProcessor(fakeService);
+    private final FakeJokeService fakeJokeService = new FakeJokeService();
+    private final CommandProcessor commandProcessor = new CommandProcessor(fakeJokeService);
     private final CommandParser commandParser = new CommandParser();
 
     private final String FIRST_JOKE = """
@@ -63,7 +63,7 @@ public class CommandTest {
      */
     @Test
     public void testJokeCommand(){
-        fakeService.saveJoke(new Joke(FIRST_JOKE));
+        fakeJokeService.saveJoke(new Joke(FIRST_JOKE));
 
         String command = "/joke";
         Assert.assertEquals("Invalid message", "Анекдот №1\n" + FIRST_JOKE,
@@ -75,7 +75,7 @@ public class CommandTest {
      */
     @Test
     public void testGetJokeCommand(){
-        fakeService.saveJoke(new Joke(FIRST_JOKE));
+        fakeJokeService.saveJoke(new Joke(FIRST_JOKE));
 
         String command = "/getJoke 1";
         Assert.assertEquals("Invalid message", "Анекдот №1\n" + FIRST_JOKE,
