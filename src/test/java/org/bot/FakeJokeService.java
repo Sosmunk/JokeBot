@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Моковый сервис для тестирования функционала CommandProcessor
  */
-public class FakeService implements JokeService {
+public class FakeJokeService implements JokeService {
     /**
      * Структура данных, имитирующая БД
      */
