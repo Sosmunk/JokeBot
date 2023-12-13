@@ -5,6 +5,7 @@ import org.bot.Joke;
 import org.bot.dto.CommandParser;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
  * Тест обработки команд /help, /start, /joke, /getJoke &lt;id&gt;
@@ -21,11 +22,14 @@ public class CommandTest {
             """;
 
     /**
-     * Тест на отсутствие команды
+     * Тест на неправильную команду
      */
     @Test
     public void testRunCommandWithNull() {
         Assert.assertEquals("Команда не найдена", commandProcessor.runCommand(null));
+        Assert.assertEquals("Команда не найдена", commandProcessor.runCommand(""));
+        Assert.assertEquals("Команда не найдена",
+                commandProcessor.runCommand("/exampleCommand"));
     }
 
     /**
@@ -71,6 +75,21 @@ public class CommandTest {
     }
 
     /**
+     * Тест на сохранение разных шуток /joke
+     */
+    @Test
+    public void testMultipleJokeCommands() {
+        fakeJokeService.saveJoke(new Joke(FIRST_JOKE));
+        fakeJokeService.saveJoke(new Joke("Second joke"));
+
+        String command = "/joke";
+        String firstJoke = commandProcessor.runCommand(command);
+        String secondJoke = commandProcessor.runCommand(command);
+
+        Assert.assertNotEquals("Different jokes should be returned", firstJoke, secondJoke);
+    }
+
+    /**
      * Тест команды /getJoke &lt;id&gt;
      */
     @Test
@@ -108,5 +127,17 @@ public class CommandTest {
         int args = Integer.parseInt(
                 commandParser.parseMessage("/getJoke 123").args());
         Assert.assertTrue("Invalid id", args > 0);
+    }
+
+    /**
+     * Тест, что вызывается runCommand 1 раз
+     */
+    @Test
+    public void testRunCommand() {
+        CommandProcessor spyCommandProcessor = Mockito.spy(commandProcessor);
+        fakeJokeService.saveJoke(new Joke(FIRST_JOKE));
+        String command = "/joke";
+        spyCommandProcessor.runCommand(command);
+        Mockito.verify(spyCommandProcessor, Mockito.times(1)).runCommand(command);
     }
 }
