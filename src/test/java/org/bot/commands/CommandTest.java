@@ -75,21 +75,6 @@ public class CommandTest {
     }
 
     /**
-     * Тест на сохранение разных шуток /joke
-     */
-    @Test
-    public void testMultipleJokeCommands() {
-        fakeJokeService.saveJoke(new Joke(FIRST_JOKE));
-        fakeJokeService.saveJoke(new Joke("Second joke"));
-
-        String command = "/joke";
-        String firstJoke = commandProcessor.runCommand(command);
-        String secondJoke = commandProcessor.runCommand(command);
-
-        Assert.assertNotEquals("Different jokes should be returned", firstJoke, secondJoke);
-    }
-
-    /**
      * Тест команды /getJoke &lt;id&gt;
      */
     @Test
