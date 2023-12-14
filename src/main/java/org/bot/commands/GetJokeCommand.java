@@ -2,6 +2,7 @@ package org.bot.commands;
 
 import org.bot.Joke;
 import org.bot.dao.JokeService;
+import org.bot.enumerable.ChatPlatform;
 
 /**
  * Команда /getJoke &lt;id&gt;
@@ -16,7 +17,7 @@ public class GetJokeCommand implements BotCommand {
     }
 
     @Override
-    public String execute(String args, Long chatId) {
+    public String execute(String args, Long chatId, ChatPlatform chatPlatform) {
         if (args == null) {
             return "Введите \"/getJoke <номер анекдота>\"";
         }
@@ -37,8 +38,10 @@ public class GetJokeCommand implements BotCommand {
             return "Анекдот не найден";
         }
 
-        // TODO: save last joke ID in chat
+        jokeService.saveLastJoke(chatId, joke.getId(), chatPlatform);
 
-        return String.format("Анекдот №%s%n", joke.getId()) + joke.getText();
+        String ratingString = joke.getAverageRatingString();
+
+        return String.format("Анекдот №%s%n", joke.getId()) + joke.getText() + ratingString;
     }
 }
