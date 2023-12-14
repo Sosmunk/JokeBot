@@ -1,6 +1,6 @@
-package org.bot.dao;
-import org.bot.Joke;
-import org.bot.utils.DataLoader;
+package org.dao;
+import org.model.Joke;
+import org.util.DataLoader;
 
 /**
  * Сервис, отвечающий за работу с данными об анекдотах
@@ -15,7 +15,7 @@ public class JokeServiceImpl implements JokeService {
     public JokeServiceImpl(JokeDAO jokeDAO) {
         this.jokeDAO = jokeDAO;
         DataLoader dataLoader = new DataLoader();
-        dataLoader.populate(this);
+        dataLoader.addJokes(this);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class JokeServiceImpl implements JokeService {
     }
 
     @Override
-    public Joke saveJoke(Joke joke) {
-        return jokeDAO.save(joke);
+    public void saveJoke(Joke joke) {
+        jokeDAO.save(joke);
     }
 }

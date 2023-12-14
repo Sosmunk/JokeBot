@@ -1,6 +1,6 @@
-package org.bot.dao;
+package org.dao;
 
-import org.bot.Joke;
+import org.model.Joke;
 
 /**
  * Сервис для получения анекдотов из хранилища
@@ -25,7 +25,6 @@ public interface JokeService {
      * Сохранить анекдот
      *
      * @param joke анекдот
-     * @return сохраненный анекдот
      */
-    Joke saveJoke(Joke joke);
+    void saveJoke(Joke joke);
 }

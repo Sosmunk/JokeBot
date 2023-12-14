@@ -1,9 +1,9 @@
-package org.bot.dao;
+package org.dao;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import org.bot.Joke;
+import org.model.Joke;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -72,14 +72,12 @@ public class JokeDAO {
      * Сохранение анекдота в БД
      *
      * @param joke анекдот
-     * @return анекдот с id в базе данных
      */
-    public Joke save(Joke joke) {
+    public void save(Joke joke) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.persist(joke);
         transaction.commit();
         session.close();
-        return joke;
     }
 }
