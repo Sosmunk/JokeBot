@@ -1,7 +1,9 @@
-package org.bot.dto;
+package org.dto;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.util.CommandData;
+import org.util.CommandParser;
 
 /**
  * Тесты CommandParser

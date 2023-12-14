@@ -1,8 +1,8 @@
-package org.bot.commands;
+package org.command;
 
-import org.bot.dao.JokeService;
-import org.bot.dto.CommandData;
-import org.bot.dto.CommandParser;
+import org.dao.JokeService;
+import org.util.CommandData;
+import org.util.CommandParser;
 
 import java.util.HashMap;
 import java.util.Map;

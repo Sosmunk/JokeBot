@@ -1,4 +1,4 @@
-package org.bot.dto;
+package org.util;
 
 /**
  * Парсер команд, вводимых пользователем

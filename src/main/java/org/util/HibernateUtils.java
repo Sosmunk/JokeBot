@@ -1,6 +1,6 @@
-package org.bot.utils;
+package org.util;
 
-import org.bot.Joke;
+import org.model.Joke;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 

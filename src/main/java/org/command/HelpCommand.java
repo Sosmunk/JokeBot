@@ -1,4 +1,4 @@
-package org.bot.commands;
+package org.command;
 
 /**
  * Команда /help

@@ -1,4 +1,4 @@
-package org.bot;
+package org.model;
 
 import jakarta.persistence.*;
 

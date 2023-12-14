@@ -1,8 +1,8 @@
-package org.bot.commands;
+package org.command;
 
-import org.bot.FakeJokeService;
-import org.bot.Joke;
-import org.bot.dto.CommandParser;
+import org.model.Joke;
+import org.service.FakeJokeService;
+import org.util.CommandParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
