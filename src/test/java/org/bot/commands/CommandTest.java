@@ -11,7 +11,8 @@ import org.junit.Test;
 public class CommandTest {
 
     private final FakeService fakeService = new FakeService();
-    private final CommandProcessor commandProcessor = new CommandProcessor(fakeService);
+
+    private final CommandProcessor commandProcessor = new CommandProcessor(fakeService, null);
 
     private final String FIRST_JOKE = """
             — Заходит программист в лифт, а ему надо на 12—й этаж.
@@ -26,7 +27,7 @@ public class CommandTest {
         String command = "/start";
         Assert.assertEquals("Wrong message", "Привет, я бот - любитель анекдотов." +
                         " Чтобы получить справку о работе со мной напишите /help.",
-                commandProcessor.runCommand(command, null));
+                commandProcessor.runCommand(command, null, null));
     }
 
     /**
@@ -45,7 +46,7 @@ public class CommandTest {
                             
                         👶🏼 Справка о командах бота (/help)
                         """,
-                commandProcessor.runCommand(command, null));
+                commandProcessor.runCommand(command, null, null));
     }
 
     /**
@@ -57,7 +58,7 @@ public class CommandTest {
 
         String command = "/joke";
         Assert.assertEquals("Invalid message", String.format("Анекдот №1%n") + FIRST_JOKE,
-                commandProcessor.runCommand(command, null));
+                commandProcessor.runCommand(command, null, null));
     }
 
     /**
@@ -69,7 +70,7 @@ public class CommandTest {
 
         String command = "/getJoke 1";
         Assert.assertEquals("Invalid message", String.format("Анекдот №1%n") + FIRST_JOKE,
-                commandProcessor.runCommand(command, null));
+                commandProcessor.runCommand(command, null, null));
     }
 
     /**
@@ -78,7 +79,7 @@ public class CommandTest {
     @Test
     public void getJokeNotFoundTest() {
         String command = "/getJoke 123";
-        Assert.assertEquals("Анекдот не найден", commandProcessor.runCommand(command, null));
+        Assert.assertEquals("Анекдот не найден", commandProcessor.runCommand(command, null, null));
 
     }
 }

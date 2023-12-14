@@ -1,6 +1,7 @@
 package org.bot;
 
 import org.bot.dao.JokeService;
+import org.bot.enumerable.ChatPlatform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,5 +35,15 @@ public class FakeService implements JokeService {
         joke.setId(jokes.size() + 1);
         jokes.add(joke);
         return joke;
+    }
+
+    @Override
+    public Integer getLastJokeId(Long chatId, ChatPlatform chatPlatform) {
+        return null;
+    }
+
+    @Override
+    public void saveLastJoke(Long chatId, Integer jokeId, ChatPlatform chatPlatform) {
+
     }
 }
