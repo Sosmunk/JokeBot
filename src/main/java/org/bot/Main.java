@@ -15,13 +15,12 @@ import org.hibernate.SessionFactory;
 
 public class Main {
     public static void main(String[] args) {
-        // Данное sessionFactory в будущем будет использоваться для других DAO
         SessionFactory sessionFactory = new HibernateUtils().createSessionFactory();
-        // Инициализируем DAO здесь, потому что передается sessionFactory
         JokeDAO jokeDAO = new JokeDAO(sessionFactory);
+        RatingDAO ratingDAO = new RatingDAO(sessionFactory);
         JokeService jokeService = new JokeServiceImpl(jokeDAO);
-        // В будущем сюда будут передаваться другие сервисы
-        CommandProcessor commandProcessor = new CommandProcessor(jokeService);
+        RatingService ratingService = new RatingServiceImpl(ratingDAO, jokeService);
+        CommandProcessor commandProcessor = new CommandProcessor(jokeService, ratingService);
         TelegramJokeBot telegramJokeBot = new TelegramJokeBot(commandProcessor);
         VkJokeBot vkJokeBot = new VkJokeBot(commandProcessor);
         telegramJokeBot.start();
