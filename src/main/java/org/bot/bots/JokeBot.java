@@ -1,9 +1,10 @@
 package org.bot.bots;
 
 /**
- * Интерфейс работы ботов
- *  Параметризация необходима для chatId, поскольку VKBot и TGBot
- *  используют разные типы данных
+ * Интерфейс работы ботов <br>
+ * <br>
+ * Параметризация необходима для chatId, поскольку VKBot и TGBot <br>
+ * используют разные типы данных для отправки сообщений
  */
 public interface JokeBot<T> {
     /**
@@ -12,7 +13,5 @@ public interface JokeBot<T> {
      * @param message сообщение, которое нужно отправить
      */
     void sendMessage(T chatId, String message);
-
-    // Если этот метод здесь не нужен, то как нам запускать бота?
     void start();
 }
