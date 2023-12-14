@@ -18,7 +18,7 @@ public class KeyboardFactory {
             buttonRow.add(
                     new TextButton(
                             Button.Color.POSITIVE,
-                            new TextButton.Action(String.format("%s ⭐", i))));
+                            new TextButton.Action(String.format("%s☆", i))));
         }
         buttons.add(buttonRow);
 
