@@ -30,9 +30,8 @@ public class FakeService implements JokeService {
     }
 
     @Override
-    public Joke saveJoke(Joke joke) {
+    public void saveJoke(Joke joke) {
         joke.setId(jokes.size() + 1);
         jokes.add(joke);
-        return joke;
     }
 }

@@ -39,7 +39,7 @@ public class JokeServiceImpl implements JokeService {
     }
 
     @Override
-    public Joke saveJoke(Joke joke) {
-        return jokeDAO.save(joke);
+    public void saveJoke(Joke joke) {
+        jokeDAO.save(joke);
     }
 }
