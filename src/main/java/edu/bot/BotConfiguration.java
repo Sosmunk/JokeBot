@@ -1,7 +1,7 @@
 package edu.bot;
 
 /**
- * Конфигуратор для бота ТГ
+ * Конфигуратор для ботов
  */
 public class BotConfiguration {
     private final String tgToken = System.getenv("TG_TOKEN");
