@@ -35,7 +35,7 @@ public class JokeDAO {
      * @return анекдот
      */
     public Joke findJoke(Integer id) {
-        try (Session session = sessionFactory.getCurrentSession()) {
+        try (Session session = sessionFactory.openSession()) {
             return session.get(Joke.class, id);
         } catch (Exception e) {
             logger.error(e.getMessage());
