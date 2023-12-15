@@ -49,9 +49,8 @@ public class JokeDAO {
      * @return анекдот
      */
     public Joke findJokeByRandom() {
-        List<Joke> jokes;
         try (Session session = sessionFactory.openSession()) {
-
+            List<Joke> jokes;
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
 
@@ -74,9 +73,13 @@ public class JokeDAO {
             int randomInt = random.nextInt(rowCount.intValue());
             Query<Joke> query = session.createQuery(jokeQuery);
             jokes = query.setFirstResult(randomInt).setMaxResults(1).getResultList();
-        }
 
-        return jokes.get(0);
+            return jokes.get(0);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return null;
     }
 
     /**
