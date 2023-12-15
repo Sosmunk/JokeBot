@@ -22,16 +22,10 @@ public class JokeDAO {
     private final Random random = new Random();
     private final Logger logger = LoggerFactory.getLogger(JokeDAO.class);
     private final TransactionRunner transactionRunner;
-    private final String ddlAuto;
-
-    public String getDdlAuto() {
-        return ddlAuto;
-    }
 
     public JokeDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
         this.transactionRunner = new TransactionRunner(sessionFactory);
-        this.ddlAuto = sessionFactory.getProperties().get("hibernate.hbm2ddl.auto").toString();
     }
 
     /**
