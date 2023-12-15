@@ -1,6 +1,6 @@
-package org.bot;
+package edu.bot;
 
-import org.command.CommandProcessor;
+import edu.command.CommandProcessor;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * Класс телеграм бота
  */
-public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
+public class TelegramBot extends TelegramLongPollingBot implements Bot {
     private final CommandProcessor commandProcessor;
     private final Logger logger = LogManager.getLogger();
 
@@ -24,10 +24,9 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
      */
     private final String BOT_NAME = System.getenv("TG_BOT_NAME");
 
-    public TelegramJokeBot(BotConfiguration configuration, CommandProcessor commandProcessor) {
+    public TelegramBot(BotConfiguration configuration, CommandProcessor commandProcessor) {
         super(configuration.getTgToken());
         this.commandProcessor = commandProcessor;
-        start();
     }
 
     /**
@@ -62,12 +61,12 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot {
     /**
      * Запуск бота
      */
-    private void start(){
+    public void start(){
         try {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(this);
-        } catch (TelegramApiException e) {
-            logger.error("Не удалось запустить бота!", e);
+        } catch (Exception e) {
+            throw new RuntimeException("Не удалось запустить бота!");
         }
     }
 }

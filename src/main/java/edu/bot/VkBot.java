@@ -1,10 +1,10 @@
-package org.bot;
+package edu.bot;
 
 import api.longpoll.bots.LongPollBot;
 import api.longpoll.bots.exceptions.VkApiException;
 import api.longpoll.bots.model.events.messages.MessageNew;
 import api.longpoll.bots.model.objects.basic.Message;
-import org.command.CommandProcessor;
+import edu.command.CommandProcessor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,17 +12,16 @@ import org.apache.logging.log4j.Logger;
 /**
  * Класс VK бота
  */
-public class VkJokeBot extends LongPollBot implements JokeBot {
+public class VkBot extends LongPollBot implements Bot {
 
     private final CommandProcessor commandProcessor;
     private final Logger logger = LogManager.getLogger();
 
     private final String vkToken;
 
-    public VkJokeBot(BotConfiguration configuration, CommandProcessor commandProcessor) {
+    public VkBot(BotConfiguration configuration, CommandProcessor commandProcessor) {
         this.commandProcessor = commandProcessor;
         this.vkToken = configuration.getVkToken();
-        start();
     }
 
     /**
@@ -64,11 +63,11 @@ public class VkJokeBot extends LongPollBot implements JokeBot {
     /**
      * Запуск бота
      */
-    private void start(){
+    public void start(){
         try {
             this.startPolling();
-        } catch (VkApiException e) {
-            logger.error("Не удалось запустить бота!", e);
+        } catch (Exception e) {
+            throw new RuntimeException("Не удалось запустить бота!");
         }
     }
 }
