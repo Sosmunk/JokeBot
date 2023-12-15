@@ -1,4 +1,4 @@
-package org.bot.dao;
+package org.bot.service;
 
 import org.bot.Joke;
 

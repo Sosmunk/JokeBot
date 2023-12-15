@@ -1,5 +1,7 @@
-package org.bot.dao;
+package org.bot.service;
+
 import org.bot.Joke;
+import org.bot.dao.JokeDAO;
 import org.bot.utils.JokeDataSource;
 
 import java.util.List;
@@ -16,9 +18,13 @@ public class JokeServiceImpl implements JokeService {
 
     public JokeServiceImpl(JokeDAO jokeDAO) {
         this.jokeDAO = jokeDAO;
-        JokeDataSource jokeDataSource = new JokeDataSource();
-        List<Joke> jokes = jokeDataSource.getJokeList();
-        jokes.forEach(this::saveJoke);
+
+        if (jokeDAO.getDdlAuto() != null && (jokeDAO.getDdlAuto().equals("create-drop")) || getRandomJoke() == null) {
+            JokeDataSource jokeDataSource = new JokeDataSource();
+            List<Joke> jokes = jokeDataSource.getJokeList();
+            jokes.forEach(this::saveJoke);
+        }
+
     }
 
     @Override

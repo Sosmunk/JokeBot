@@ -19,8 +19,15 @@ public class JokeDAO {
     private final SessionFactory sessionFactory;
     private final Random random = new Random();
 
+    private final String ddlAuto;
+
+    public String getDdlAuto() {
+        return ddlAuto;
+    }
+
     public JokeDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+        this.ddlAuto = sessionFactory.getProperties().get("hibernate.hbm2ddl.auto").toString();
     }
 
     /**
@@ -52,6 +59,10 @@ public class JokeDAO {
         countQuery.select(criteriaBuilder.count(countRoot));
         Long rowCount = session.createQuery(countQuery).uniqueResult();
 
+        if (rowCount == 0) {
+            return null;
+        }
+
         //Выборка по классу Joke
         CriteriaQuery<Joke> jokeQuery = criteriaBuilder.createQuery(Joke.class);
         Root<Joke> jokeRoot = jokeQuery.from(Joke.class);
@@ -64,7 +75,7 @@ public class JokeDAO {
         List<Joke> jokes = query.setFirstResult(randomInt).setMaxResults(1).getResultList();
 
         session.close();
-        // БД может быть пустой, возможно нужно обработать этот случай
+
         return jokes.get(0);
     }
 

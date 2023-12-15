@@ -1,6 +1,6 @@
 package org.bot;
 
-import org.bot.dao.JokeService;
+import org.bot.service.JokeService;
 
 import java.util.ArrayList;
 import java.util.List;
