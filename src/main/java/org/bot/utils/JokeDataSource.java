@@ -6,10 +6,13 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Класс для загрузки первоначальных данных об анекдотах
- * hibernate сейчас работает через create-drop, поэтому дублирование данных не страшно
+ * Класс для хранения анекдотов перед последующим сохранением в БД
  */
 public class JokeDataSource {
+
+    /**
+     * Список анекдотов
+     */
     private final List<Joke> jokeList = Arrays.asList(
             new Joke("""
                     Тестировщик заходит в бар и заказывает:
