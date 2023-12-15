@@ -1,6 +1,6 @@
-package org.util;
+package edu.util;
 
-import org.model.Joke;
+import edu.model.Joke;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 

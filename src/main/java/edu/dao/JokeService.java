@@ -1,6 +1,6 @@
-package org.dao;
+package edu.dao;
 
-import org.model.Joke;
+import edu.model.Joke;
 
 /**
  * Сервис для получения анекдотов из хранилища

@@ -1,4 +1,4 @@
-package org.command;
+package edu.command;
 
 /**
  * Команда /start

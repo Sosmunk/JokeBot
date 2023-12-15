@@ -1,8 +1,8 @@
-package org.command;
+package edu.command;
 
-import org.dao.JokeService;
-import org.util.CommandData;
-import org.util.CommandParser;
+import edu.dao.JokeService;
+import edu.util.CommandData;
+import edu.util.CommandParser;
 
 import java.util.HashMap;
 import java.util.Map;

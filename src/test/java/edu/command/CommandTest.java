@@ -1,8 +1,8 @@
-package org.command;
+package edu.command;
 
-import org.model.Joke;
-import org.service.FakeJokeService;
-import org.util.CommandParser;
+import edu.model.Joke;
+import edu.service.FakeJokeService;
+import edu.util.CommandParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -26,8 +26,10 @@ public class CommandTest {
      */
     @Test
     public void testRunCommandWithNull() {
-        Assert.assertEquals("Команда не найдена", commandProcessor.runCommand(null));
-        Assert.assertEquals("Команда не найдена", commandProcessor.runCommand(""));
+        Assert.assertEquals("Команда не найдена",
+                commandProcessor.runCommand(null));
+        Assert.assertEquals("Команда не найдена",
+                commandProcessor.runCommand(""));
         Assert.assertEquals("Команда не найдена",
                 commandProcessor.runCommand("/exampleCommand"));
     }
@@ -70,7 +72,8 @@ public class CommandTest {
         fakeJokeService.saveJoke(new Joke(FIRST_JOKE));
 
         String command = "/joke";
-        Assert.assertEquals("Invalid message", "Анекдот №1\n" + FIRST_JOKE,
+        Assert.assertEquals("Invalid message",
+                "Анекдот №1\n" + FIRST_JOKE,
                 commandProcessor.runCommand(command));
     }
 
@@ -82,7 +85,8 @@ public class CommandTest {
         fakeJokeService.saveJoke(new Joke(FIRST_JOKE));
 
         String command = "/getJoke 1";
-        Assert.assertEquals("Invalid message", "Анекдот №1\n" + FIRST_JOKE,
+        Assert.assertEquals("Invalid message",
+                "Анекдот №1\n" + FIRST_JOKE,
                 commandProcessor.runCommand(command));
     }
 
@@ -92,7 +96,8 @@ public class CommandTest {
     @Test
     public void getJokeNotFoundTest() {
         String command = "/getJoke 123";
-        Assert.assertEquals("Анекдот не найден", commandProcessor.runCommand(command));
+        Assert.assertEquals("Анекдот не найден",
+                commandProcessor.runCommand(command));
     }
 
     /**
@@ -101,7 +106,8 @@ public class CommandTest {
     @Test
     public void getJokeLettersInCommandTest(){
         String args = commandParser.parseMessage("/getJoke 123").args();
-        Assert.assertTrue("Letters in arguments",args.matches("[0-9]+"));
+        Assert.assertTrue("Letters in arguments",
+                args.matches("[0-9]+"));
     }
 
     /**
@@ -123,6 +129,7 @@ public class CommandTest {
         fakeJokeService.saveJoke(new Joke(FIRST_JOKE));
         String command = "/joke";
         spyCommandProcessor.runCommand(command);
-        Mockito.verify(spyCommandProcessor, Mockito.times(1)).runCommand(command);
+        Mockito.verify(spyCommandProcessor,
+                Mockito.times(1)).runCommand(command);
     }
 }

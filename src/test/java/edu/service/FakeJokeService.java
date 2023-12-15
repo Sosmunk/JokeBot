@@ -1,7 +1,7 @@
-package org.service;
+package edu.service;
 
-import org.dao.JokeService;
-import org.model.Joke;
+import edu.model.Joke;
+import edu.dao.JokeService;
 
 import java.util.ArrayList;
 import java.util.List;

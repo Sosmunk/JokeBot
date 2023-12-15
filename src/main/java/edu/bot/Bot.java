@@ -1,9 +1,9 @@
-package org.bot;
+package edu.bot;
 
 /**
  *  Интерфейс работы ботов
  */
-public interface JokeBot {
+public interface Bot {
     /**
      * Отправка сообщений бота
      *

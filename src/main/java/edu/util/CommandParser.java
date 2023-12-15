@@ -1,7 +1,7 @@
-package org.util;
+package edu.util;
 
 /**
- * Парсер команд, вводимых пользователем
+ * Парсер команд
  */
 public class CommandParser {
     /**

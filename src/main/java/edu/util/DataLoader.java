@@ -1,7 +1,7 @@
-package org.util;
+package edu.util;
 
-import org.dao.JokeService;
-import org.model.Joke;
+import edu.model.Joke;
+import edu.dao.JokeService;
 
 import java.util.Arrays;
 import java.util.List;

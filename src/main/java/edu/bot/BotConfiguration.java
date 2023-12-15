@@ -1,4 +1,4 @@
-package org.bot;
+package edu.bot;
 
 /**
  * Конфигуратор для бота ТГ

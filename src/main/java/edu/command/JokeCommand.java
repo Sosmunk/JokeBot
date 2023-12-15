@@ -1,7 +1,7 @@
-package org.command;
+package edu.command;
 
-import org.model.Joke;
-import org.dao.JokeService;
+import edu.model.Joke;
+import edu.dao.JokeService;
 
 /**
  * Команда /joke

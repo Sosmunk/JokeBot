@@ -1,6 +1,6 @@
-package org.dao;
-import org.model.Joke;
-import org.util.DataLoader;
+package edu.dao;
+import edu.model.Joke;
+import edu.util.DataLoader;
 
 /**
  * Сервис, отвечающий за работу с данными об анекдотах
