@@ -1,5 +1,7 @@
 package org.bot.dto;
 
+import org.bot.commands.CommandParser;
+import org.bot.commands.data.CommandData;
 import org.junit.Assert;
 import org.junit.Test;
 
