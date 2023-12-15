@@ -1,6 +1,8 @@
 package org.bot.dao;
 import org.bot.Joke;
-import org.bot.utils.DataLoader;
+import org.bot.utils.JokeDataSource;
+
+import java.util.List;
 
 /**
  * Сервис, отвечающий за работу с данными об анекдотах
@@ -14,8 +16,9 @@ public class JokeServiceImpl implements JokeService {
 
     public JokeServiceImpl(JokeDAO jokeDAO) {
         this.jokeDAO = jokeDAO;
-        DataLoader dataLoader = new DataLoader();
-        dataLoader.populate(this);
+        JokeDataSource jokeDataSource = new JokeDataSource();
+        List<Joke> jokes = jokeDataSource.getJokeList();
+        jokes.forEach(this::saveJoke);
     }
 
     @Override
