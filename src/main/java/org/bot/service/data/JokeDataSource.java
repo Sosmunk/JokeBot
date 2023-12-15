@@ -1,4 +1,4 @@
-package org.bot.utils;
+package org.bot.service.data;
 
 import org.bot.Joke;
 
@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Класс для хранения анекдотов перед последующим сохранением в БД
+ * Класс для хранения анекдотов перед последующим сохранением в сервисе
  */
 public class JokeDataSource {
 

@@ -2,7 +2,7 @@ package org.bot.service;
 
 import org.bot.Joke;
 import org.bot.dao.JokeDAO;
-import org.bot.utils.JokeDataSource;
+import org.bot.service.data.JokeDataSource;
 
 import java.util.List;
 
