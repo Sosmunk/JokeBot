@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.Consumer;
 
+/**
+ * Используется для правильного выполнения транзакций
+ */
 public class TransactionRunner {
 
     private final SessionFactory sessionFactory;
@@ -17,6 +20,11 @@ public class TransactionRunner {
         this.sessionFactory = sessionFactory;
     }
 
+    /**
+     * Выполнить операцию в транзакции
+     *
+     * @param call consumer в котором выполняются действия использующие сессию
+     */
     public void doInTransaction(Consumer<Session> call) {
         try (Session session = sessionFactory.getCurrentSession()) {
             final Transaction transaction = session.beginTransaction();
