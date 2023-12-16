@@ -35,7 +35,8 @@ public class GetJokeCommand implements BotCommand {
         if (joke == null) {
             return "Анекдот не найден";
         }
-        
-        return String.format("Анекдот №%s%n", joke.getId()) + joke.getText();
+
+        return "Анекдот №" + joke.getId() +
+                "\n" + joke.getText();
     }
 }
