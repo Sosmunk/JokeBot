@@ -24,8 +24,8 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
      */
     private final String BOT_NAME = System.getenv("TG_BOT_NAME");
 
-    public TelegramBot(BotConfiguration configuration, CommandProcessor commandProcessor) {
-        super(configuration.getTgToken());
+    public TelegramBot(CommandProcessor commandProcessor) {
+        super(System.getenv("TG_TOKEN"));
         this.commandProcessor = commandProcessor;
     }
 

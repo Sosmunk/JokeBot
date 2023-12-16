@@ -19,9 +19,9 @@ public class VkBot extends LongPollBot implements Bot {
 
     private final String vkToken;
 
-    public VkBot(BotConfiguration configuration, CommandProcessor commandProcessor) {
+    public VkBot(CommandProcessor commandProcessor) {
         this.commandProcessor = commandProcessor;
-        this.vkToken = configuration.getVkToken();
+        this.vkToken = System.getenv("VK_TOKEN");
     }
 
     /**
@@ -53,7 +53,6 @@ public class VkBot extends LongPollBot implements Bot {
             vk.messages.send()
                     .setPeerId((chatId.intValue()))
                     .setMessage(message)
-                    // TODO : Здесь реализовать клавиатуру для VK бота
                     .execute();
         } catch (VkApiException e) {
             logger.error("Не удалось отправить сообщение!", e);
