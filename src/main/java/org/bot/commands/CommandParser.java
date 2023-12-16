@@ -8,6 +8,7 @@ import org.bot.commands.data.CommandData;
 public class CommandParser {
     /**
      * Возвращает отформатированное сообщение в виде CommandData
+     *
      * @param message сообщение пользователя
      * @return CommandData сообщение
      */

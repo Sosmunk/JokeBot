@@ -1,6 +1,5 @@
 package org.bot;
 
-import org.bot.Joke;
 import org.bot.service.JokeService;
 
 import java.util.ArrayList;

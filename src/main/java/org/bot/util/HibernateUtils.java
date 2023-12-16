@@ -17,9 +17,6 @@ public class HibernateUtils {
     public SessionFactory createSessionFactory() {
         Configuration configuration = new Configuration();
         configuration.setProperty(
-                "hibernate.connection.url",
-                "jdbc:postgresql://localhost:5433/" + System.getenv("DB"));
-        configuration.setProperty(
                 "hibernate.connection.username",
                 System.getenv("DB_NAME"));
         configuration.setProperty(
