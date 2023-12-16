@@ -12,7 +12,6 @@ public class CommandTest {
 
     private final FakeJokeService fakeJokeService = new FakeJokeService();
     private final CommandProcessor commandProcessor = new CommandProcessor(fakeJokeService);
-    private final CommandParser commandParser = new CommandParser();
 
     private final String FIRST_JOKE = """
             — Заходит программист в лифт, а ему надо на 12—й этаж.
@@ -99,23 +98,34 @@ public class CommandTest {
     }
 
     /**
-     * Тест команды /getJoke &lt;id&gt; на отсутствие букв в id
+     * Тест команды /getJoke &lt;id&gt; на отсутствие анекдота с негативным id
      */
     @Test
-    public void getJokeLettersInCommandTest(){
-        String args = commandParser.parseMessage("/getJoke 123").args();
-        Assert.assertTrue("Letters in arguments",
-                args.matches("[0-9]+"));
+    public void getJokeNegativeNotFound() {
+        Assert.assertEquals("Анекдот не найден",
+                commandProcessor.runCommand("/getJoke -1"));
     }
 
     /**
-     * Тест команды /getJoke &lt;id&gt; на правильный id
+     * Тест /getJoke при буквенных аргументах
      */
     @Test
-    public void getJokeCorrectIdTest(){
-        int args = Integer.parseInt(
-                commandParser.parseMessage("/getJoke 123").args());
-        Assert.assertTrue("Invalid id", args > 0);
+    public void getJokeLetterArgsTest() {
+        Assert.assertEquals("""
+                        Неправильный номер команды! Ответ должен содержать только цифры.
+                        Например: "/getJoke 1"
+                        """,
+                commandProcessor.runCommand("/getJoke AAAAAAAAA"));
     }
+
+    /**
+     * Тест /getJoke если не указаны аргументы команды
+     */
+    @Test
+    public void getJokeNoArgsTest() {
+        Assert.assertEquals("Введите \"/getJoke <номер анекдота>\"",
+                commandProcessor.runCommand("/getJoke"));
+    }
+
 
 }
