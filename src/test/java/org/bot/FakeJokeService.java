@@ -1,6 +1,6 @@
 package org.bot;
 
-import org.bot.dao.JokeService;
+import org.bot.service.JokeService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +30,8 @@ public class FakeJokeService implements JokeService {
     }
 
     @Override
-    public Joke saveJoke(Joke joke) {
+    public void saveJoke(Joke joke) {
         joke.setId(jokes.size() + 1);
         jokes.add(joke);
-        return joke;
     }
 }

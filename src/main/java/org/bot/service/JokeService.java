@@ -1,4 +1,4 @@
-package org.bot.dao;
+package org.bot.service;
 
 import org.bot.Joke;
 
@@ -25,7 +25,6 @@ public interface JokeService {
      * Сохранить анекдот
      *
      * @param joke анекдот
-     * @return сохраненный анекдот
      */
-    Joke saveJoke(Joke joke);
+    void saveJoke(Joke joke);
 }

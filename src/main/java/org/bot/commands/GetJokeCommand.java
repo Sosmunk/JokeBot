@@ -1,7 +1,7 @@
 package org.bot.commands;
 
 import org.bot.Joke;
-import org.bot.dao.JokeService;
+import org.bot.service.JokeService;
 
 /**
  * Команда /getJoke &lt;id&gt;

@@ -1,4 +1,6 @@
-package org.bot.dto;
+package org.bot.commands;
+
+import org.bot.commands.data.CommandData;
 
 /**
  * Парсер команд, вводимых пользователем
@@ -6,6 +8,7 @@ package org.bot.dto;
 public class CommandParser {
     /**
      * Возвращает отформатированное сообщение в виде CommandData
+     *
      * @param message сообщение пользователя
      * @return CommandData сообщение
      */

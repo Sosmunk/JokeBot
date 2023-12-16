@@ -4,8 +4,8 @@ import org.bot.bots.TelegramJokeBot;
 import org.bot.bots.VkJokeBot;
 import org.bot.commands.CommandProcessor;
 import org.bot.dao.JokeDAO;
-import org.bot.dao.JokeService;
-import org.bot.dao.JokeServiceImpl;
+import org.bot.service.JokeService;
+import org.bot.service.JokeServiceImpl;
 import org.bot.utils.HibernateUtils;
 import org.hibernate.SessionFactory;
 
