@@ -1,10 +1,9 @@
 package org.bot.command;
 
-import org.bot.Joke;
 import org.bot.FakeJokeService;
+import org.bot.Joke;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 /**
  * Тест обработки команд /help, /start, /joke, /getJoke &lt;id&gt;
