@@ -3,7 +3,7 @@ package org.bot;
 import org.bot.bot.BotConfiguration;
 import org.bot.bot.TelegramBot;
 import org.bot.bot.VkBot;
-import org.bot.commands.CommandProcessor;
+import org.bot.command.CommandProcessor;
 import org.bot.dao.JokeDAO;
 import org.bot.service.JokeService;
 import org.bot.service.JokeServiceImpl;
