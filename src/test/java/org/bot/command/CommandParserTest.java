@@ -1,4 +1,4 @@
-package org.bot.util;
+package org.bot.command;
 
 import org.bot.command.CommandParser;
 import org.bot.command.data.CommandData;

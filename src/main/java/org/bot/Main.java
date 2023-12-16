@@ -1,6 +1,5 @@
 package org.bot;
 
-import org.bot.bot.BotConfiguration;
 import org.bot.bot.TelegramBot;
 import org.bot.bot.VkBot;
 import org.bot.command.CommandProcessor;
@@ -22,10 +21,9 @@ public class Main {
         JokeDAO jokeDAO = new JokeDAO(sessionFactory);
         JokeService jokeService = new JokeServiceImpl(jokeDAO);
         // В будущем сюда будут передаваться другие сервисы
-        BotConfiguration configuration = new BotConfiguration();
         CommandProcessor commandProcessor = new CommandProcessor(jokeService);
-        TelegramBot telegramJokeBot = new TelegramBot(configuration, commandProcessor);
-        VkBot vkJokeBot = new VkBot(configuration, commandProcessor);
+        TelegramBot telegramJokeBot = new TelegramBot(commandProcessor);
+        VkBot vkJokeBot = new VkBot(commandProcessor);
         telegramJokeBot.start();
         vkJokeBot.start();
     }
