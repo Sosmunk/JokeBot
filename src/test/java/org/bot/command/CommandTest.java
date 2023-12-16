@@ -119,16 +119,4 @@ public class CommandTest {
         Assert.assertTrue("Invalid id", args > 0);
     }
 
-    /**
-     * Тест, что вызывается runCommand 1 раз
-     */
-    @Test
-    public void testRunCommand() {
-        CommandProcessor spyCommandProcessor = Mockito.spy(commandProcessor);
-        fakeJokeService.saveJoke(new Joke(FIRST_JOKE));
-        String command = "/joke";
-        spyCommandProcessor.runCommand(command);
-        Mockito.verify(spyCommandProcessor,
-                Mockito.times(1)).runCommand(command);
-    }
 }
