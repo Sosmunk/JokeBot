@@ -1,6 +1,6 @@
-package org.bot.commands;
+package org.bot.command;
 
-import org.bot.commands.data.CommandData;
+import org.bot.command.data.CommandData;
 import org.bot.service.JokeService;
 
 import java.util.HashMap;

@@ -1,12 +1,12 @@
 package org.bot;
 
-import org.bot.bots.TelegramJokeBot;
-import org.bot.bots.VkJokeBot;
-import org.bot.commands.CommandProcessor;
+import org.bot.bot.TelegramBot;
+import org.bot.bot.VkBot;
+import org.bot.command.CommandProcessor;
 import org.bot.dao.JokeDAO;
 import org.bot.service.JokeService;
 import org.bot.service.JokeServiceImpl;
-import org.bot.utils.HibernateUtils;
+import org.bot.util.HibernateUtils;
 import org.hibernate.SessionFactory;
 
 /**
@@ -22,8 +22,8 @@ public class Main {
         JokeService jokeService = new JokeServiceImpl(jokeDAO);
         // В будущем сюда будут передаваться другие сервисы
         CommandProcessor commandProcessor = new CommandProcessor(jokeService);
-        TelegramJokeBot telegramJokeBot = new TelegramJokeBot(commandProcessor);
-        VkJokeBot vkJokeBot = new VkJokeBot(commandProcessor);
+        TelegramBot telegramJokeBot = new TelegramBot(commandProcessor);
+        VkBot vkJokeBot = new VkBot(commandProcessor);
         telegramJokeBot.start();
         vkJokeBot.start();
     }

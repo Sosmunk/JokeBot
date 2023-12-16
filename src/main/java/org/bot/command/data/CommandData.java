@@ -1,4 +1,4 @@
-package org.bot.commands.data;
+package org.bot.command.data;
 
 /**
  * Хранит в себе данные о командах, поступающие от пользователя

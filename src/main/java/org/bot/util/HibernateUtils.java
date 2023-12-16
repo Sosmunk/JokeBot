@@ -1,4 +1,4 @@
-package org.bot.utils;
+package org.bot.util;
 
 import org.bot.Joke;
 import org.hibernate.SessionFactory;

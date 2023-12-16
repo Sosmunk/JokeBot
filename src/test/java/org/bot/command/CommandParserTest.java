@@ -1,7 +1,7 @@
-package org.bot.dto;
+package org.bot.command;
 
-import org.bot.commands.CommandParser;
-import org.bot.commands.data.CommandData;
+import org.bot.command.CommandParser;
+import org.bot.command.data.CommandData;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,7 +9,7 @@ import org.junit.Test;
  * Тесты CommandParser
  */
 public class CommandParserTest {
-    CommandParser commandParser = new CommandParser();
+    private final CommandParser commandParser = new CommandParser();
     /**
      * Тест корректного ввода команды /getJoke
      */
@@ -17,7 +17,10 @@ public class CommandParserTest {
     public void parserGetJokeCorrect(){
         CommandData commandDataExpected = new CommandData("/getJoke","15");
         CommandData commandDataActual = commandParser.parseMessage("/getJoke 15");
-        Assert.assertEquals("Invalid command!", commandDataExpected, commandDataActual);
+
+        Assert.assertEquals("Invalid command!",
+                commandDataExpected,
+                commandDataActual);
     }
 
     /**
@@ -26,7 +29,8 @@ public class CommandParserTest {
     @Test
     public void parserGetJokeNoArgs(){
         CommandData commandDataActual = commandParser.parseMessage("/getJoke");
-        Assert.assertNull("Args is null!", commandDataActual.args());
+        Assert.assertNull("Args is null!",
+                commandDataActual.args());
     }
     /**
      * Тестирование парсера на возврат null значений в полях, при передаче пустой строки

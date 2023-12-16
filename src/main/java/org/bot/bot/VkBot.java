@@ -1,20 +1,27 @@
-package org.bot.bots;
+package org.bot.bot;
 
 import api.longpoll.bots.LongPollBot;
 import api.longpoll.bots.exceptions.VkApiException;
 import api.longpoll.bots.model.events.messages.MessageNew;
 import api.longpoll.bots.model.objects.basic.Message;
-import org.bot.commands.CommandProcessor;
+import org.bot.command.CommandProcessor;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Класс VK бота
  */
-public class VkJokeBot extends LongPollBot implements JokeBot<Integer> {
+public class VkBot extends LongPollBot implements Bot {
 
     private final CommandProcessor commandProcessor;
+    private final Logger logger = LogManager.getLogger();
 
-    public VkJokeBot(CommandProcessor commandProcessor) {
+    private final String vkToken;
+
+    public VkBot(CommandProcessor commandProcessor) {
         this.commandProcessor = commandProcessor;
+        this.vkToken = System.getenv("VK_TOKEN");
     }
 
     /**
@@ -22,12 +29,12 @@ public class VkJokeBot extends LongPollBot implements JokeBot<Integer> {
      *
      * @param messageNew сообщение от пользователя
      */
-    @Override
+
     public void onMessageNew(MessageNew messageNew) {
         Message message = messageNew.getMessage();
         if (message.hasText()) {
             String result = commandProcessor.runCommand(message.getText());
-            sendMessage(message.getPeerId(), result);
+            sendMessage(Long.valueOf(message.getPeerId()), result);
         }
     }
 
@@ -36,32 +43,30 @@ public class VkJokeBot extends LongPollBot implements JokeBot<Integer> {
      *
      * @return токен VK api
      */
-    @Override
     public String getAccessToken() {
-        return System.getenv("VK_TOKEN");
+        return vkToken;
     }
 
     @Override
-    public void sendMessage(Integer chatId, String message) {
+    public void sendMessage(Long chatId, String message) {
         try {
             vk.messages.send()
-                    .setPeerId(chatId)
+                    .setPeerId((chatId.intValue()))
                     .setMessage(message)
-                    // TODO : Здесь реализовать клавиатуру для VK бота
                     .execute();
         } catch (VkApiException e) {
-            e.printStackTrace();
+            logger.error("Не удалось отправить сообщение!", e);
         }
-
     }
 
-    @Override
-    public void start() {
+    /**
+     * Запуск бота
+     */
+    public void start(){
         try {
             this.startPolling();
-        } catch (VkApiException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException("Не удалось запустить бота!");
         }
     }
-
 }
