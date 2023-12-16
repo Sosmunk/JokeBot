@@ -1,4 +1,6 @@
-package org.bot.util;
+package org.bot.commands;
+
+import org.bot.commands.data.CommandData;
 
 /**
  * Парсер команд

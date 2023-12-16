@@ -1,4 +1,4 @@
-package org.bot.command;
+package org.bot.commands;
 
 import org.bot.Joke;
 import org.bot.service.JokeService;

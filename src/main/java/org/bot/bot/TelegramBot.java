@@ -1,6 +1,6 @@
 package org.bot.bot;
 
-import org.bot.command.CommandProcessor;
+import org.bot.commands.CommandProcessor;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

@@ -1,4 +1,4 @@
-package org.bot.command;
+package org.bot.commands;
 
 /**
  * Команда /start
