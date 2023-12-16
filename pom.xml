@@ -23,6 +23,7 @@
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <vk.api.version>1.0.15</vk.api.version>
         <java.vk.bots.longpoll.api.version>4.1.8</java.vk.bots.longpoll.api.version>
+        <mockito.version>1.10.19</mockito.version>
     </properties>
 
     <dependencies>
@@ -95,6 +96,15 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 
