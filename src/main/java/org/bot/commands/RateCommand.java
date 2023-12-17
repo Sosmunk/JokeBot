@@ -23,7 +23,13 @@ public class RateCommand implements BotCommand {
         }
 
         Integer jokeId = Integer.parseInt(data[0]);
-        byte stars = Byte.parseByte(data[1]);
+        byte stars;
+        try {
+            stars = Byte.parseByte(data[1]);
+        } catch (Exception e) {
+            return "Количество звезд рейтинга должно содержать только цифры (1-5)";
+        }
+
 
         if (stars > 5 || stars < 1) {
             return "Неверное количество звезд рейтинга";
