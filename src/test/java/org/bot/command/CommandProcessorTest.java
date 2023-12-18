@@ -1,19 +1,19 @@
 package org.bot.command;
 
-import org.bot.FakeJokeService;
 import org.bot.Joke;
+import org.bot.service.JokeService;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
- * Тест обработки команд /help, /start, /joke, /getJoke &lt;id&gt;
+ * Тест обработки команд
  */
-public class CommandTest {
+public class CommandProcessorTest {
+    JokeService jokeService = Mockito.mock(JokeService.class);
+    private final CommandProcessor commandProcessor = new CommandProcessor(jokeService);
 
-    private final FakeJokeService fakeJokeService = new FakeJokeService();
-    private final CommandProcessor commandProcessor = new CommandProcessor(fakeJokeService);
-
-    private final String FIRST_JOKE = """
+    private final String firstJoke = """
             — Заходит программист в лифт, а ему надо на 12—й этаж.
             — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
             """;
@@ -66,11 +66,11 @@ public class CommandTest {
      */
     @Test
     public void testJokeCommand(){
-        fakeJokeService.saveJoke(new Joke(FIRST_JOKE));
-
+        jokeService.saveJoke(new Joke(firstJoke));
         String command = "/joke";
+        Mockito.when(jokeService.getJoke(1)).thenReturn(new Joke(firstJoke));
         Assert.assertEquals("Invalid message",
-                "Анекдот №1\n" + FIRST_JOKE,
+                "Анекдот №1\n" + firstJoke,
                 commandProcessor.runCommand(command));
     }
 
@@ -79,11 +79,11 @@ public class CommandTest {
      */
     @Test
     public void testGetJokeCommand(){
-        fakeJokeService.saveJoke(new Joke(FIRST_JOKE));
-
+        jokeService.saveJoke(new Joke(firstJoke));
         String command = "/getJoke 1";
+        Mockito.when(jokeService.getJoke(1)).thenReturn(new Joke(firstJoke));
         Assert.assertEquals("Invalid message",
-                "Анекдот №1\n" + FIRST_JOKE,
+                "Анекдот №1\n" + firstJoke,
                 commandProcessor.runCommand(command));
     }
 
