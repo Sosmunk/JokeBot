@@ -4,13 +4,12 @@ import api.longpoll.bots.LongPollBot;
 import api.longpoll.bots.exceptions.VkApiException;
 import api.longpoll.bots.model.events.messages.MessageNew;
 import api.longpoll.bots.model.objects.basic.Message;
-import org.bot.command.CommandProcessor;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bot.command.CommandProcessor;
 
 /**
- * Класс VK бота
+ * VK бот
  */
 public class VkBot extends LongPollBot implements Bot {
 

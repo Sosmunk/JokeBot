@@ -33,15 +33,11 @@ public class CommandProcessor {
      * @return сообщение пользователю
      */
     public String runCommand(String command) {
-        CommandData commandData = parseCommand(command);
+        CommandData commandData = commandParser.parseMessage(command);
         BotCommand botCommand = commandMap.get(commandData.command());
         if (botCommand == null){
             return "Команда не найдена";
         }
         return botCommand.execute(commandData.args());
-    }
-
-    private CommandData parseCommand(String command) {
-        return commandParser.parseMessage(command);
     }
 }

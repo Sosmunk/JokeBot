@@ -1,5 +1,7 @@
 package org.bot.bot;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bot.command.CommandProcessor;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -9,11 +11,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 /**
- * Класс телеграм бота
+ * Телеграм бот
  */
 public class TelegramBot extends TelegramLongPollingBot implements Bot {
     private final CommandProcessor commandProcessor;
