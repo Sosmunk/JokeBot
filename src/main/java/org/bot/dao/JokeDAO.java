@@ -29,6 +29,33 @@ public class JokeDAO {
     }
 
     /**
+     * Получить количество строчек в таблице анекдотов
+     *
+     * @param session сессия
+     * @return количество строчек в таблице анекдотов
+     */
+    public Long getRowCount(Session session) {
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+
+        Root<Joke> countRoot = countQuery.from(Joke.class);
+        countQuery.select(criteriaBuilder.count(countRoot));
+        return session.createQuery(countQuery).uniqueResult();
+    }
+
+    /**
+     * Проверка на то что таблица анекдотов пустая
+     *
+     * @return true если таблица анекдотов пустая, иначе false
+     */
+    public boolean isEmpty() {
+        try (Session session = sessionFactory.openSession()) {
+            return getRowCount(session) == 0;
+        }
+    }
+
+
+    /**
      * Поиск анекдота в БД
      *
      * @param id id анекдота
@@ -52,12 +79,8 @@ public class JokeDAO {
         try (Session session = sessionFactory.openSession()) {
             List<Joke> jokes;
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
 
-            // Находим количество строчек в таблице
-            Root<Joke> countRoot = countQuery.from(Joke.class);
-            countQuery.select(criteriaBuilder.count(countRoot));
-            Long rowCount = session.createQuery(countQuery).uniqueResult();
+            Long rowCount = getRowCount(session);
 
             if (rowCount == 0) {
                 return null;

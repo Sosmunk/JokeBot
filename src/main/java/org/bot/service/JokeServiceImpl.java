@@ -20,7 +20,7 @@ public class JokeServiceImpl implements JokeService {
         this.jokeDAO = jokeDAO;
 
         // Заполняем БД если анекдоты отсутствуют
-        if (getRandomJoke() == null) {
+        if (jokeDAO.isEmpty()) {
             JokeDataSource jokeDataSource = new JokeDataSource();
             List<Joke> jokes = jokeDataSource.getJokeList();
             jokes.forEach(this::saveJoke);
@@ -35,6 +35,7 @@ public class JokeServiceImpl implements JokeService {
 
     @Override
     public Joke getRandomJoke() {
+
         return jokeDAO.findJokeByRandom();
     }
 

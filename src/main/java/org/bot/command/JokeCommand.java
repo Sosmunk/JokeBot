@@ -16,6 +16,9 @@ public class JokeCommand implements BotCommand {
     @Override
     public String execute(String args) {
         Joke joke = jokeService.getRandomJoke();
+        if (joke == null) {
+            return "Анекдоты не найдены";
+        }
         return "Анекдот №" + joke.getId() +
                 "\n" + joke.getText();
     }

@@ -16,8 +16,9 @@ public interface JokeService {
 
     /**
      * Получить случайный анекдот
+     * Joke может принимать значение null
      *
-     * @return анекдот
+     * @return анекдот или null
      */
     Joke getRandomJoke();
 

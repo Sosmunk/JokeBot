@@ -1,7 +1,7 @@
 package org.bot.bot;
 
 /**
- *  Интерфейс работы ботов
+ * Бот, отправляющий сообщения пользователям
  */
 public interface Bot {
     /**
@@ -10,5 +10,5 @@ public interface Bot {
      * @param chatId  id чата
      * @param message сообщение, которое нужно отправить
      */
-    default void sendMessage(Long chatId, String message) {}
+    void sendMessage(Long chatId, String message);
 }
