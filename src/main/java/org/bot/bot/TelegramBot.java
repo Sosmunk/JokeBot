@@ -3,6 +3,7 @@ package org.bot.bot;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bot.command.CommandProcessor;
+import org.bot.enumerable.ChatPlatform;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -29,14 +30,17 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
     }
 
     /**
-     *Метод, который получает сообщение от пользователя и отправляет ему новое в ответ
+     * Метод, который получает сообщение от пользователя и отправляет ему новое в ответ
      * @param update обновление из api
      */
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             Message textInMessage = update.getMessage();
-            Long chatId = textInMessage.getChatId();
-            String result = commandProcessor.runCommand(textInMessage.getText());
+            long chatId = textInMessage.getChatId();
+            String result = commandProcessor.runCommand(
+                    textInMessage.getText(),
+                    chatId,
+                    ChatPlatform.TELEGRAM);
             sendMessage(chatId, result);
         }
     }
@@ -60,7 +64,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
     /**
      * Запуск бота
      */
-    public void start(){
+    public void start() {
         try {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(this);

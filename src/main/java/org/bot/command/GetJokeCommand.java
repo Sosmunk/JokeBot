@@ -1,6 +1,9 @@
 package org.bot.command;
 
 import org.bot.Joke;
+
+import org.bot.enumerable.ChatPlatform;
+
 import org.bot.service.JokeService;
 
 /**
@@ -14,8 +17,9 @@ public class GetJokeCommand implements BotCommand {
     public GetJokeCommand(JokeService jokeService) {
         this.jokeService = jokeService;
     }
+
     @Override
-    public String execute(String args) {
+    public String execute(String args, Long chatId, ChatPlatform chatPlatform) {
         if (args == null) {
             return "Введите \"/getJoke <номер анекдота>\"";
         }
@@ -36,7 +40,14 @@ public class GetJokeCommand implements BotCommand {
             return "Анекдот не найден";
         }
 
+        jokeService.saveLastJoke(chatId, joke.getId(), chatPlatform);
+
+        String averageRating = joke.getAverageRatingString();
+
+        if (!averageRating.equals("")) {
+            averageRating = "\n" + averageRating;
+        }
         return "Анекдот №" + joke.getId() +
-                "\n" + joke.getText();
+                "\n" + joke.getText() + averageRating;
     }
 }
