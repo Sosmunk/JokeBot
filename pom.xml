@@ -12,6 +12,98 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <hibernate-core.version>6.3.1.Final</hibernate-core.version>
+        <postgresql.version>42.6.0</postgresql.version>
+        <telegrambots.version>6.5.0</telegrambots.version>
+        <slf4j-jdk14.version>1.7.26</slf4j-jdk14.version>
+        <log4j-slf4j-impl.version>2.11.2</log4j-slf4j-impl.version>
+        <log4j-api.version>2.11.2</log4j-api.version>
+        <log4j-core.version>2.11.2</log4j-core.version>
+        <junit.version>4.13.2</junit.version>
+        <jaxb-api.version>2.3.1</jaxb-api.version>
+        <vk.api.version>1.0.15</vk.api.version>
+        <java.vk.bots.longpoll.api.version>4.1.8</java.vk.bots.longpoll.api.version>
+        <mockito.mockito-junit-jupiter>4.2.0</mockito.mockito-junit-jupiter>
     </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate-core.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots</artifactId>
+            <version>${telegrambots.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vk.api</groupId>
+            <artifactId>sdk</artifactId>
+            <version>${vk.api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>${jaxb-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.yvasyliev</groupId>
+            <artifactId>java-vk-bots-longpoll-api</artifactId>
+            <version>${java.vk.bots.longpoll.api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${slf4j-jdk14.version}</version>
+        </dependency>
+
+        <!-- Binding for Log4J -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j-slf4j-impl.version}</version>
+        </dependency>
+
+        <!-- Log4j API and Core implementation required for binding -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j-core.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.mockito-junit-jupiter}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
 
 </project>
