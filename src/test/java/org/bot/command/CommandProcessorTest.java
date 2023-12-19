@@ -34,6 +34,7 @@ public class CommandProcessorTest {
             — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
             """;
 
+    @Before
     public void setUp() {
         this.testJoke.setId(1);
     }
