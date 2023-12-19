@@ -84,12 +84,12 @@ public class CommandProcessorTest {
     @Test
     public void testGetJokeCommand(){
         Joke joke = new Joke(firstJoke);
-        jokeService.saveJoke(joke);
+        joke.setId(1);
         String command = "/getJoke 1";
+        Mockito.when(jokeService.getJoke(1)).thenReturn(joke);
         Assert.assertEquals("Invalid message",
                 "Анекдот №1\n" + firstJoke,
                 commandProcessor.runCommand(command));
-        Mockito.verify(jokeDAO).save(joke);
     }
 
     /**
