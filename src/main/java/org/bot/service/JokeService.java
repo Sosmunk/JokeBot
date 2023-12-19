@@ -47,5 +47,4 @@ public interface JokeService {
      * @param chatPlatform чат-платформа
      */
     void saveLastJoke(Long chatId, Integer jokeId, ChatPlatform chatPlatform);
-
 }

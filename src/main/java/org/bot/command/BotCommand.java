@@ -1,7 +1,6 @@
 package org.bot.command;
 
 import org.bot.enumerable.ChatPlatform;
-
 /**
  * Команда бота
  */

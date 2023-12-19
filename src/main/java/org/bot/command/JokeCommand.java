@@ -8,7 +8,6 @@ import org.bot.service.JokeService;
  * Команда /joke
  * Получить случайный анекдот
  */
-
 public class JokeCommand implements BotCommand {
     private final JokeService jokeService;
 

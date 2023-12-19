@@ -26,9 +26,9 @@ public class VkBot extends LongPollBot implements Bot {
         this.commandProcessor = commandProcessor;
         this.vkToken = System.getenv("VK_TOKEN");
     }
-
+  
     private final Keyboard vkRateKeyBoard = new KeyboardFactory().createVKRateKeyboard();
-
+  
     /**
      * Метод, отвечающий за обработку сообщений, присланных пользователем
      *
@@ -82,5 +82,4 @@ public class VkBot extends LongPollBot implements Bot {
             throw new RuntimeException("Не удалось запустить бота!");
         }
     }
-
 }

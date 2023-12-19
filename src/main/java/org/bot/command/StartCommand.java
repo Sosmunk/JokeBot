@@ -6,7 +6,6 @@ import org.bot.enumerable.ChatPlatform;
  * Команда /start
  * Получить приветствие
  */
-
 public class StartCommand implements BotCommand {
     @Override
     public String execute(String args, Long chatId, ChatPlatform chatPlatform) {

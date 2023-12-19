@@ -56,6 +56,5 @@ public class CommandProcessor {
         } else {
             return botCommand.execute(commandData.args(), chatId, chatPlatform);
         }
-
     }
 }

@@ -31,7 +31,6 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
 
     /**
      * Метод, который получает сообщение от пользователя и отправляет ему новое в ответ
-     *
      * @param update обновление из api
      */
     public void onUpdateReceived(Update update) {
@@ -42,7 +41,6 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
                     textInMessage.getText(),
                     chatId,
                     ChatPlatform.TELEGRAM);
-
             sendMessage(chatId, result);
         }
     }

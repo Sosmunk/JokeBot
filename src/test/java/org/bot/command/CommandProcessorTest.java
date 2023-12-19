@@ -34,7 +34,6 @@ public class CommandProcessorTest {
             — Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
             """;
 
-    @Before
     public void setUp() {
         this.testJoke.setId(1);
     }
@@ -42,7 +41,6 @@ public class CommandProcessorTest {
     private final Long chatId = 12345L;
 
     private final ChatPlatform chatPlatform = ChatPlatform.TELEGRAM;
-
 
     /**
      * Тест на неправильную команду

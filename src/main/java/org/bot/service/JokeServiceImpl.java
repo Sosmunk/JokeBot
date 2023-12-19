@@ -31,7 +31,7 @@ public class JokeServiceImpl implements JokeService {
      * значение - id анекдота
      */
     private final Map<Long, Integer> vkChatLastJokes;
-
+    
     public JokeServiceImpl(JokeDAO jokeDAO) {
         this.jokeDAO = jokeDAO;
 
@@ -41,6 +41,7 @@ public class JokeServiceImpl implements JokeService {
             List<Joke> jokes = jokeDataSource.getJokeList();
             jokes.forEach(this::saveJoke);
         }
+        
         this.telegramChatLastJokes = new HashMap<>();
         this.vkChatLastJokes = new HashMap<>();
 
@@ -60,7 +61,7 @@ public class JokeServiceImpl implements JokeService {
     public void saveJoke(Joke joke) {
         jokeDAO.save(joke);
     }
-
+    
     @Override
     public Integer getLastJokeId(Long chatId, ChatPlatform chatPlatform) {
         if (chatPlatform == ChatPlatform.TELEGRAM) {
