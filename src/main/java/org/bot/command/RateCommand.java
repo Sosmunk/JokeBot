@@ -1,4 +1,4 @@
-package org.bot.commands;
+package org.bot.command;
 
 import org.bot.dao.RatingService;
 import org.bot.enumerable.ChatPlatform;
@@ -15,18 +15,23 @@ public class RateCommand implements BotCommand {
         this.ratingService = ratingService;
     }
 
+    private static final String INVALID_ARGUMENT_COUNT = "Неверное количество аргументов";
+
     @Override
     public String execute(String args, Long chatId, ChatPlatform chatPlatform) {
+        if (args == null) {
+            return INVALID_ARGUMENT_COUNT;
+        }
         String[] data = args.split(" ");
         if (data.length != 2) {
-            return "Неверное количество аргументов";
+            return INVALID_ARGUMENT_COUNT;
         }
 
         Integer jokeId = Integer.parseInt(data[0]);
         byte stars;
         try {
             stars = Byte.parseByte(data[1]);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             return "Количество звезд рейтинга должно содержать только цифры (1-5)";
         }
 

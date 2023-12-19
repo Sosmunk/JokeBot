@@ -1,10 +1,12 @@
-package org.bot.dao;
+package org.bot.service;
 
 import org.bot.Joke;
+import org.bot.dao.JokeDAO;
 import org.bot.enumerable.ChatPlatform;
-import org.bot.utils.DataLoader;
+import org.bot.service.data.JokeDataSource;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,10 +34,16 @@ public class JokeServiceImpl implements JokeService {
 
     public JokeServiceImpl(JokeDAO jokeDAO) {
         this.jokeDAO = jokeDAO;
-        DataLoader dataLoader = new DataLoader();
-        dataLoader.populate(this);
+
+        // Заполняем БД если анекдоты отсутствуют
+        if (jokeDAO.isEmpty()) {
+            JokeDataSource jokeDataSource = new JokeDataSource();
+            List<Joke> jokes = jokeDataSource.getJokeList();
+            jokes.forEach(this::saveJoke);
+        }
         this.telegramChatLastJokes = new HashMap<>();
         this.vkChatLastJokes = new HashMap<>();
+
     }
 
     @Override
@@ -49,8 +57,8 @@ public class JokeServiceImpl implements JokeService {
     }
 
     @Override
-    public Joke saveJoke(Joke joke) {
-        return jokeDAO.save(joke);
+    public void saveJoke(Joke joke) {
+        jokeDAO.save(joke);
     }
 
     @Override

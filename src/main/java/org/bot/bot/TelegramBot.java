@@ -1,6 +1,8 @@
-package org.bot.bots;
+package org.bot.bot;
 
-import org.bot.commands.CommandProcessor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.bot.command.CommandProcessor;
 import org.bot.enumerable.ChatPlatform;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -11,51 +13,42 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 /**
- * Класс телеграм бота
+ * Телеграм бот
  */
-public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<Long> {
+public class TelegramBot extends TelegramLongPollingBot implements Bot {
     private final CommandProcessor commandProcessor;
+    private final Logger logger = LogManager.getLogger();
 
-    public TelegramJokeBot(CommandProcessor commandProcessor) {
-        this.commandProcessor = commandProcessor;
-    }
-
-    /**
-     * Токен телеграм бота
-     */
-    private final String TOKEN = System.getenv("TG_TOKEN");
     /**
      * Имя бота
      */
     private final String BOT_NAME = System.getenv("TG_BOT_NAME");
 
+    public TelegramBot(CommandProcessor commandProcessor) {
+        super(System.getenv("TG_TOKEN"));
+        this.commandProcessor = commandProcessor;
+    }
+
     /**
-     *Метод, который получает сообщение от пользователя и отправляет ему новое в ответ
+     * Метод, который получает сообщение от пользователя и отправляет ему новое в ответ
+     *
      * @param update обновление из api
      */
-    @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             Message textInMessage = update.getMessage();
-            Long chatId = textInMessage.getChatId();
+            long chatId = textInMessage.getChatId();
             String result = commandProcessor.runCommand(
                     textInMessage.getText(),
                     chatId,
                     ChatPlatform.TELEGRAM);
 
             sendMessage(chatId, result);
-
         }
     }
 
-    @Override
     public String getBotUsername() {
         return BOT_NAME;
-    }
-
-    @Override
-    public String getBotToken() {
-        return TOKEN;
     }
 
     @Override
@@ -66,17 +59,19 @@ public class TelegramJokeBot extends TelegramLongPollingBot implements JokeBot<L
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            logger.error("Не удалось отправить сообщение!", e);
         }
     }
 
-    @Override
+    /**
+     * Запуск бота
+     */
     public void start() {
         try {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(this);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException("Не удалось запустить бота!");
         }
     }
 }

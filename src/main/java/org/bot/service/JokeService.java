@@ -1,4 +1,4 @@
-package org.bot.dao;
+package org.bot.service;
 
 import org.bot.Joke;
 import org.bot.enumerable.ChatPlatform;
@@ -17,8 +17,9 @@ public interface JokeService {
 
     /**
      * Получить случайный анекдот
+     * Joke может принимать значение null
      *
-     * @return анекдот
+     * @return анекдот или null
      */
     Joke getRandomJoke();
 
@@ -26,16 +27,15 @@ public interface JokeService {
      * Сохранить анекдот
      *
      * @param joke анекдот
-     * @return сохраненный анекдот
      */
-    Joke saveJoke(Joke joke);
+    void saveJoke(Joke joke);
 
     /**
      * Получить id последнего анекдота в чате
      *
      * @param chatId       id чата
      * @param chatPlatform чат-платформа
-     * @return
+     * @return id последнего анекдота в чате
      */
     Integer getLastJokeId(Long chatId, ChatPlatform chatPlatform);
 

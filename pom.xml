@@ -23,7 +23,7 @@
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <vk.api.version>1.0.15</vk.api.version>
         <java.vk.bots.longpoll.api.version>4.1.8</java.vk.bots.longpoll.api.version>
-        <mockito-core.version>5.4.0</mockito-core.version>
+        <mockito.mockito-junit-jupiter>4.2.0</mockito.mockito-junit-jupiter>
     </properties>
 
     <dependencies>
@@ -96,10 +96,12 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito-core.version}</version>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.mockito-junit-jupiter}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

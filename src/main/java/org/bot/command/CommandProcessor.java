@@ -1,10 +1,9 @@
-package org.bot.commands;
+package org.bot.command;
 
-import org.bot.dao.JokeService;
+import org.bot.command.data.CommandData;
 import org.bot.dao.RatingService;
-import org.bot.dto.CommandData;
-import org.bot.dto.CommandParser;
 import org.bot.enumerable.ChatPlatform;
+import org.bot.service.JokeService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +45,7 @@ public class CommandProcessor {
      * @return сообщение пользователю
      */
     public String runCommand(String command, Long chatId, ChatPlatform chatPlatform) {
-        CommandData commandData = parseCommand(command);
+        CommandData commandData = commandParser.parseMessage(command);
         BotCommand botCommand = commandMap.get(commandData.command());
 
         if (botCommand == null) {
@@ -58,9 +57,5 @@ public class CommandProcessor {
             return botCommand.execute(commandData.args(), chatId, chatPlatform);
         }
 
-    }
-
-    private CommandData parseCommand(String command) {
-        return commandParser.parseMessage(command);
     }
 }

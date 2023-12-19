@@ -1,4 +1,4 @@
-package org.bot.commands;
+package org.bot.command;
 
 import org.bot.enumerable.ChatPlatform;
 
@@ -19,6 +19,9 @@ public class HelpCommand implements BotCommand {
                      (/getJoke <номер анекдота>)
                     
                 👶🏼 Справка о командах бота (/help)
+                                
+                ⭐ Оценить анекдот
+                   (/rate <номер анекдота> <оценка от 1 до 5>)
                 """;
     }
 }

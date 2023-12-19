@@ -2,6 +2,7 @@ package org.bot.dao;
 
 import org.bot.Joke;
 import org.bot.Rate;
+import org.bot.service.JokeService;
 
 public class RatingServiceImpl implements RatingService {
 
@@ -14,6 +15,14 @@ public class RatingServiceImpl implements RatingService {
         this.jokeService = jokeService;
     }
 
+    /**
+     * Оценить анекдот
+     *
+     * @param jokeId id анекдота
+     * @param chatId id чата
+     * @param stars  количество звезд (1-5)
+     * @return результат оценки анекдота
+     */
     @Override
     public String rateJoke(Integer jokeId, Long chatId, Byte stars) {
         Joke joke = jokeService.getJoke(jokeId);

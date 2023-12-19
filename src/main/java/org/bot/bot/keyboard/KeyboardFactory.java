@@ -1,4 +1,4 @@
-package org.bot.bots.keyboard;
+package org.bot.bot.keyboard;
 
 import api.longpoll.bots.model.objects.additional.Keyboard;
 import api.longpoll.bots.model.objects.additional.buttons.Button;

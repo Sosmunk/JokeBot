@@ -79,7 +79,7 @@ public class Joke {
                 .average();
 
         return optionalDouble.isPresent()
-                ? "\n Рейтинг анекдота: " + optionalDouble.getAsDouble()
+                ? "Рейтинг анекдота: " + optionalDouble.getAsDouble()
                 : "";
     }
 }

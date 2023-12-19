@@ -1,8 +1,8 @@
-package org.bot.commands;
+package org.bot.command;
 
 import org.bot.Joke;
-import org.bot.dao.JokeService;
 import org.bot.enumerable.ChatPlatform;
+import org.bot.service.JokeService;
 
 /**
  * Команда /getJoke &lt;id&gt;
@@ -40,8 +40,12 @@ public class GetJokeCommand implements BotCommand {
 
         jokeService.saveLastJoke(chatId, joke.getId(), chatPlatform);
 
-        String ratingString = joke.getAverageRatingString();
+        String averageRating = joke.getAverageRatingString();
 
-        return String.format("Анекдот №%s%n", joke.getId()) + joke.getText() + ratingString;
+        if (!averageRating.equals("")) {
+            averageRating = "\n" + averageRating;
+        }
+        return "Анекдот №" + joke.getId() +
+                "\n" + joke.getText() + averageRating;
     }
 }

@@ -1,4 +1,4 @@
-package org.bot.commands;
+package org.bot.command;
 
 import org.bot.enumerable.ChatPlatform;
 

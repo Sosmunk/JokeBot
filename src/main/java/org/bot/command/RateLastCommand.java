@@ -1,8 +1,8 @@
-package org.bot.commands;
+package org.bot.command;
 
-import org.bot.dao.JokeService;
 import org.bot.dao.RatingService;
 import org.bot.enumerable.ChatPlatform;
+import org.bot.service.JokeService;
 
 /**
  * Оценить последний анекдот отправленный пользователю
