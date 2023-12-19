@@ -26,7 +26,7 @@ public class JokeCommand implements BotCommand {
 
         String averageRating = joke.getAverageRatingString();
 
-        if (!averageRating.equals("")) {
+        if (!averageRating.isEmpty()) {
             averageRating = "\n" + averageRating;
         }
 
