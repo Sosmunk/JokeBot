@@ -4,7 +4,7 @@ import org.bot.dao.RatingService;
 import org.bot.enumerable.ChatPlatform;
 
 /**
- * Команда /rate #id_шутки #оценка <br>
+ * Команда /rate &lt;id шутки&gt; &lt;оценка&gt; <br>
  * Оценить анекдот
  */
 public class RateCommand implements BotCommand {
