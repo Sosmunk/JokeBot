@@ -21,11 +21,15 @@ public class Main {
         SessionFactory sessionFactory = new HibernateUtils().createSessionFactory();
         JokeDAO jokeDAO = new JokeDAO(sessionFactory);
         RatingDAO ratingDAO = new RatingDAO(sessionFactory);
+
         JokeService jokeService = new JokeServiceImpl(jokeDAO);
         RatingService ratingService = new RatingServiceImpl(ratingDAO, jokeService);
+
         CommandProcessor commandProcessor = new CommandProcessor(jokeService, ratingService);
+
         TelegramBot telegramJokeBot = new TelegramBot(commandProcessor);
         VkBot vkJokeBot = new VkBot(commandProcessor);
+
         telegramJokeBot.start();
         vkJokeBot.start();
     }
