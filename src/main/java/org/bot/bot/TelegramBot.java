@@ -2,6 +2,7 @@ package org.bot.bot;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bot.bot.keyboard.KeyboardFactory;
 import org.bot.command.CommandProcessor;
 import org.bot.enumerable.ChatPlatform;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -9,6 +10,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
@@ -17,6 +19,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
  */
 public class TelegramBot extends TelegramLongPollingBot implements Bot {
     private final CommandProcessor commandProcessor;
+    private final ReplyKeyboardMarkup replyKeyboardMarkup = new KeyboardFactory().createTgRateKeyboard();
     private final Logger logger = LogManager.getLogger();
 
     /**
@@ -55,6 +58,9 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
         sendMessage.setChatId(chatId);
         sendMessage.setText(message);
         try {
+            if (message.contains("Анекдот №")) {
+                sendMessage.setReplyMarkup(replyKeyboardMarkup);
+            }
             execute(sendMessage);
         } catch (TelegramApiException e) {
             logger.error("Не удалось отправить сообщение!", e);
