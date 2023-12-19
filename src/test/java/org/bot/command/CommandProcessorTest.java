@@ -1,7 +1,9 @@
 package org.bot.command;
 
 import org.bot.Joke;
+import org.bot.dao.JokeDAO;
 import org.bot.service.JokeService;
+import org.bot.service.JokeServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -10,7 +12,8 @@ import org.mockito.Mockito;
  * Тест обработки команд
  */
 public class CommandProcessorTest {
-    JokeService jokeService = Mockito.mock(JokeService.class);
+    JokeDAO jokeDAO = Mockito.mock(JokeDAO.class);
+    JokeService jokeService = new JokeServiceImpl(jokeDAO);
     private final CommandProcessor commandProcessor = new CommandProcessor(jokeService);
 
     private final String firstJoke = """
@@ -66,9 +69,10 @@ public class CommandProcessorTest {
      */
     @Test
     public void testJokeCommand(){
-        jokeService.saveJoke(new Joke(firstJoke));
+        Joke joke = new Joke(firstJoke);
+        joke.setId(1);
         String command = "/joke";
-        Mockito.when(jokeService.getJoke(1)).thenReturn(new Joke(firstJoke));
+        Mockito.when(jokeService.getRandomJoke()).thenReturn(joke);
         Assert.assertEquals("Invalid message",
                 "Анекдот №1\n" + firstJoke,
                 commandProcessor.runCommand(command));
@@ -79,12 +83,13 @@ public class CommandProcessorTest {
      */
     @Test
     public void testGetJokeCommand(){
-        jokeService.saveJoke(new Joke(firstJoke));
+        Joke joke = new Joke(firstJoke);
+        jokeService.saveJoke(joke);
         String command = "/getJoke 1";
-        Mockito.when(jokeService.getJoke(1)).thenReturn(new Joke(firstJoke));
         Assert.assertEquals("Invalid message",
                 "Анекдот №1\n" + firstJoke,
                 commandProcessor.runCommand(command));
+        Mockito.verify(jokeDAO).save(joke);
     }
 
     /**
