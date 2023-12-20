@@ -24,6 +24,7 @@
         <vk.api.version>1.0.15</vk.api.version>
         <java.vk.bots.longpoll.api.version>4.1.8</java.vk.bots.longpoll.api.version>
         <mockito.mockito-junit-jupiter>4.2.0</mockito.mockito-junit-jupiter>
+        <db.scheduler.version>12.4.0</db.scheduler.version>
     </properties>
 
     <dependencies>
@@ -102,6 +103,12 @@
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>${mockito.mockito-junit-jupiter}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.kagkarlsson</groupId>
+            <artifactId>db-scheduler</artifactId>
+            <version>${db.scheduler.version}</version>
         </dependency>
 
     </dependencies>
