@@ -49,6 +49,8 @@ public class KeyboardFactory {
         }
         keyboardRows.add(row);
         keyboardMarkup.setKeyboard(keyboardRows);
+        keyboardMarkup.setResizeKeyboard(true);
+        keyboardMarkup.setOneTimeKeyboard(true);
         return keyboardMarkup;
     }
 }
