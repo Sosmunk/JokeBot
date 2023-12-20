@@ -1,5 +1,7 @@
 package org.bot.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bot.Rate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,6 +14,7 @@ import org.hibernate.query.Query;
 public class RatingDAO {
 
     private final SessionFactory sessionFactory;
+    private final Logger logger = LogManager.getLogger();
 
     public RatingDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -51,8 +54,10 @@ public class RatingDAO {
             session.merge(rate);
             tx.commit();
         } catch (Exception e) {
-            e.printStackTrace();
-            if (tx != null) tx.rollback();
+            logger.error("Can't update rating!",e);
+            if (tx != null) {
+                tx.rollback();
+            }
         } finally {
             session.close();
         }
@@ -71,8 +76,10 @@ public class RatingDAO {
             session.persist(rate);
             tx.commit();
         } catch (Exception e) {
-            e.printStackTrace();
-            if (tx != null) tx.rollback();
+            logger.error("Can't save rating!",e);
+            if (tx != null) {
+                tx.rollback();
+            }
         } finally {
             session.close();
         }
