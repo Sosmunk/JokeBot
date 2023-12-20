@@ -86,13 +86,10 @@ public class JokeDAO {
                 return null;
             }
 
-            //Выборка по классу Joke
             CriteriaQuery<Joke> jokeQuery = criteriaBuilder.createQuery(Joke.class);
             Root<Joke> jokeRoot = jokeQuery.from(Joke.class);
             jokeQuery.select(jokeRoot);
 
-            //Получаем список случайных анекдотов,
-            //где будет храниться один анекдот (из коробки только так)
             int randomInt = random.nextInt(rowCount.intValue());
             Query<Joke> query = session.createQuery(jokeQuery);
             jokes = query.setFirstResult(randomInt).setMaxResults(1).getResultList();
