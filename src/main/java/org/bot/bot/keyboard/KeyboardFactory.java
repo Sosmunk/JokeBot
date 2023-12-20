@@ -37,9 +37,10 @@ public class KeyboardFactory {
 
     /**
      * Клавиатура для тг бота
+     *
      * @return клавиатура
      */
-    public ReplyKeyboardMarkup createTgRateKeyboard(){
+    public ReplyKeyboardMarkup createTgRateKeyboard() {
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         KeyboardRow row = new KeyboardRow();
