@@ -34,6 +34,8 @@ public class CommandProcessor {
         commandMap.put("3☆", rateLastCommand);
         commandMap.put("4☆", rateLastCommand);
         commandMap.put("5☆", rateLastCommand);
+        // TODO: fix stub
+        commandMap.put("/subscribe", new SubscribeCommand(null));
     }
 
     /**

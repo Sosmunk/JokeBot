@@ -30,6 +30,7 @@ public class Main {
         TelegramBot telegramJokeBot = new TelegramBot(commandProcessor);
         VkBot vkJokeBot = new VkBot(commandProcessor);
 
+        DatabaseScheduler scheduler = new DatabaseScheduler(telegramJokeBot, vkJokeBot);
         telegramJokeBot.start();
         vkJokeBot.start();
     }
