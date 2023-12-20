@@ -4,6 +4,10 @@ import org.bot.DatabaseScheduler;
 import org.bot.command.data.ChatData;
 import org.bot.enumerable.ChatPlatform;
 
+/**
+ * /unsubscribe <br>
+ * Отписаться от ежедневных анекдотов
+ */
 public class UnsubscribeCommand implements BotCommand {
 
     private final DatabaseScheduler databaseScheduler;

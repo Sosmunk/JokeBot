@@ -63,10 +63,14 @@ public class CommandProcessor {
     }
 
     public void enableSchedulingForBots(TelegramBot telegramBot, VkBot vkBot) {
-
-        DatabaseScheduler databaseScheduler = new DatabaseScheduler(telegramBot, vkBot, (JokeCommand) commandMap.get("/joke"));
+        DatabaseScheduler databaseScheduler = new DatabaseScheduler(
+                telegramBot,
+                vkBot,
+                (JokeCommand) commandMap.get("/joke")
+        );
         commandMap.put("/subscribe",
                 new SubscribeCommand(databaseScheduler));
-        commandMap.put("/unsubscribe", new UnsubscribeCommand(databaseScheduler));
+        commandMap.put("/unsubscribe",
+                new UnsubscribeCommand(databaseScheduler));
     }
 }

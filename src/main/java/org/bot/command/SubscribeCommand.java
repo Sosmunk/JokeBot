@@ -6,6 +6,10 @@ import org.bot.enumerable.ChatPlatform;
 
 import java.time.Instant;
 
+/**
+ * /subscribe HH-mm <br>
+ * Подписка на ежедневные анекдоты
+ */
 public class SubscribeCommand implements BotCommand {
     private final DatabaseScheduler databaseScheduler;
 
@@ -15,6 +19,8 @@ public class SubscribeCommand implements BotCommand {
 
     @Override
     public String execute(String args, Long chatId, ChatPlatform chatPlatform) {
+
+        // TODO: parse dateTime to instant
 
         databaseScheduler.schedule(new ChatData(chatPlatform, chatId), Instant.now());
 

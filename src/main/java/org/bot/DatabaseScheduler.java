@@ -1,7 +1,7 @@
 package org.bot;
 
-import com.github.kagkarlsson.scheduler.ScheduledExecution;
 import com.github.kagkarlsson.scheduler.Scheduler;
+import com.github.kagkarlsson.scheduler.task.TaskInstanceId;
 import com.github.kagkarlsson.scheduler.task.helper.RecurringTask;
 import com.github.kagkarlsson.scheduler.task.helper.Tasks;
 import com.github.kagkarlsson.scheduler.task.schedule.FixedDelay;
@@ -16,9 +16,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
-import java.util.List;
 import java.util.Properties;
 
+/**
+ * Планировщик task-ов, хранящий данные о ежедневных анекдотах
+ */
 public class DatabaseScheduler {
     private final Scheduler scheduler;
     private final RecurringTask<ChatData> subscribeTask;
@@ -45,30 +47,45 @@ public class DatabaseScheduler {
         scheduler.start();
     }
 
+    /**
+     * Запланировать ежедневную отправку анекдота
+     *
+     * @param chatData информация о чате
+     * @param instant  время отправки
+     */
     public void schedule(ChatData chatData, Instant instant) {
-        this.scheduler.schedule(
-                this.subscribeTask
-                        .instance(
-                                chatData.chatPlatform().toString() + "_" + chatData.chatId(),
-                                chatData
-                        ),
-                instant);
+
+        String id = chatData.chatPlatform().toString() + "_" + chatData.chatId();
+        TaskInstanceId taskInstanceId = TaskInstanceId.of("subscribeTask", id);
+
+        if (this.scheduler.getScheduledExecution(taskInstanceId).isPresent()) {
+            this.scheduler.reschedule(this.subscribeTask.instance(id, chatData), instant);
+        } else {
+            this.scheduler.schedule(this.subscribeTask.instance(id, chatData), instant);
+        }
+
     }
 
+    /**
+     * Отменить ежедневную отправку анекдотов в чате
+     *
+     * @param chatData информация о чате
+     */
     public void deschedule(ChatData chatData) {
-        List<ScheduledExecution<ChatData>> tasks = this.scheduler.getScheduledExecutionsForTask("subscribeTask", ChatData.class);
-        List<ScheduledExecution<ChatData>> currentChatTasks = tasks.stream()
-                .filter(e -> e
-                        .getTaskInstance()
-                        .getId()
-                        .contains(chatData.chatPlatform().toString() + "_" + chatData.chatId()))
-                .toList();
 
-        for (ScheduledExecution<ChatData> scheduledExecution : currentChatTasks) {
-            this.scheduler.cancel(scheduledExecution.getTaskInstance());
+        String id = chatData.chatPlatform().toString() + "_" + chatData.chatId();
+        TaskInstanceId taskInstanceId = TaskInstanceId.of("subscribeTask", id);
+
+        if (this.scheduler.getScheduledExecution(taskInstanceId).isPresent()) {
+            this.scheduler.cancel(taskInstanceId);
         }
     }
 
+    /**
+     * Получить Postgres DataSource из connection.properties
+     *
+     * @return Postgres DataSource
+     */
     private PGSimpleDataSource getPGDataSource() {
         try (InputStream input = new FileInputStream("src/main/resources/connection.properties")) {
 
@@ -86,6 +103,7 @@ public class DatabaseScheduler {
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Не удалось создать планировщик событий: проверьте наличие конфигурационного файла");
         } catch (IOException e) {
+            // TODO: exception
             throw new RuntimeException(e);
         }
     }
