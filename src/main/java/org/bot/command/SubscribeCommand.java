@@ -11,20 +11,20 @@ import java.time.Instant;
  * Подписка на ежедневные анекдоты
  */
 public class SubscribeCommand implements BotCommand {
-    private final DatabaseScheduler databaseScheduler;
+	private final DatabaseScheduler databaseScheduler;
+	private final DateTimeParser dateTimeParser = new DateTimeParser();
 
-    public SubscribeCommand(DatabaseScheduler databaseScheduler) {
-        this.databaseScheduler = databaseScheduler;
-    }
+	public SubscribeCommand(DatabaseScheduler databaseScheduler) {
+		this.databaseScheduler = databaseScheduler;
+	}
 
-    @Override
-    public String execute(String args, Long chatId, ChatPlatform chatPlatform) {
+	@Override
+	public String execute(String args, Long chatId, ChatPlatform chatPlatform) {
 
-        // TODO: parse dateTime to instant
+		Instant instantDate = dateTimeParser.parserArgsToDate(args);
+		databaseScheduler.schedule(new ChatData(chatPlatform, chatId), instantDate);
 
-        databaseScheduler.schedule(new ChatData(chatPlatform, chatId), Instant.now());
-
-        //TODO: Scheduling
-        return "ПОКА НЕ РАБОТАЕТ";
-    }
+		//TODO: Scheduling
+		return "ПОКА НЕ РАБОТАЕТ";
+	}
 }
