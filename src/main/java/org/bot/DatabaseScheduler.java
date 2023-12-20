@@ -1,10 +1,12 @@
 package org.bot;
 
+import com.github.kagkarlsson.scheduler.ScheduledExecution;
 import com.github.kagkarlsson.scheduler.Scheduler;
 import com.github.kagkarlsson.scheduler.task.helper.RecurringTask;
 import com.github.kagkarlsson.scheduler.task.helper.Tasks;
 import com.github.kagkarlsson.scheduler.task.schedule.FixedDelay;
 import org.bot.bot.Bot;
+import org.bot.command.JokeCommand;
 import org.bot.command.data.ChatData;
 import org.bot.enumerable.ChatPlatform;
 import org.postgresql.ds.PGSimpleDataSource;
@@ -14,39 +16,31 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
+import java.util.List;
 import java.util.Properties;
 
 public class DatabaseScheduler {
     private final Scheduler scheduler;
-
-    private final Bot telegramBot;
-
-    private final Bot vkBot;
-
     private final RecurringTask<ChatData> subscribeTask;
 
-    public DatabaseScheduler(Bot telegramBot, Bot vkBot) {
+    public DatabaseScheduler(Bot telegramBot, Bot vkBot, JokeCommand jokeCommand) {
 
-        this.telegramBot = telegramBot;
-        this.vkBot = vkBot;
-        //TODO change delay
-        this.subscribeTask = Tasks.recurring("subscribeTask", FixedDelay.ofSeconds(10), ChatData.class)
+        this.subscribeTask = Tasks.recurring("subscribeTask", FixedDelay.ofHours(24), ChatData.class)
                 .execute(((taskInstance, executionContext) -> {
-                    ChatData data = taskInstance.getData();
 
-                    System.out.println("Отправка в " + data.chatPlatform());
-                    System.out.println("Id = " + data.chatPlatform().toString() + "_" + data.chatId());
-                    System.out.println(executionContext.getExecution().taskInstance + " = TASKINSTANCE");
-                    // TODO:
-                    // взять chatPlatform, определить в какого бота отправлять
-                    // Вызвать JokeCommand(null, chatId, chatPlatform)
-                    // send message в нужного бота
+                    ChatData data = taskInstance.getData();
+                    Long chatId = data.chatId();
+                    ChatPlatform chatPlatform = data.chatPlatform();
+
+                    if (chatPlatform.equals(ChatPlatform.TELEGRAM)) {
+                        telegramBot.sendMessage(chatId, jokeCommand.execute(null, chatId, chatPlatform));
+                    } else if (chatPlatform.equals(ChatPlatform.VK)) {
+                        vkBot.sendMessage(chatId, jokeCommand.execute(null, chatId, chatPlatform));
+                    }
                 }));
 
         PGSimpleDataSource pgSimpleDataSource = getPGDataSource();
-        this.scheduler = Scheduler.create(pgSimpleDataSource, this.subscribeTask).build();
-        scheduler.schedule(this.subscribeTask.instance("TEST TASK", new ChatData(ChatPlatform.VK, 111L)),
-                Instant.now().plusSeconds(5));
+        this.scheduler = Scheduler.create(pgSimpleDataSource, subscribeTask).build();
 
         scheduler.start();
     }
@@ -59,6 +53,20 @@ public class DatabaseScheduler {
                                 chatData
                         ),
                 instant);
+    }
+
+    public void deschedule(ChatData chatData) {
+        List<ScheduledExecution<ChatData>> tasks = this.scheduler.getScheduledExecutionsForTask("subscribeTask", ChatData.class);
+        List<ScheduledExecution<ChatData>> currentChatTasks = tasks.stream()
+                .filter(e -> e
+                        .getTaskInstance()
+                        .getId()
+                        .contains(chatData.chatPlatform().toString() + "_" + chatData.chatId()))
+                .toList();
+
+        for (ScheduledExecution<ChatData> scheduledExecution : currentChatTasks) {
+            this.scheduler.cancel(scheduledExecution.getTaskInstance());
+        }
     }
 
     private PGSimpleDataSource getPGDataSource() {

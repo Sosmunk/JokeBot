@@ -29,8 +29,8 @@ public class Main {
 
         TelegramBot telegramJokeBot = new TelegramBot(commandProcessor);
         VkBot vkJokeBot = new VkBot(commandProcessor);
+        commandProcessor.enableSchedulingForBots(telegramJokeBot, vkJokeBot);
 
-        DatabaseScheduler scheduler = new DatabaseScheduler(telegramJokeBot, vkJokeBot);
         telegramJokeBot.start();
         vkJokeBot.start();
     }

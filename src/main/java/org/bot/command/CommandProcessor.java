@@ -1,5 +1,8 @@
 package org.bot.command;
 
+import org.bot.DatabaseScheduler;
+import org.bot.bot.TelegramBot;
+import org.bot.bot.VkBot;
 import org.bot.command.data.CommandData;
 import org.bot.dao.RatingService;
 import org.bot.enumerable.ChatPlatform;
@@ -34,8 +37,7 @@ public class CommandProcessor {
         commandMap.put("3☆", rateLastCommand);
         commandMap.put("4☆", rateLastCommand);
         commandMap.put("5☆", rateLastCommand);
-        // TODO: fix stub
-        commandMap.put("/subscribe", new SubscribeCommand(null));
+
     }
 
     /**
@@ -58,5 +60,13 @@ public class CommandProcessor {
         } else {
             return botCommand.execute(commandData.args(), chatId, chatPlatform);
         }
+    }
+
+    public void enableSchedulingForBots(TelegramBot telegramBot, VkBot vkBot) {
+
+        DatabaseScheduler databaseScheduler = new DatabaseScheduler(telegramBot, vkBot, (JokeCommand) commandMap.get("/joke"));
+        commandMap.put("/subscribe",
+                new SubscribeCommand(databaseScheduler));
+        commandMap.put("/unsubscribe", new UnsubscribeCommand(databaseScheduler));
     }
 }
