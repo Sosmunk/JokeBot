@@ -23,7 +23,7 @@ import java.util.List;
 public class TelegramBot extends TelegramLongPollingBot implements Bot {
 	private final CommandProcessor commandProcessor;
 	private final List<String> listRate;
-	private final ReplyKeyboardMarkup replyKeyboardMarkup;
+	private ReplyKeyboardMarkup replyKeyboardMarkup;
 	private final Logger logger = LogManager.getLogger();
 	/**
 	 * Имя бота
@@ -34,7 +34,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
 		super(System.getenv("TG_TOKEN"));
 		this.commandProcessor = commandProcessor;
 		listRate = new KeyboardUtils().getLIST_RATES();
-		replyKeyboardMarkup = createKeyboard();
+		replyKeyboardMarkup = createKeyboard("");
 	}
 
 	public void onUpdateReceived(Update update) {
@@ -59,9 +59,8 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
 		sendMessage.setChatId(chatId);
 		sendMessage.setText(message);
 		try {
-			if (message.contains("Анекдот №")) {
-				sendMessage.setReplyMarkup(replyKeyboardMarkup);
-			}
+			replyKeyboardMarkup = createKeyboard(message);
+			sendMessage.setReplyMarkup(replyKeyboardMarkup);
 			execute(sendMessage);
 		} catch (TelegramApiException e) {
 			logger.error("Не удалось отправить сообщение!", e);
@@ -83,10 +82,12 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
 	/**
 	 * Создание клавиатуры
 	 *
+	 * @param message сообщение бота
 	 * @return Клавиатура
 	 */
-	private ReplyKeyboardMarkup createKeyboard() {
+	private ReplyKeyboardMarkup createKeyboard(String message) {
 		ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+		List<KeyboardRow> nullKeyboardRows = new ArrayList<>();
 		List<KeyboardRow> keyboardRows = new ArrayList<>();
 		KeyboardRow row = new KeyboardRow();
 		for (String button : listRate) {
@@ -96,6 +97,9 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
 		keyboardMarkup.setKeyboard(keyboardRows);
 		keyboardMarkup.setResizeKeyboard(true);
 		keyboardMarkup.setOneTimeKeyboard(true);
+		if (!message.contains("Анекдот №")) {
+			keyboardMarkup.setKeyboard(nullKeyboardRows);
+		}
 		return keyboardMarkup;
 	}
 }

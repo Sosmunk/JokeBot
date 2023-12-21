@@ -24,7 +24,7 @@ public class VkBot extends LongPollBot implements Bot {
 	private final CommandProcessor commandProcessor;
 	private final Logger logger = LogManager.getLogger();
 
-	private final Keyboard keyboard;
+	private Keyboard keyboard;
 
 	private final List<String> listRate;
 
@@ -34,7 +34,7 @@ public class VkBot extends LongPollBot implements Bot {
 		this.commandProcessor = commandProcessor;
 		this.vkToken = System.getenv("VK_TOKEN");
 		listRate = new KeyboardUtils().getLIST_RATES();
-		keyboard = createKeyboard();
+		keyboard = createKeyboard("");
 	}
 
 	/**
@@ -71,9 +71,8 @@ public class VkBot extends LongPollBot implements Bot {
 			Send send = vk.messages.send()
 					.setPeerId(chatId.intValue())
 					.setMessage(message);
-			if (message.contains("Анекдот №")) {
-				send.setKeyboard(keyboard);
-			}
+			keyboard = createKeyboard(message);
+			send.setKeyboard(keyboard);
 			send.execute();
 		} catch (VkApiException e) {
 			logger.error("Не удалось отправить сообщение!", e);
@@ -95,10 +94,11 @@ public class VkBot extends LongPollBot implements Bot {
 	/**
 	 * Создание клавиатуры
 	 *
+	 * @param message сообщение бота
 	 * @return клавиатура
 	 */
 
-	private Keyboard createKeyboard() {
+	private Keyboard createKeyboard(String message) {
 		List<List<Button>> buttons = new ArrayList<>();
 		List<Button> buttonRow = new ArrayList<>();
 		for (String textButton : listRate) {
@@ -107,6 +107,9 @@ public class VkBot extends LongPollBot implements Bot {
 		buttons.add(buttonRow);
 		Keyboard keyboard = new Keyboard(buttons);
 		keyboard.setOneTime(true);
+		if (!message.contains("Анекдот №")) {
+			keyboard.setButtons(new ArrayList<>());
+		}
 		return keyboard;
 	}
 }
