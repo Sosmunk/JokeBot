@@ -4,8 +4,7 @@ import org.bot.Joke;
 import org.bot.Rate;
 import org.bot.dao.RatingDAO;
 
-import java.util.List;
-import java.util.OptionalDouble;
+import java.util.Optional;
 
 /**
  * Сервис отвечающий за работу с данными об оценках анекдотов
@@ -36,12 +35,14 @@ public class RatingServiceImpl implements RatingService {
         return true;
     }
 
+    /**
+     * Получить средний рейтинг анекдота
+     *
+     * @param jokeId id анекдота
+     * @return средний рейтинг анекдота, либо пустой optional
+     */
     @Override
-    public OptionalDouble getAverageRatingForJoke(Integer jokeId) {
-        List<Byte> ratings = ratingDAO.findStarsForJoke(jokeId);
-
-        return ratings.stream()
-                .mapToDouble(a -> a)
-                .average();
+    public Optional<Double> getAverageRatingForJoke(Integer jokeId) {
+        return ratingDAO.findAverageStarsForJoke(jokeId);
     }
 }

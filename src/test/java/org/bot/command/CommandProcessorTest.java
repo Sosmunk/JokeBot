@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Тест обработки команд
@@ -194,8 +194,8 @@ public class CommandProcessorTest {
     public void testRateCorrectPrint() {
         Mockito.when(jokeService.getJoke(2)).thenReturn(joke2);
 
-        Mockito.when(mockRatingDao.findStarsForJoke(2))
-                .thenReturn(List.of((byte) 1));
+        Mockito.when(mockRatingDao.findAverageStarsForJoke(2))
+                .thenReturn(Optional.of(1.0));
 
 
         String hasRating = commandProcessor.runCommand("/getJoke 2",
@@ -205,8 +205,8 @@ public class CommandProcessorTest {
                         + "\n" + "Рейтинг анекдота: 1.0",
                 hasRating);
 
-        Mockito.when(mockRatingDao.findStarsForJoke(2))
-                .thenReturn(List.of((byte) 1, (byte) 2));
+        Mockito.when(mockRatingDao.findAverageStarsForJoke(2))
+                .thenReturn(Optional.of(1.5));
 
         String hasMultipleRatings = commandProcessor.runCommand("/getJoke 2",
                 chatId);
@@ -215,8 +215,8 @@ public class CommandProcessorTest {
                         + "\n" + "Рейтинг анекдота: 1.5",
                 hasMultipleRatings);
 
-        Mockito.when(mockRatingDao.findStarsForJoke(2))
-                .thenReturn(List.of());
+        Mockito.when(mockRatingDao.findAverageStarsForJoke(2))
+                .thenReturn(Optional.empty());
 
         String hasNoRatings = commandProcessor.runCommand("/getJoke 2",
                 chatId);

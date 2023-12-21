@@ -4,7 +4,7 @@ import org.bot.Joke;
 import org.bot.service.JokeService;
 import org.bot.service.RatingService;
 
-import java.util.OptionalDouble;
+import java.util.Optional;
 
 /**
  * Команда /joke
@@ -28,10 +28,10 @@ public class JokeCommand implements BotCommand {
 
         jokeService.saveLastJoke(chatId, joke.getId());
 
-        OptionalDouble averageRating = ratingService.getAverageRatingForJoke(joke.getId());
+        Optional<Double> averageRating = ratingService.getAverageRatingForJoke(joke.getId());
 
         String ratingString = averageRating.isPresent()
-                ? "\nРейтинг анекдота: " + averageRating.getAsDouble()
+                ? "\nРейтинг анекдота: " + averageRating.get()
                 : "";
 
         return "Анекдот №" + joke.getId() +

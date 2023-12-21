@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * DAO для работы с рейтингами анекдотов
@@ -66,23 +66,23 @@ public class RatingDAO {
     }
 
     /**
-     * Найти все звезды рейтинга для конкретного анекдота
+     * Найти среднее количество звезд рейтинга для анекдота
      *
      * @param jokeId id анекдота
-     * @return звезды рейтинга
+     * @return среднее количество звезд рейтинга, либо пустой Optional
      */
-    public List<Byte> findStarsForJoke(Integer jokeId) {
+    public Optional<Double> findAverageStarsForJoke(Integer jokeId) {
         try (Session session = sessionFactory.openSession()) {
 
-            Query<Byte> query = session
-                    .createQuery("select stars from Rate where joke.id = :jokeId", Byte.class)
+            Query<Double> query = session
+                    .createQuery("select avg(stars) from Rate where joke.id = :jokeId", Double.class)
                     .setParameter("jokeId", jokeId);
 
-            return query.getResultList();
+            return Optional.ofNullable(query.uniqueResult());
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
-        return List.of();
+        return Optional.empty();
     }
 
 }

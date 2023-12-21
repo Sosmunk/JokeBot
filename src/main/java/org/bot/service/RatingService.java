@@ -1,6 +1,6 @@
 package org.bot.service;
 
-import java.util.OptionalDouble;
+import java.util.Optional;
 
 /**
  * Сервис для оценок анекдотов
@@ -22,5 +22,5 @@ public interface RatingService {
      * @param jokeId id анекдота
      * @return средний рейтинг, если анекдот был оценен
      */
-    OptionalDouble getAverageRatingForJoke(Integer jokeId);
+    Optional<Double> getAverageRatingForJoke(Integer jokeId);
 }
