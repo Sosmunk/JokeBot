@@ -4,15 +4,15 @@ import org.bot.Joke;
 import org.bot.Rate;
 import org.bot.dao.JokeDAO;
 import org.bot.dao.RatingDAO;
-import org.bot.dao.RatingService;
-import org.bot.dao.RatingServiceImpl;
 import org.bot.service.JokeService;
 import org.bot.service.JokeServiceImpl;
+import org.bot.service.RatingService;
+import org.bot.service.RatingServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Тест обработки команд
@@ -190,8 +190,13 @@ public class CommandProcessorTest {
 				.updateRating(Mockito.any(), Mockito.any(Byte.class));
 	}
 
+	/**
+	 * Тест правильного вывода
+	 */
+	@Test
 	public void testRateCorrectPrint() {
-		Mockito.when(jokeService.getJoke(2)).thenReturn(joke2);
+		Mockito.when(jokeService.getJoke(2))
+				.thenReturn(joke2);
 
 		Mockito.when(mockRatingDao.findAverageStarsForJoke(2))
 				.thenReturn(Optional.of(1.0));

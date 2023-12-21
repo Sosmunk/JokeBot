@@ -10,6 +10,7 @@ import api.longpoll.bots.model.objects.additional.buttons.TextButton;
 import api.longpoll.bots.model.objects.basic.Message;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bot.bot.keyboard.KeyboardUtils;
 import org.bot.command.CommandProcessor;
 
 import java.util.ArrayList;
