@@ -5,12 +5,17 @@ import api.longpoll.bots.exceptions.VkApiException;
 import api.longpoll.bots.methods.impl.messages.Send;
 import api.longpoll.bots.model.events.messages.MessageNew;
 import api.longpoll.bots.model.objects.additional.Keyboard;
+import api.longpoll.bots.model.objects.additional.buttons.Button;
+import api.longpoll.bots.model.objects.additional.buttons.TextButton;
 import api.longpoll.bots.model.objects.basic.Message;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.bot.bot.keyboard.VkKeyboard;
+import org.bot.bot.keyboard.KeyboardUtils;
 import org.bot.command.CommandProcessor;
 import org.bot.enumerable.ChatPlatform;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * VK бот
@@ -20,14 +25,18 @@ public class VkBot extends LongPollBot implements Bot {
 	private final CommandProcessor commandProcessor;
 	private final Logger logger = LogManager.getLogger();
 
+	private final Keyboard keyboard;
+
+	private final List<String> listRate;
+
 	private final String vkToken;
 
 	public VkBot(CommandProcessor commandProcessor) {
 		this.commandProcessor = commandProcessor;
 		this.vkToken = System.getenv("VK_TOKEN");
+		listRate = new KeyboardUtils().getLIST_RATES();
+		keyboard = createKeyboard();
 	}
-
-	private final Keyboard vkRateKeyBoard = new VkKeyboard().createKeyboard();
 
 	/**
 	 * Метод, отвечающий за обработку сообщений, присланных пользователем
@@ -65,7 +74,7 @@ public class VkBot extends LongPollBot implements Bot {
 					.setPeerId(chatId.intValue())
 					.setMessage(message);
 			if (message.contains("Анекдот №")) {
-				send.setKeyboard(vkRateKeyBoard);
+				send.setKeyboard(keyboard);
 			}
 			send.execute();
 		} catch (VkApiException e) {
@@ -83,5 +92,23 @@ public class VkBot extends LongPollBot implements Bot {
 		} catch (Exception e) {
 			throw new RuntimeException("Не удалось запустить бота!");
 		}
+	}
+
+	/**
+	 * Создание клавиатуры
+	 *
+	 * @return клавиатура
+	 */
+
+	private Keyboard createKeyboard() {
+		List<List<Button>> buttons = new ArrayList<>();
+		List<Button> buttonRow = new ArrayList<>();
+		for (String textButton : listRate) {
+			buttonRow.add(new TextButton(Button.Color.POSITIVE, new TextButton.Action(textButton)));
+		}
+		buttons.add(buttonRow);
+		Keyboard keyboard = new Keyboard(buttons);
+		keyboard.setOneTime(true);
+		return keyboard;
 	}
 }
