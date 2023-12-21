@@ -12,74 +12,74 @@ import java.util.OptionalDouble;
 @Table(name = "jokes")
 public class Joke {
 
-    public Joke() {
-    }
+	public Joke() {
+	}
 
-    public Joke(String text) {
-        this.text = text;
-    }
+	public Joke(String text) {
+		this.text = text;
+	}
 
-    /**
-     * id анекдота
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+	/**
+	 * id анекдота
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Integer id;
 
-    /**
-     * Рейтинги анекдота
-     */
-    @OneToMany(mappedBy = "joke", fetch = FetchType.EAGER)
-    private List<Rate> ratings;
+	/**
+	 * Рейтинги анекдота
+	 */
+	@OneToMany(mappedBy = "joke", fetch = FetchType.EAGER)
+	private List<Rate> ratings;
 
-    /**
-     * Текст анекдота
-     */
-    @Column(columnDefinition = "TEXT")
-    private String text;
+	/**
+	 * Текст анекдота
+	 */
+	@Column(columnDefinition = "TEXT")
+	private String text;
 
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public String getText() {
-        return text;
-    }
+	public String getText() {
+		return text;
+	}
 
-    public List<Rate> getRatings() {
-        return this.ratings;
-    }
+	private List<Rate> getRatings() {
+		return this.ratings;
+	}
 
-    public void setRatings(List<Rate> ratings) {
-        this.ratings = ratings;
-    }
+	public void setRatings(List<Rate> ratings) {
+		this.ratings = ratings;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setText(String text) {
-        this.text = text;
-    }
+	public void setText(String text) {
+		this.text = text;
+	}
 
-    /**
-     * Получить средний рейтинг анекдота
-     *
-     * @return строка со средним рейтингом
-     */
-    public String getAverageRatingString() {
-        List<Rate> jokeRatings = this.getRatings();
+	/**
+	 * Получить средний рейтинг анекдота
+	 *
+	 * @return строка со средним рейтингом
+	 */
+	public String getAverageRatingString() {
+		List<Rate> jokeRatings = this.getRatings();
 
-        if (jokeRatings == null) {
-            return "";
-        }
+		if (jokeRatings == null) {
+			return "";
+		}
 
-        OptionalDouble optionalDouble = jokeRatings.stream()
-                .mapToDouble(Rate::getStars)
-                .average();
+		OptionalDouble optionalDouble = jokeRatings.stream()
+				.mapToDouble(Rate::getStars)
+				.average();
 
-        return optionalDouble.isPresent()
-                ? "Рейтинг анекдота: " + optionalDouble.getAsDouble()
-                : "";
-    }
+		return optionalDouble.isPresent()
+				? "Рейтинг анекдота: " + optionalDouble.getAsDouble()
+				: "";
+	}
 }
