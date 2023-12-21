@@ -26,14 +26,14 @@ public class CommandProcessorTest {
 
 	private final CommandProcessor commandProcessor = new CommandProcessor(jokeService, ratingService);
 
-	private final Joke testJoke = new Joke(firstJoke);
-	private final Joke joke2 = new Joke(secondJoke);
+	private final Joke testJoke = new Joke(FIRST_JOKE);
+	private final Joke joke2 = new Joke(SECOND_JOKE);
 
-	private final static String firstJoke = """
+	private final static String FIRST_JOKE = """
 			— Заходит программист в лифт, а ему надо на 12—й этаж.
 			— Нажимает 1, потом 2 и начинает лихорадочно искать кнопку Enter.
 			""";
-	private final static String secondJoke = """
+	private final static String SECOND_JOKE = """
 			Разработчики, обвиненные в написании нечитабельного кода, отказались давать комментарии
 			""";
 
@@ -100,7 +100,7 @@ public class CommandProcessorTest {
 		Mockito.when(jokeService.getRandomJoke())
 				.thenReturn(testJoke);
 		Assert.assertEquals("Invalid message",
-				"Анекдот №1\n" + firstJoke,
+				"Анекдот №1\n" + FIRST_JOKE,
 				commandProcessor.runCommand(command, chatId, null));
 	}
 
@@ -113,7 +113,7 @@ public class CommandProcessorTest {
 		Mockito.when(jokeService.getJoke(1))
 				.thenReturn(testJoke);
 		Assert.assertEquals("Invalid message",
-				"Анекдот №1\n" + firstJoke,
+				"Анекдот №1\n" + FIRST_JOKE,
 				commandProcessor.runCommand(command, chatId, null));
 	}
 
@@ -335,10 +335,10 @@ public class CommandProcessorTest {
 					chatId, ChatPlatform.TELEGRAM);
 			Assert.assertEquals("Анекдот оценен", update);
 			Assert.assertEquals(jokeService.getLastJokeId(chatId, ChatPlatform.TELEGRAM), testJoke.getId());
-			Mockito.verify(mockRatingDao, Mockito.times(i - 1))
+			Mockito.verify(mockRatingDao, Mockito.times(1))
 					.updateRating(
-							Mockito.any(Rate.class),
-							Mockito.any(byte.class)
+							testRate,
+							(byte) i
 					);
 		}
 	}
