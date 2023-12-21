@@ -1,8 +1,7 @@
 package org.bot.command;
 
-import org.bot.dao.RatingService;
-import org.bot.enumerable.ChatPlatform;
 import org.bot.service.JokeService;
+import org.bot.service.RatingService;
 
 /**
  * Оценить последний анекдот отправленный пользователю
@@ -19,12 +18,13 @@ public class RateLastCommand implements BotCommand {
 
 
     @Override
-    public String execute(String args, Long chatId, ChatPlatform chatPlatform) {
-        Integer jokeId = jokeService.getLastJokeId(chatId, chatPlatform);
+    public String execute(String args, Long chatId) {
+        Integer jokeId = jokeService.getLastJokeId(chatId);
         if (jokeId == null) {
             return "Нет анекдотов для оценивания";
         }
 
-        return ratingService.rateJoke(jokeId, chatId, Byte.parseByte(args));
+        ratingService.rateJoke(jokeId, chatId, Byte.parseByte(args));
+        return "Анекдот оценен";
     }
 }

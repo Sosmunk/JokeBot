@@ -4,17 +4,16 @@ import org.bot.Joke;
 import org.bot.Rate;
 import org.bot.dao.JokeDAO;
 import org.bot.dao.RatingDAO;
-import org.bot.dao.RatingService;
-import org.bot.dao.RatingServiceImpl;
-import org.bot.enumerable.ChatPlatform;
 import org.bot.service.JokeService;
 import org.bot.service.JokeServiceImpl;
+import org.bot.service.RatingService;
+import org.bot.service.RatingServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Тест обработки команд
@@ -46,19 +45,17 @@ public class CommandProcessorTest {
 
     private final Long chatId = 12345L;
 
-    private final ChatPlatform chatPlatform = ChatPlatform.TELEGRAM;
-
     /**
      * Тест на неправильную команду
      */
     @Test
     public void testRunCommandWithNull() {
         Assert.assertEquals("Команда не найдена",
-                commandProcessor.runCommand(null, chatId, chatPlatform));
+                commandProcessor.runCommand(null, chatId));
         Assert.assertEquals("Команда не найдена",
-                commandProcessor.runCommand("", chatId, chatPlatform));
+                commandProcessor.runCommand("", chatId));
         Assert.assertEquals("Команда не найдена",
-                commandProcessor.runCommand("/exampleCommand", chatId, chatPlatform));
+                commandProcessor.runCommand("/exampleCommand", chatId));
     }
 
     /**
@@ -69,7 +66,7 @@ public class CommandProcessorTest {
         String command = "/start";
         Assert.assertEquals("Wrong message", "Привет, я бот - любитель анекдотов." +
                         " Чтобы получить справку о работе со мной напишите /help.",
-                commandProcessor.runCommand(command, chatId, chatPlatform));
+                commandProcessor.runCommand(command, chatId));
     }
 
     /**
@@ -80,18 +77,18 @@ public class CommandProcessorTest {
         String command = "/help";
         Assert.assertEquals("Wrong message", """
                         Вот всё что я умею:
-                                        
+
                         😂 Показать случайный анекдот (/joke)
-                            
+
                         😂🔢 Показать анекдот по номеру
                              (/getJoke <номер анекдота>)
-                            
+
                         👶🏼 Справка о командах бота (/help)
-                                                
+
                         ⭐ Оценить анекдот
                            (/rate <номер анекдота> <оценка от 1 до 5>)
                         """,
-                commandProcessor.runCommand(command, chatId, chatPlatform));
+                commandProcessor.runCommand(command, chatId));
     }
 
     /**
@@ -103,7 +100,7 @@ public class CommandProcessorTest {
         Mockito.when(jokeService.getRandomJoke()).thenReturn(testJoke);
         Assert.assertEquals("Invalid message",
                 "Анекдот №1\n" + firstJoke,
-                commandProcessor.runCommand(command, chatId, chatPlatform));
+                commandProcessor.runCommand(command, chatId));
     }
 
     /**
@@ -115,7 +112,7 @@ public class CommandProcessorTest {
         Mockito.when(jokeService.getJoke(1)).thenReturn(testJoke);
         Assert.assertEquals("Invalid message",
                 "Анекдот №1\n" + firstJoke,
-                commandProcessor.runCommand(command, chatId, chatPlatform));
+                commandProcessor.runCommand(command, chatId));
     }
 
     /**
@@ -125,7 +122,7 @@ public class CommandProcessorTest {
     public void getJokeNotFoundTest() {
         String command = "/getJoke 123";
         Assert.assertEquals("Анекдот не найден",
-                commandProcessor.runCommand(command, chatId, chatPlatform));
+                commandProcessor.runCommand(command, chatId));
     }
 
     /**
@@ -135,8 +132,7 @@ public class CommandProcessorTest {
     public void getJokeNegativeNotFound() {
         Assert.assertEquals("Анекдот не найден",
                 commandProcessor.runCommand("/getJoke -1",
-                        chatId,
-                        chatPlatform));
+                        chatId));
     }
 
     /**
@@ -149,8 +145,7 @@ public class CommandProcessorTest {
                         Например: "/getJoke 1"
                         """,
                 commandProcessor.runCommand("/getJoke AAAAAAAAA",
-                        chatId,
-                        chatPlatform));
+                        chatId));
     }
 
     /**
@@ -160,8 +155,7 @@ public class CommandProcessorTest {
     public void getJokeNoArgsTest() {
         Assert.assertEquals("Введите \"/getJoke <номер анекдота>\"",
                 commandProcessor.runCommand("/getJoke",
-                        chatId,
-                        chatPlatform));
+                        chatId));
     }
 
     /**
@@ -170,7 +164,7 @@ public class CommandProcessorTest {
     @Test
     public void testRateNotExistingJoke(){
         String notFound = commandProcessor.runCommand("/rate 999 5",
-                chatId, chatPlatform);
+                chatId);
         Assert.assertEquals("Анекдот не найден", notFound);
         Mockito.verify(mockRatingDao, Mockito.never()).saveRating(Mockito.any());
         Mockito.verify(mockRatingDao, Mockito.never())
@@ -185,8 +179,7 @@ public class CommandProcessorTest {
         Mockito.when(jokeService.getJoke(2)).thenReturn(joke2);
 
         String res = commandProcessor.runCommand("/rate 2 1",
-                chatId,
-                chatPlatform);
+                chatId);
         Assert.assertEquals("Анекдот оценен", res);
         Mockito.verify(mockRatingDao, Mockito.times(1))
                 .saveRating(Mockito.any(Rate.class));
@@ -201,21 +194,36 @@ public class CommandProcessorTest {
     public void testRateCorrectPrint() {
         Mockito.when(jokeService.getJoke(2)).thenReturn(joke2);
 
-        joke2.setRatings(List.of(new Rate(chatId, (byte) 1, joke2)));
+        Mockito.when(mockRatingDao.findAverageStarsForJoke(2))
+                .thenReturn(Optional.of(1.0));
+
+
         String hasRating = commandProcessor.runCommand("/getJoke 2",
-                chatId,
-                chatPlatform);
+                chatId);
+
         Assert.assertEquals("Анекдот №2\n" + joke2.getText()
                         + "\n" + "Рейтинг анекдота: 1.0",
                 hasRating);
-        joke2.setRatings(List.of(new Rate(chatId, (byte) 1, joke2),
-                new Rate(123L, (byte) 3, joke2)));
+
+        Mockito.when(mockRatingDao.findAverageStarsForJoke(2))
+                .thenReturn(Optional.of(1.5));
+
         String hasMultipleRatings = commandProcessor.runCommand("/getJoke 2",
-                chatId,
-                chatPlatform);
+                chatId);
+
         Assert.assertEquals("Анекдот №2\n" + joke2.getText()
-                        + "\n" + "Рейтинг анекдота: 2.0",
+                        + "\n" + "Рейтинг анекдота: 1.5",
                 hasMultipleRatings);
+
+        Mockito.when(mockRatingDao.findAverageStarsForJoke(2))
+                .thenReturn(Optional.empty());
+
+        String hasNoRatings = commandProcessor.runCommand("/getJoke 2",
+                chatId);
+
+        Assert.assertEquals("Анекдот №2\n" + joke2.getText(),
+                hasNoRatings);
+
     }
 
     /**
@@ -224,11 +232,11 @@ public class CommandProcessorTest {
     @Test
     public void testRateWrongCountStars() {
         String tooManyStars = commandProcessor.runCommand("/rate 2 100",
-                chatId, chatPlatform);
+                chatId);
         Assert.assertEquals("Неверное количество звезд рейтинга",
                 tooManyStars);
         String notEnoughStars = commandProcessor.runCommand("/rate 2 -1",
-                chatId, chatPlatform);
+                chatId);
         Assert.assertEquals("Неверное количество звезд рейтинга", notEnoughStars);
     }
 
@@ -239,14 +247,13 @@ public class CommandProcessorTest {
     public void testRateWrongTypeNumberStars() {
         String abracadabraStars = commandProcessor
                 .runCommand("/rate 2 abracadabra",
-                        chatId,
-                        null);
+                        chatId);
         Assert.assertEquals(
                 "Количество звезд рейтинга должно содержать только цифры (1-5)",
                 abracadabraStars);
         String overByteLimitStars = commandProcessor.runCommand(
                 "/rate 2 100000000",
-                chatId, chatPlatform);
+                chatId);
         Assert.assertEquals(
                 "Количество звезд рейтинга должно содержать только цифры (1-5)",
                 overByteLimitStars);
@@ -260,11 +267,11 @@ public class CommandProcessorTest {
         Mockito.when(jokeService.getJoke(2)).thenReturn(joke2);
 
         String tooManyArgs = commandProcessor
-                .runCommand("/rate 2 1 1 1 1 1 1 1", chatId, chatPlatform);
+                .runCommand("/rate 2 1 1 1 1 1 1 1", chatId);
         String noArgs = commandProcessor.runCommand("/rate ",
-                chatId, chatPlatform);
+                chatId);
         String oneArg = commandProcessor.runCommand("/rate 2",
-                chatId, chatPlatform);
+                chatId);
         String invalidArgs = "Неверное количество аргументов";
 
         Assert.assertEquals(invalidArgs, tooManyArgs);
@@ -283,7 +290,7 @@ public class CommandProcessorTest {
                 .thenReturn(new Rate(chatId, (byte) 1, null));
 
         String updateSameJoke = commandProcessor
-                .runCommand("/rate 2 2", chatId, chatPlatform);
+                .runCommand("/rate 2 2", chatId);
 
         Assert.assertEquals("Анекдот оценен", updateSameJoke);
         Mockito.verify(mockRatingDao, Mockito.times(1))
@@ -297,7 +304,7 @@ public class CommandProcessorTest {
     @Test
     public void testRateNoLastJoke() {
         String noLastJokes = commandProcessor.runCommand("1☆",
-                chatId, chatPlatform);
+                chatId);
         Assert.assertEquals("Нет анекдотов для оценивания", noLastJokes);
     }
 
@@ -311,10 +318,10 @@ public class CommandProcessorTest {
         Mockito.when(jokeService.getJoke(testJoke.getId())).thenReturn(testJoke);
 
         commandProcessor.runCommand("/getJoke " + testJoke.getId(),
-                chatId, chatPlatform);
+                chatId);
 
         String rated = commandProcessor.runCommand("1☆",
-                chatId, chatPlatform);
+                chatId);
         Assert.assertEquals("Анекдот оценен", rated);
 
         Mockito.verify(mockRatingDao, Mockito.times(1))
@@ -325,7 +332,7 @@ public class CommandProcessorTest {
 
         for (int i = 2; i < 6; i++) {
             String update = commandProcessor.runCommand(i + "☆",
-                    chatId, chatPlatform);
+                    chatId);
             Assert.assertEquals("Анекдот оценен", update);
             Mockito.verify(mockRatingDao, Mockito.times(i - 1))
                     .updateRating(

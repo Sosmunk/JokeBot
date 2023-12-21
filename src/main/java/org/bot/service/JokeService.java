@@ -1,7 +1,6 @@
 package org.bot.service;
 
 import org.bot.Joke;
-import org.bot.enumerable.ChatPlatform;
 
 /**
  * Сервис для получения анекдотов из хранилища
@@ -33,18 +32,16 @@ public interface JokeService {
     /**
      * Получить id последнего анекдота в чате
      *
-     * @param chatId       id чата
-     * @param chatPlatform чат-платформа
+     * @param chatId id чата
      * @return id последнего анекдота в чате
      */
-    Integer getLastJokeId(Long chatId, ChatPlatform chatPlatform);
+    Integer getLastJokeId(Long chatId);
 
     /**
      * Сохранить последний анекдот отправленный пользователю в чат
      *
-     * @param chatId       id чата
-     * @param jokeId       id анекдота
-     * @param chatPlatform чат-платформа
+     * @param chatId id чата
+     * @param jokeId id анекдота
      */
-    void saveLastJoke(Long chatId, Integer jokeId, ChatPlatform chatPlatform);
+    void saveLastJoke(Long chatId, Integer jokeId);
 }

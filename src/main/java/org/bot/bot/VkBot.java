@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bot.bot.keyboard.KeyboardFactory;
 import org.bot.command.CommandProcessor;
-import org.bot.enumerable.ChatPlatform;
 
 /**
  * VK бот
@@ -40,8 +39,7 @@ public class VkBot extends LongPollBot implements Bot {
         if (message.hasText()) {
             String result = commandProcessor.runCommand(
                     message.getText(),
-                    message.getPeerId().longValue(),
-                    ChatPlatform.VK);
+                    message.getPeerId().longValue());
             sendMessage(message.getPeerId().longValue(), result);
         }
     }

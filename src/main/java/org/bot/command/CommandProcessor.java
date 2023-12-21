@@ -1,9 +1,8 @@
 package org.bot.command;
 
 import org.bot.command.data.CommandData;
-import org.bot.dao.RatingService;
-import org.bot.enumerable.ChatPlatform;
 import org.bot.service.JokeService;
+import org.bot.service.RatingService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +25,8 @@ public class CommandProcessor {
         RateLastCommand rateLastCommand = new RateLastCommand(jokeService, ratingService);
         commandMap.put("/start", new StartCommand());
         commandMap.put("/help", new HelpCommand());
-        commandMap.put("/joke", new JokeCommand(jokeService));
-        commandMap.put("/getJoke", new GetJokeCommand(jokeService));
+        commandMap.put("/joke", new JokeCommand(jokeService, ratingService));
+        commandMap.put("/getJoke", new GetJokeCommand(jokeService, ratingService));
         commandMap.put("/rate", new RateCommand(ratingService));
         commandMap.put("1☆", rateLastCommand);
         commandMap.put("2☆", rateLastCommand);
@@ -39,12 +38,11 @@ public class CommandProcessor {
     /**
      * Выполнить пользовательскую команду
      *
-     * @param command      команда из сообщения
-     * @param chatId       id чата
-     * @param chatPlatform чат платформа (Telegram/VK)
+     * @param command команда из сообщения
+     * @param chatId  id чата
      * @return сообщение пользователю
      */
-    public String runCommand(String command, Long chatId, ChatPlatform chatPlatform) {
+    public String runCommand(String command, Long chatId) {
         CommandData commandData = commandParser.parseMessage(command);
         BotCommand botCommand = commandMap.get(commandData.command());
 
@@ -52,9 +50,9 @@ public class CommandProcessor {
             return "Команда не найдена";
         }
         if (botCommand.getClass() == RateLastCommand.class) {
-            return botCommand.execute(commandData.command().substring(0, 1), chatId, chatPlatform);
+            return botCommand.execute(commandData.command().substring(0, 1), chatId);
         } else {
-            return botCommand.execute(commandData.args(), chatId, chatPlatform);
+            return botCommand.execute(commandData.args(), chatId);
         }
     }
 }

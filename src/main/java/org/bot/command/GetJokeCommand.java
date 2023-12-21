@@ -1,10 +1,10 @@
 package org.bot.command;
 
 import org.bot.Joke;
-
-import org.bot.enumerable.ChatPlatform;
-
 import org.bot.service.JokeService;
+import org.bot.service.RatingService;
+
+import java.util.Optional;
 
 /**
  * Команда /getJoke &lt;id&gt;
@@ -13,13 +13,15 @@ import org.bot.service.JokeService;
 public class GetJokeCommand implements BotCommand {
 
     private final JokeService jokeService;
+    private final RatingService ratingService;
 
-    public GetJokeCommand(JokeService jokeService) {
+    public GetJokeCommand(JokeService jokeService, RatingService ratingService) {
         this.jokeService = jokeService;
+        this.ratingService = ratingService;
     }
 
     @Override
-    public String execute(String args, Long chatId, ChatPlatform chatPlatform) {
+    public String execute(String args, Long chatId) {
         if (args == null) {
             return "Введите \"/getJoke <номер анекдота>\"";
         }
@@ -40,14 +42,15 @@ public class GetJokeCommand implements BotCommand {
             return "Анекдот не найден";
         }
 
-        jokeService.saveLastJoke(chatId, joke.getId(), chatPlatform);
+        jokeService.saveLastJoke(chatId, joke.getId());
 
-        String averageRating = joke.getAverageRatingString();
+        Optional<Double> averageRating = ratingService.getAverageRatingForJoke(joke.getId());
 
-        if (!averageRating.isEmpty()) {
-            averageRating = "\n" + averageRating;
-        }
+        String ratingString = averageRating.isPresent()
+                ? "\nРейтинг анекдота: " + averageRating.get()
+                : "";
+
         return "Анекдот №" + joke.getId() +
-                "\n" + joke.getText() + averageRating;
+                "\n" + joke.getText() + ratingString;
     }
 }

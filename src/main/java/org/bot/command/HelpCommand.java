@@ -1,14 +1,12 @@
 package org.bot.command;
 
-import org.bot.enumerable.ChatPlatform;
-
 /**
  * Команда /help
  * Получить справку о работе бота
  */
 public class HelpCommand implements BotCommand {
     @Override
-    public String execute(String args, Long chatId, ChatPlatform chatPlatform) {
+    public String execute(String args, Long chatId) {
         return """
                 Вот всё что я умею:
                                 
