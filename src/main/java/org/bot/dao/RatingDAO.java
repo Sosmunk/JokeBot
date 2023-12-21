@@ -5,8 +5,9 @@ import org.apache.logging.log4j.Logger;
 import org.bot.Rate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
+import java.util.List;
 
 /**
  * DAO для работы с рейтингами анекдотов
@@ -16,8 +17,12 @@ public class RatingDAO {
     private final SessionFactory sessionFactory;
     private final Logger logger = LogManager.getLogger();
 
+    private final TransactionRunner transactionRunner;
+
     public RatingDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+        this.transactionRunner = new TransactionRunner(sessionFactory);
+
     }
 
     /**
@@ -25,18 +30,17 @@ public class RatingDAO {
      *
      * @param jokeId id анекдота
      * @param chatId id чата
-     * @return рейтинг анекдота
+     * @return рейтинг анекдота или null
      */
     public Rate findRating(Integer jokeId, Long chatId) {
-        Session session = sessionFactory.openSession();
-        Query<Rate> query = session.
-                createQuery("from Rate where chatId =: chatId and joke.id =: jokeId", Rate.class)
-                .setParameter("chatId", chatId)
-                .setParameter("jokeId", jokeId);
+        try (Session session = sessionFactory.openSession()) {
+            Query<Rate> query = session.
+                    createQuery("from Rate where chatId =: chatId and joke.id =: jokeId", Rate.class)
+                    .setParameter("chatId", chatId)
+                    .setParameter("jokeId", jokeId);
 
-        Rate rate = query.uniqueResult();
-        session.close();
-        return rate;
+            return query.uniqueResult();
+        }
     }
 
     /**
@@ -46,21 +50,10 @@ public class RatingDAO {
      * @param stars оценка
      */
     public void updateRating(Rate rate, byte stars) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
+        transactionRunner.doInTransaction((session -> {
             rate.setStars(stars);
             session.merge(rate);
-            tx.commit();
-        } catch (Exception e) {
-            logger.error("Can't update rating!",e);
-            if (tx != null) {
-                tx.rollback();
-            }
-        } finally {
-            session.close();
-        }
+        }));
     }
 
     /**
@@ -69,20 +62,27 @@ public class RatingDAO {
      * @param rate рейтинг
      */
     public void saveRating(Rate rate) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            session.persist(rate);
-            tx.commit();
+        transactionRunner.doInTransaction((session -> session.persist(rate)));
+    }
+
+    /**
+     * Найти все звезды рейтинга для конкретного анекдота
+     *
+     * @param jokeId id анекдота
+     * @return звезды рейтинга
+     */
+    public List<Byte> findStarsForJoke(Integer jokeId) {
+        try (Session session = sessionFactory.openSession()) {
+
+            Query<Byte> query = session
+                    .createQuery("select stars from Rate where joke.id = :jokeId", Byte.class)
+                    .setParameter("jokeId", jokeId);
+
+            return query.getResultList();
         } catch (Exception e) {
-            logger.error("Can't save rating!",e);
-            if (tx != null) {
-                tx.rollback();
-            }
-        } finally {
-            session.close();
+            logger.error(e.getMessage());
         }
+        return List.of();
     }
 
 }

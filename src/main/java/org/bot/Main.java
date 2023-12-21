@@ -5,10 +5,10 @@ import org.bot.bot.VkBot;
 import org.bot.command.CommandProcessor;
 import org.bot.dao.JokeDAO;
 import org.bot.dao.RatingDAO;
-import org.bot.dao.RatingService;
-import org.bot.dao.RatingServiceImpl;
 import org.bot.service.JokeService;
 import org.bot.service.JokeServiceImpl;
+import org.bot.service.RatingService;
+import org.bot.service.RatingServiceImpl;
 import org.bot.util.HibernateUtils;
 import org.hibernate.SessionFactory;
 

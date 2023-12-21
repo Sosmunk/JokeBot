@@ -1,7 +1,6 @@
 package org.bot.command;
 
-import org.bot.dao.RatingService;
-import org.bot.enumerable.ChatPlatform;
+import org.bot.service.RatingService;
 
 /**
  * Команда /rate &lt;id шутки&gt; &lt;оценка&gt; <br>
@@ -18,7 +17,7 @@ public class RateCommand implements BotCommand {
     private static final String INVALID_ARGUMENT_COUNT = "Неверное количество аргументов";
 
     @Override
-    public String execute(String args, Long chatId, ChatPlatform chatPlatform) {
+    public String execute(String args, Long chatId) {
         if (args == null) {
             return INVALID_ARGUMENT_COUNT;
         }
@@ -40,6 +39,11 @@ public class RateCommand implements BotCommand {
             return "Неверное количество звезд рейтинга";
         }
 
-        return this.ratingService.rateJoke(jokeId, chatId, stars);
+        boolean result = this.ratingService.rateJoke(jokeId, chatId, stars);
+        if (result) {
+            return "Анекдот оценен";
+        } else {
+            return "Анекдот не найден";
+        }
     }
 }

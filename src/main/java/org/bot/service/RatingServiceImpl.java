@@ -1,13 +1,17 @@
-package org.bot.dao;
+package org.bot.service;
 
 import org.bot.Joke;
 import org.bot.Rate;
-import org.bot.service.JokeService;
+import org.bot.dao.RatingDAO;
 
+import java.util.List;
+import java.util.OptionalDouble;
+
+/**
+ * Сервис отвечающий за работу с данными об оценках анекдотов
+ */
 public class RatingServiceImpl implements RatingService {
-
     private final RatingDAO ratingDAO;
-
     private final JokeService jokeService;
 
     public RatingServiceImpl(RatingDAO ratingDAO, JokeService jokeService) {
@@ -15,19 +19,11 @@ public class RatingServiceImpl implements RatingService {
         this.jokeService = jokeService;
     }
 
-    /**
-     * Оценить анекдот
-     *
-     * @param jokeId id анекдота
-     * @param chatId id чата
-     * @param stars  количество звезд (1-5)
-     * @return результат оценки анекдота
-     */
     @Override
-    public String rateJoke(Integer jokeId, Long chatId, Byte stars) {
+    public boolean rateJoke(Integer jokeId, Long chatId, Byte stars) {
         Joke joke = jokeService.getJoke(jokeId);
         if (joke == null) {
-            return "Анекдот не найден";
+            return false;
         }
         Rate rate = ratingDAO.findRating(jokeId, chatId);
 
@@ -37,7 +33,15 @@ public class RatingServiceImpl implements RatingService {
             Rate newRate = new Rate(chatId, stars, joke);
             ratingDAO.saveRating(newRate);
         }
+        return true;
+    }
 
-        return "Анекдот оценен";
+    @Override
+    public OptionalDouble getAverageRatingForJoke(Integer jokeId) {
+        List<Byte> ratings = ratingDAO.findStarsForJoke(jokeId);
+
+        return ratings.stream()
+                .mapToDouble(a -> a)
+                .average();
     }
 }

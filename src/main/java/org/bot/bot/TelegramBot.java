@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bot.bot.keyboard.KeyboardFactory;
 import org.bot.command.CommandProcessor;
-import org.bot.enumerable.ChatPlatform;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -42,8 +41,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
             long chatId = textInMessage.getChatId();
             String result = commandProcessor.runCommand(
                     textInMessage.getText(),
-                    chatId,
-                    ChatPlatform.TELEGRAM);
+                    chatId);
             sendMessage(chatId, result);
         }
     }

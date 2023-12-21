@@ -1,8 +1,10 @@
 package org.bot.command;
 
 import org.bot.Joke;
-import org.bot.enumerable.ChatPlatform;
 import org.bot.service.JokeService;
+import org.bot.service.RatingService;
+
+import java.util.OptionalDouble;
 
 /**
  * Команда /joke
@@ -10,27 +12,30 @@ import org.bot.service.JokeService;
  */
 public class JokeCommand implements BotCommand {
     private final JokeService jokeService;
+    private final RatingService ratingService;
 
-    public JokeCommand(JokeService jokeService) {
+    public JokeCommand(JokeService jokeService, RatingService ratingService) {
         this.jokeService = jokeService;
+        this.ratingService = ratingService;
     }
 
     @Override
-    public String execute(String args, Long chatId, ChatPlatform chatPlatform) {
+    public String execute(String args, Long chatId) {
         Joke joke = jokeService.getRandomJoke();
         if (joke == null) {
             return "Анекдоты не найдены";
         }
 
-        jokeService.saveLastJoke(chatId, joke.getId(), chatPlatform);
+        jokeService.saveLastJoke(chatId, joke.getId());
 
-        String averageRating = joke.getAverageRatingString();
+        OptionalDouble averageRating = ratingService.getAverageRatingForJoke(joke.getId());
 
-        if (!averageRating.isEmpty()) {
-            averageRating = "\n" + averageRating;
-        }
+        String ratingString = averageRating.isPresent()
+                ? "\nРейтинг анекдота: " + averageRating.getAsDouble()
+                : "";
 
         return "Анекдот №" + joke.getId() +
-                "\n" + joke.getText() + averageRating;
+                "\n" + joke.getText() + ratingString;
+
     }
 }
