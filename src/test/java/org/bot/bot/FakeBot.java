@@ -3,8 +3,14 @@ package org.bot.bot;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Имитация чат бота
+ */
 public class FakeBot implements Bot {
 
+    /**
+     * Сообщения которые должны быть отправлены пользователю
+     */
     private final List<MessageData> messages = new ArrayList<>();
 
     @Override
