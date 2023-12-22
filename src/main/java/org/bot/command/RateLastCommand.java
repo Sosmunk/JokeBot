@@ -1,5 +1,6 @@
 package org.bot.command;
 
+import org.bot.bot.Bot;
 import org.bot.service.JokeService;
 import org.bot.service.RatingService;
 
@@ -18,13 +19,14 @@ public class RateLastCommand implements BotCommand {
 
 
     @Override
-    public String execute(String args, Long chatId) {
+    public void execute(String args, Long chatId, Bot bot) {
         Integer jokeId = jokeService.getLastJokeId(chatId);
         if (jokeId == null) {
-            return "Нет анекдотов для оценивания";
+            bot.sendMessage(chatId, "Нет анекдотов для оценивания");
+            return;
         }
 
         ratingService.rateJoke(jokeId, chatId, Byte.parseByte(args));
-        return "Анекдот оценен";
+        bot.sendMessageWithRateKeyboard(chatId, "Анекдот оценен");
     }
 }

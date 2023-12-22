@@ -24,7 +24,7 @@ public class VkBot extends LongPollBot implements Bot {
 	private final CommandProcessor commandProcessor;
 	private final Logger logger = LogManager.getLogger();
 
-	private Keyboard keyboard;
+	private final Keyboard rateKeyboard;
 
 	private final List<String> listRate;
 
@@ -33,8 +33,8 @@ public class VkBot extends LongPollBot implements Bot {
 	public VkBot(CommandProcessor commandProcessor) {
 		this.commandProcessor = commandProcessor;
 		this.vkToken = System.getenv("VK_TOKEN");
-		listRate = new KeyboardUtils().getLIST_RATES();
-		keyboard = createKeyboard("");
+		listRate = new KeyboardUtils().getListRates();
+		this.rateKeyboard = createRateKeyboard();
 	}
 
 	/**
@@ -46,12 +46,11 @@ public class VkBot extends LongPollBot implements Bot {
 	public void onMessageNew(MessageNew messageNew) {
 		Message message = messageNew.getMessage();
 		if (message.hasText()) {
-			String result = commandProcessor.runCommand(
+			commandProcessor.runCommand(
 					message.getText(),
 					message.getPeerId()
-							.longValue());
-			sendMessage(message.getPeerId()
-					.longValue(), result);
+							.longValue(),
+					this);
 		}
 	}
 
@@ -71,13 +70,23 @@ public class VkBot extends LongPollBot implements Bot {
 			Send send = vk.messages.send()
 					.setPeerId(chatId.intValue())
 					.setMessage(message);
-			keyboard = createKeyboard(message);
-			send.setKeyboard(keyboard);
 			send.execute();
 		} catch (VkApiException e) {
 			logger.error("Не удалось отправить сообщение!", e);
 		}
+	}
 
+	@Override
+	public void sendMessageWithRateKeyboard(Long chatId, String message) {
+		try {
+			Send send = vk.messages.send()
+					.setPeerId(chatId.intValue())
+					.setMessage(message);
+			send.setKeyboard(rateKeyboard);
+			send.execute();
+		} catch (VkApiException e) {
+			logger.error("Не удалось отправить сообщение!", e);
+		}
 	}
 
 	/**
@@ -86,19 +95,17 @@ public class VkBot extends LongPollBot implements Bot {
 	public void start() {
 		try {
 			this.startPolling();
-		} catch (Exception e) {
+		} catch (VkApiException e) {
 			throw new RuntimeException("Не удалось запустить бота!");
 		}
 	}
 
 	/**
-	 * Создание клавиатуры
+	 * Создание клавиатуры с оценками
 	 *
-	 * @param message сообщение бота
 	 * @return клавиатура
 	 */
-
-	private Keyboard createKeyboard(String message) {
+	private Keyboard createRateKeyboard() {
 		List<List<Button>> buttons = new ArrayList<>();
 		List<Button> buttonRow = new ArrayList<>();
 		for (String textButton : listRate) {
@@ -107,9 +114,6 @@ public class VkBot extends LongPollBot implements Bot {
 		buttons.add(buttonRow);
 		Keyboard keyboard = new Keyboard(buttons);
 		keyboard.setOneTime(true);
-		if (!message.startsWith("Анекдот №")) {
-			keyboard.setButtons(new ArrayList<>());
-		}
 		return keyboard;
 	}
 }

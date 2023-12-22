@@ -1,10 +1,11 @@
 package org.bot.command;
 
+import org.bot.bot.Bot;
 import org.bot.service.RatingService;
 
 /**
  * Команда /rate &lt;id шутки&gt; &lt;оценка&gt; <br>
- * Оценить анекдот
+ * Оценить анекдот и отправить сообщение о статусе выполнения команды
  */
 public class RateCommand implements BotCommand {
 
@@ -16,13 +17,15 @@ public class RateCommand implements BotCommand {
 	}
 
 	@Override
-	public String execute(String args, Long chatId) {
+	public void execute(String args, Long chatId, Bot bot) {
 		if (args == null) {
-			return INVALID_ARGUMENT_COUNT;
+			bot.sendMessage(chatId, INVALID_ARGUMENT_COUNT);
+			return;
 		}
 		String[] data = args.split(" ");
 		if (data.length != 2) {
-			return INVALID_ARGUMENT_COUNT;
+			bot.sendMessage(chatId, INVALID_ARGUMENT_COUNT);
+			return;
 		}
 
 		Integer jokeId = Integer.parseInt(data[0]);
@@ -30,19 +33,22 @@ public class RateCommand implements BotCommand {
 		try {
 			stars = Byte.parseByte(data[1]);
 		} catch (NumberFormatException e) {
-			return "Количество звезд рейтинга должно содержать только цифры (1-5)";
+			bot.sendMessage(chatId,
+					"Количество звезд рейтинга должно содержать только цифры (1-5)");
+			return;
 		}
 
 
 		if (stars > 5 || stars < 1) {
-			return "Неверное количество звезд рейтинга";
+			bot.sendMessage(chatId, "Неверное количество звезд рейтинга");
+			return;
 		}
 
 		boolean result = this.ratingService.rateJoke(jokeId, chatId, stars);
 		if (result) {
-			return "Анекдот оценен";
+			bot.sendMessage(chatId, "Анекдот оценен");
 		} else {
-			return "Анекдот не найден";
+			bot.sendMessage(chatId, "Анекдот не найден");
 		}
 	}
 }

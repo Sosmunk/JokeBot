@@ -1,5 +1,6 @@
 package org.bot.command;
 
+import org.bot.bot.Bot;
 import org.bot.command.data.CommandData;
 import org.bot.service.JokeService;
 import org.bot.service.RatingService;
@@ -28,7 +29,7 @@ public class CommandProcessor {
         commandMap.put("/help", new HelpCommand());
         commandMap.put("/joke", new JokeCommand(jokeService, ratingService));
         commandMap.put("/getJoke", getJokeCommand);
-        commandMap.put("/best", new BestCommand(getJokeCommand, ratingService));
+        commandMap.put("/best", new BestCommand(jokeService, ratingService));
         commandMap.put("/rate", new RateCommand(ratingService));
         commandMap.put("1☆", rateLastCommand);
         commandMap.put("2☆", rateLastCommand);
@@ -42,19 +43,19 @@ public class CommandProcessor {
      *
      * @param command команда из сообщения
      * @param chatId  id чата
-     * @return сообщение пользователю
      */
-    public String runCommand(String command, Long chatId) {
+    public void runCommand(String command, Long chatId, Bot bot) {
         CommandData commandData = commandParser.parseMessage(command);
         BotCommand botCommand = commandMap.get(commandData.command());
 
         if (botCommand == null) {
-            return "Команда не найдена";
+            bot.sendMessage(chatId, "Команда не найдена");
+            return;
         }
         if (botCommand.getClass() == RateLastCommand.class) {
-            return botCommand.execute(commandData.command().substring(0, 1), chatId);
+            botCommand.execute(commandData.command().substring(0, 1), chatId, bot);
         } else {
-            return botCommand.execute(commandData.args(), chatId);
+            botCommand.execute(commandData.args(), chatId, bot);
         }
     }
 }
