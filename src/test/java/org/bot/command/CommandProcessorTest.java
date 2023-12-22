@@ -1,6 +1,7 @@
 package org.bot.command;
 
 import org.bot.Joke;
+import org.bot.JokeScheduler;
 import org.bot.Rate;
 import org.bot.bot.FakeBot;
 import org.bot.dao.JokeDAO;
@@ -10,9 +11,11 @@ import org.bot.service.JokeServiceImpl;
 import org.bot.service.RatingService;
 import org.bot.service.RatingServiceImpl;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.time.Instant;
 import java.util.Optional;
 
 /**
@@ -25,6 +28,8 @@ public class CommandProcessorTest {
 	private final RatingService ratingService = new RatingServiceImpl(mockRatingDao, jokeService);
 
 	private final CommandProcessor commandProcessor = new CommandProcessor(jokeService, ratingService);
+
+	private final JokeScheduler mockScheduler = Mockito.mock(JokeScheduler.class);
 
 	private final FakeBot fakeBot = new FakeBot();
 
@@ -45,6 +50,12 @@ public class CommandProcessorTest {
 	public CommandProcessorTest() {
 		this.testJoke.setId(1);
 		this.joke2.setId(2);
+	}
+
+	@Before
+	public void setUp() throws Exception {
+
+		commandProcessor.enableJokeSchedulingForBots(mockScheduler);
 	}
 
 	/**
@@ -390,5 +401,29 @@ public class CommandProcessorTest {
 		Assert.assertEquals(jokeService.getLastJokeId(chatId), joke2.getId());
 		Assert.assertNotEquals(jokeService.getLastJokeId(chatId), testJoke.getId());
 		Assert.assertEquals(chatId, fakeBot.getLastMessageChatId());
+	}
+
+	/**
+	 * Тест на команду /subscribe
+	 */
+	@Test
+	public void testSubscribe() {
+
+		commandProcessor.runCommand("/subscribe 12:00", chatId, fakeBot);
+
+		// TODO: Проверить, что планировка в нужный инстант
+
+		Mockito.verify(mockScheduler).schedule(fakeBot.getChatPlatform(), chatId, Instant.now());
+		//TODO: получение уведомления о том что мы подписаны на анекдоты
+		Assert.assertEquals("TODO", fakeBot.getLastMessageText());
+
+	}
+
+	@Test
+	public void testUnsubscribe() {
+		commandProcessor.runCommand("/unsubscribe", chatId, fakeBot);
+
+		//TODO: получение уведомления что мы отписались от анекдотов
+		Assert.assertEquals("TODO", fakeBot.getLastMessageText());
 	}
 }

@@ -21,8 +21,13 @@ public class FakeBot implements Bot {
     @Override
     public void sendMessageWithRateKeyboard(Long chatId, String message) {
         messages.add(new MessageData(message, chatId, true));
-
     }
+
+    @Override
+    public String getChatPlatform() {
+        return "FAKE";
+    }
+
 
     /**
      * Получить текст последнего сообщения
