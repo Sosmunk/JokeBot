@@ -21,7 +21,11 @@ public class DateTimeParser {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 		LocalTime localTime = LocalTime.parse(args, formatter);
 		LocalDate localDate = LocalDate.now(Clock.systemUTC());
+		if (localTime.isBefore(LocalTime.now())) {
+			localDate = localDate.plusDays(1);
+		}
 		LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
+
 		return localDateTime.toInstant(ZoneOffset.of("+5"));
 	}
 }
