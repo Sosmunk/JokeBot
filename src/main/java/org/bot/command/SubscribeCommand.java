@@ -29,8 +29,6 @@ public class SubscribeCommand implements BotCommand {
 		try {
 			Instant instantDate = dateTimeParser.parserArgsToDate(args);
 			databaseScheduler.schedule(new ChatData(chatPlatform, chatId), instantDate);
-
-			//TODO: Scheduling
 			return "Теперь вы будете получать анекдот в " + args;
 		} catch (DateTimeParseException e) {
 			return "Ошибка при парсинге времени";

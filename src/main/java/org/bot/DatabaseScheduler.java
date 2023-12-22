@@ -25,6 +25,9 @@ public class DatabaseScheduler {
     private final Scheduler scheduler;
     private final RecurringTask<ChatData> subscribeTask;
 
+    // Отправка сообщений из command
+    //
+
     public DatabaseScheduler(Bot telegramBot, Bot vkBot, JokeCommand jokeCommand) {
 
         this.subscribeTask = Tasks.recurring("subscribeTask", FixedDelay.ofHours(24), ChatData.class)
