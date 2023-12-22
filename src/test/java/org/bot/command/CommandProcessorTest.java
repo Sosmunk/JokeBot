@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -390,5 +391,46 @@ public class CommandProcessorTest {
 		Assert.assertEquals(jokeService.getLastJokeId(chatId), joke2.getId());
 		Assert.assertNotEquals(jokeService.getLastJokeId(chatId), testJoke.getId());
 		Assert.assertEquals(chatId, fakeBot.getLastMessageChatId());
+	}
+
+	/**
+	 * Тест команды /best
+	 */
+	@Test
+	public void testBestJokes() {
+		Mockito.when(jokeService.getJoke(1))
+				.thenReturn(testJoke);
+		Mockito.when(ratingService.getAverageRatingForJoke(1))
+				.thenReturn(Optional.of((double) 1));
+
+		Mockito.when(jokeService.getJoke(2))
+				.thenReturn(joke2);
+		Mockito.when(ratingService.getAverageRatingForJoke(2))
+				.thenReturn(Optional.of((double) 5));
+
+		Mockito.when(ratingService.getBestJokeIds())
+				.thenReturn(List.of(1, 2));
+
+		commandProcessor.runCommand("/best", chatId, fakeBot);
+		String res = fakeBot.getLastMessageText();
+		String expected = "Лучшие анекдоты по мнению пользователей: \n\n" + "Анекдот №1\n" +
+				testJoke.getText() + "\nРейтинг анекдота: 1.0\n\n" + "Анекдот №2\n" + joke2.getText()
+				+ "\nРейтинг анекдота: 5.0";
+
+		Assert.assertEquals(expected, res);
+	}
+
+	/**
+	 * Тест, если лучших шуток пока не существует
+	 */
+	@Test
+	public void testBestJokesEmpty() {
+		Mockito.when(ratingService.getBestJokeIds())
+				.thenReturn(List.of());
+
+		commandProcessor.runCommand("/best", chatId, fakeBot);
+		String res = fakeBot.getLastMessageText();
+
+		Assert.assertEquals("Лучшие анекдоты по мнению пользователей: \n\n", res);
 	}
 }
