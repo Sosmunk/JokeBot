@@ -1,6 +1,7 @@
 package org.bot.command;
 
 import org.bot.Joke;
+import org.bot.bot.Bot;
 import org.bot.service.JokeService;
 import org.bot.service.RatingService;
 
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 /**
  * Команда /joke
- * Получить случайный анекдот
+ * Отправить случайный анекдот
  */
 public class JokeCommand implements BotCommand {
     private final JokeService jokeService;
@@ -20,10 +21,11 @@ public class JokeCommand implements BotCommand {
     }
 
     @Override
-    public String execute(String args, Long chatId) {
+    public void execute(String args, Long chatId, Bot bot) {
         Joke joke = jokeService.getRandomJoke();
         if (joke == null) {
-            return "Анекдоты не найдены";
+            bot.sendMessage(chatId, "Анекдоты не найдены");
+            return;
         }
 
         jokeService.saveLastJoke(chatId, joke.getId());
@@ -34,8 +36,8 @@ public class JokeCommand implements BotCommand {
                 ? "\nРейтинг анекдота: " + averageRating.get()
                 : "";
 
-        return "Анекдот №" + joke.getId() +
-                "\n" + joke.getText() + ratingString;
+        bot.sendMessage(chatId, "Анекдот №" + joke.getId() +
+                "\n" + joke.getText() + ratingString);
 
     }
 }

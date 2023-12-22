@@ -1,6 +1,7 @@
 package org.bot.command;
 
 import org.bot.Joke;
+import org.bot.bot.Bot;
 import org.bot.service.JokeService;
 import org.bot.service.RatingService;
 
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 /**
  * Команда /getJoke &lt;id&gt;
- * Получить анекдот по id
+ * Получить анекдот по id и отправить его в бота
  */
 public class GetJokeCommand implements BotCommand {
 
@@ -21,25 +22,29 @@ public class GetJokeCommand implements BotCommand {
     }
 
     @Override
-    public String execute(String args, Long chatId) {
+    public void execute(String args, Long chatId, Bot bot) {
         if (args == null) {
-            return "Введите \"/getJoke <номер анекдота>\"";
+            bot.sendMessage(chatId, "Введите \"/getJoke <номер анекдота>\"");
+            return;
         }
         int jokeId;
 
         try {
             jokeId = Integer.parseInt(args);
         } catch (NumberFormatException e) {
-            return """
-                    Неправильный номер команды! Ответ должен содержать только цифры.
-                    Например: "/getJoke 1"
-                    """;
+            bot.sendMessage(chatId,
+                    """
+                            Неправильный номер команды! Ответ должен содержать только цифры.
+                            Например: "/getJoke 1"
+                            """);
+            return;
         }
 
         Joke joke = this.jokeService.getJoke(jokeId);
 
         if (joke == null) {
-            return "Анекдот не найден";
+            bot.sendMessage(chatId, "Анекдот не найден");
+            return;
         }
 
         jokeService.saveLastJoke(chatId, joke.getId());
@@ -50,7 +55,7 @@ public class GetJokeCommand implements BotCommand {
                 ? "\nРейтинг анекдота: " + averageRating.get()
                 : "";
 
-        return "Анекдот №" + joke.getId() +
-                "\n" + joke.getText() + ratingString;
+        bot.sendMessage(chatId, "Анекдот №" + joke.getId() +
+                "\n" + joke.getText() + ratingString);
     }
 }

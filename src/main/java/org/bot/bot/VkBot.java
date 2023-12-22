@@ -46,12 +46,11 @@ public class VkBot extends LongPollBot implements Bot {
 	public void onMessageNew(MessageNew messageNew) {
 		Message message = messageNew.getMessage();
 		if (message.hasText()) {
-			String result = commandProcessor.runCommand(
+			commandProcessor.runCommand(
 					message.getText(),
 					message.getPeerId()
-							.longValue());
-			sendMessage(message.getPeerId()
-					.longValue(), result);
+							.longValue(),
+					this);
 		}
 	}
 
@@ -86,7 +85,7 @@ public class VkBot extends LongPollBot implements Bot {
 	public void start() {
 		try {
 			this.startPolling();
-		} catch (Exception e) {
+		} catch (VkApiException e) {
 			throw new RuntimeException("Не удалось запустить бота!");
 		}
 	}
