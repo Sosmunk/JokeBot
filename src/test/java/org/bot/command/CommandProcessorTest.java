@@ -16,6 +16,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 /**
@@ -53,8 +55,7 @@ public class CommandProcessorTest {
 	}
 
 	@Before
-	public void setUp() throws Exception {
-
+	public void setUp() {
 		commandProcessor.enableJokeSchedulingForBots(mockScheduler);
 	}
 
@@ -406,24 +407,38 @@ public class CommandProcessorTest {
 	/**
 	 * Тест на команду /subscribe
 	 */
+	// К сожалению отложенную отправку тестировать не получится, так как она тесно связана с БД.
 	@Test
 	public void testSubscribe() {
 
 		commandProcessor.runCommand("/subscribe 12:00", chatId, fakeBot);
 
-		// TODO: Проверить, что планировка в нужный инстант
+		Mockito.verify(mockScheduler).schedule(fakeBot.getChatPlatform(), chatId,
+				Instant.now().atZone(ZoneOffset.of("+5"))
+						.withHour(12)
+						.withMinute(0)
+						.truncatedTo(ChronoUnit.MINUTES)
+						.toInstant());
+		Assert.assertEquals("Теперь вы будете получать анекдот в 12:00", fakeBot.getLastMessageText());
 
-		Mockito.verify(mockScheduler).schedule(fakeBot.getChatPlatform(), chatId, Instant.now());
-		//TODO: получение уведомления о том что мы подписаны на анекдоты
-		Assert.assertEquals("TODO", fakeBot.getLastMessageText());
+		commandProcessor.runCommand("/subscribe aaaaaa", chatId, fakeBot);
+		Assert.assertEquals("Ошибка при парсинге времени", fakeBot.getLastMessageText());
+
+		commandProcessor.runCommand("/subscribe 33:33", chatId, fakeBot);
+		Assert.assertEquals("Ошибка при парсинге времени", fakeBot.getLastMessageText());
+
+		commandProcessor.runCommand("/subscribe 8:00", chatId, fakeBot);
+		Assert.assertEquals("Ошибка при парсинге времени", fakeBot.getLastMessageText());
+
 
 	}
 
+	/**
+	 * Тест команды /unsubscribe
+	 */
 	@Test
 	public void testUnsubscribe() {
 		commandProcessor.runCommand("/unsubscribe", chatId, fakeBot);
-
-		//TODO: получение уведомления что мы отписались от анекдотов
-		Assert.assertEquals("TODO", fakeBot.getLastMessageText());
+		Assert.assertEquals("Теперь вы не будете получать ежедневные анекдоты", fakeBot.getLastMessageText());
 	}
 }
