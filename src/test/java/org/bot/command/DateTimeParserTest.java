@@ -24,13 +24,13 @@ public class DateTimeParserTest {
 	 */
 	@Test
 	public void testCorrectDate() {
-		String date = "20:30:35";
+		String date = "20:30";
 		Instant instant = Instant.now();
 		instant = instant.atZone(ZoneOffset.UTC)
 				.withHour(20)
 				.withMinute(30)
 				.withSecond(35)
-				.truncatedTo(ChronoUnit.SECONDS)
+				.truncatedTo(ChronoUnit.MINUTES)
 				.toInstant();
 		Assert.assertEquals(instant, dateTimeParser.parserArgsToDate(date));
 	}

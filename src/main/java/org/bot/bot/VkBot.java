@@ -79,6 +79,7 @@ public class VkBot extends LongPollBot implements Bot {
         try {
             this.startPolling();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("Не удалось запустить бота!");
         }
     }

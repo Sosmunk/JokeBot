@@ -56,4 +56,4 @@ fabric.properties
 target/
 
 hibernate.properties
-connection.properties
+src/main/resources/connection.properties

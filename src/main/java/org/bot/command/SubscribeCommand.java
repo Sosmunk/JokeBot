@@ -5,6 +5,7 @@ import org.bot.command.data.ChatData;
 import org.bot.enumerable.ChatPlatform;
 
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
 
 /**
  * /subscribe HH-mm <br>
@@ -21,10 +22,18 @@ public class SubscribeCommand implements BotCommand {
 	@Override
 	public String execute(String args, Long chatId, ChatPlatform chatPlatform) {
 
-		Instant instantDate = dateTimeParser.parserArgsToDate(args);
-		databaseScheduler.schedule(new ChatData(chatPlatform, chatId), instantDate);
+		if (args == null) {
+			return "Не указаны аргументы команды";
+		}
 
-		//TODO: Scheduling
-		return "ПОКА НЕ РАБОТАЕТ";
+		try {
+			Instant instantDate = dateTimeParser.parserArgsToDate(args);
+			databaseScheduler.schedule(new ChatData(chatPlatform, chatId), instantDate);
+
+			//TODO: Scheduling
+			return "Теперь вы будете получать анекдот в " + args;
+		} catch (DateTimeParseException e) {
+			return "Ошибка при парсинге времени";
+		}
 	}
 }

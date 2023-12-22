@@ -19,6 +19,6 @@ public class UnsubscribeCommand implements BotCommand {
     @Override
     public String execute(String args, Long chatId, ChatPlatform chatPlatform) {
         databaseScheduler.deschedule(new ChatData(chatPlatform, chatId));
-        return "ОК?";
+        return "Теперь вы не будете получать ежедневные анекдоты";
     }
 }
