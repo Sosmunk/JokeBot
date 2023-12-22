@@ -97,7 +97,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
 		keyboardMarkup.setKeyboard(keyboardRows);
 		keyboardMarkup.setResizeKeyboard(true);
 		keyboardMarkup.setOneTimeKeyboard(true);
-		if (!message.contains("Анекдот №")) {
+		if (!message.startsWith("Анекдот №")) {
 			keyboardMarkup.setKeyboard(nullKeyboardRows);
 		}
 		return keyboardMarkup;

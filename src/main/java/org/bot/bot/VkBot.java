@@ -107,7 +107,7 @@ public class VkBot extends LongPollBot implements Bot {
 		buttons.add(buttonRow);
 		Keyboard keyboard = new Keyboard(buttons);
 		keyboard.setOneTime(true);
-		if (!message.contains("Анекдот №")) {
+		if (!message.startsWith("Анекдот №")) {
 			keyboard.setButtons(new ArrayList<>());
 		}
 		return keyboard;

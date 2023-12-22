@@ -22,11 +22,13 @@ public class CommandProcessor {
     public CommandProcessor(JokeService jokeService, RatingService ratingService) {
         this.commandParser = new CommandParser();
         commandMap = new HashMap<>();
+        GetJokeCommand getJokeCommand = new GetJokeCommand(jokeService, ratingService);
         RateLastCommand rateLastCommand = new RateLastCommand(jokeService, ratingService);
         commandMap.put("/start", new StartCommand());
         commandMap.put("/help", new HelpCommand());
         commandMap.put("/joke", new JokeCommand(jokeService, ratingService));
-        commandMap.put("/getJoke", new GetJokeCommand(jokeService, ratingService));
+        commandMap.put("/getJoke", getJokeCommand);
+        commandMap.put("/best", new BestCommand(getJokeCommand, ratingService));
         commandMap.put("/rate", new RateCommand(ratingService));
         commandMap.put("1☆", rateLastCommand);
         commandMap.put("2☆", rateLastCommand);

@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -83,6 +84,26 @@ public class RatingDAO {
             logger.error(e.getMessage());
         }
         return Optional.empty();
+    }
+
+    /**
+     * Найти id лучших анекдотов по рейтингу (убывание)
+     * @return список id анекдотов
+     */
+    public List<Integer> findBestJokeIdsByRating() {
+        try (Session session = sessionFactory.openSession()) {
+
+           return session
+                    .createQuery(
+                            "select joke.id from Rate group by joke.id order by avg(stars) desc",
+                            Integer.class)
+                   .setMaxResults(10)
+                   .getResultList();
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return List.of();
     }
 
 }

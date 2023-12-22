@@ -4,6 +4,7 @@ import org.bot.Joke;
 import org.bot.Rate;
 import org.bot.dao.RatingDAO;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,5 +45,14 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public Optional<Double> getAverageRatingForJoke(Integer jokeId) {
         return ratingDAO.findAverageStarsForJoke(jokeId);
+    }
+
+    /**
+     * Получить лучшие анекдоты по рейтингу
+     * @return список id анекдотов
+     */
+    @Override
+    public List<Integer> getBestJokeIds() {
+        return ratingDAO.findBestJokeIdsByRating();
     }
 }

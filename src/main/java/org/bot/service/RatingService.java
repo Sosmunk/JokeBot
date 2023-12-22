@@ -1,5 +1,6 @@
 package org.bot.service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,4 +24,10 @@ public interface RatingService {
      * @return средний рейтинг, если анекдот был оценен
      */
     Optional<Double> getAverageRatingForJoke(Integer jokeId);
+
+    /**
+     * Получить лучшие анекдоты по рейтингу
+     * @return список id анекдотов
+     */
+    List<Integer> getBestJokeIds();
 }
