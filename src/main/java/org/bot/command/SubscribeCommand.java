@@ -4,6 +4,7 @@ import org.bot.JokeScheduler;
 import org.bot.bot.Bot;
 
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
 
 /**
  * /subscribe HH-mm <br>
@@ -11,18 +12,22 @@ import java.time.Instant;
  */
 public class SubscribeCommand implements BotCommand {
 
-    private final JokeScheduler jokeScheduler;
+	private final JokeScheduler jokeScheduler;
 
-    public SubscribeCommand(JokeScheduler jokeScheduler) {
-        this.jokeScheduler = jokeScheduler;
-    }
+	private final DateTimeParser dateTimeParser = new DateTimeParser();
 
-    @Override
-    public void execute(String args, Long chatId, Bot bot) {
-        //TODO: парсинг и отправка в нужное время
-        jokeScheduler.schedule(bot.getChatPlatform(), chatId, Instant.now());
+	public SubscribeCommand(JokeScheduler jokeScheduler) {
+		this.jokeScheduler = jokeScheduler;
+	}
 
-
-        bot.sendMessage(chatId, "TODO:");
-    }
+	@Override
+	public void execute(String args, Long chatId, Bot bot) {
+		try {
+			Instant instantDate = dateTimeParser.parserArgsToDate(args);
+			jokeScheduler.schedule(bot.getChatPlatform(), chatId, instantDate);
+			bot.sendMessage(chatId, "Теперь вы будете получать анекдот в " + args);
+		} catch (DateTimeParseException e) {
+			bot.sendMessage(chatId, "Ошибка при парсинге времени");
+		}
+	}
 }
