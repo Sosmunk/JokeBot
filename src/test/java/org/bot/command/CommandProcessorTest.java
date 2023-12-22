@@ -88,16 +88,18 @@ public class CommandProcessorTest {
 		commandProcessor.runCommand(command, chatId, fakeBot);
 		Assert.assertEquals("Wrong message", """
 				Вот всё что я умею:
-
+				                
 				😂 Показать случайный анекдот (/joke)
-
+				    
 				😂🔢 Показать анекдот по номеру
 				     (/getJoke <номер анекдота>)
-
+				    
 				👶🏼 Справка о командах бота (/help)
-
+				                
 				⭐ Оценить анекдот
 				   (/rate <номер анекдота> <оценка от 1 до 5>)
+				   
+				🏆 Отображение 10 лучших анекдотов по рейтингу (/best)
 				""", fakeBot.getLastMessageText()
 		);
 		Assert.assertEquals(chatId, fakeBot.getLastMessageChatId());
