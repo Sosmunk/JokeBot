@@ -27,6 +27,6 @@ public class RateLastCommand implements BotCommand {
         }
 
         ratingService.rateJoke(jokeId, chatId, Byte.parseByte(args));
-        bot.sendMessage(chatId, "Анекдот оценен");
+        bot.sendMessageWithRateKeyboard(chatId, "Анекдот оценен");
     }
 }

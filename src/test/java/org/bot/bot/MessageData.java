@@ -1,5 +1,5 @@
 package org.bot.bot;
 
-public record MessageData(String text, Long chatId) {
+public record MessageData(String text, Long chatId, boolean keyboard) {
 
 }

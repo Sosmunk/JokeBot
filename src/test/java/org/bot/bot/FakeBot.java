@@ -9,14 +9,39 @@ public class FakeBot implements Bot {
 
     @Override
     public void sendMessage(Long chatId, String message) {
-        messages.add(new MessageData(message, chatId));
+        messages.add(new MessageData(message, chatId, false));
     }
 
+    @Override
+    public void sendMessageWithRateKeyboard(Long chatId, String message) {
+        messages.add(new MessageData(message, chatId, true));
+
+    }
+
+    /**
+     * Получить текст последнего сообщения
+     *
+     * @return текст последнего сообщения
+     */
     public String getLastMessageText() {
         return messages.get(messages.size() - 1).text();
     }
 
-    public Long getLastMessageId() {
+    /**
+     * Получить chatId последнего сообщения
+     *
+     * @return chatId последнего сообщения
+     */
+    public Long getLastMessageChatId() {
         return messages.get(messages.size() - 1).chatId();
+    }
+
+    /**
+     * Вернуть наличие клавиатуры в сообщении
+     *
+     * @return true, если клавиатура была отправлена
+     */
+    public Boolean getKeyboardPresent() {
+        return messages.get(messages.size() - 1).keyboard();
     }
 }

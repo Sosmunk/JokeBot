@@ -22,8 +22,11 @@ import java.util.List;
  */
 public class TelegramBot extends TelegramLongPollingBot implements Bot {
 	private final CommandProcessor commandProcessor;
-	private final List<String> listRate;
-	private ReplyKeyboardMarkup replyKeyboardMarkup;
+
+	/**
+	 * Клавиатура с оценками для бота
+	 */
+	private final ReplyKeyboardMarkup rateKeyboardMarkup;
 	private final Logger logger = LogManager.getLogger();
 	/**
 	 * Имя бота
@@ -33,8 +36,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
 	public TelegramBot(CommandProcessor commandProcessor) {
 		super(System.getenv("TG_TOKEN"));
 		this.commandProcessor = commandProcessor;
-		listRate = new KeyboardUtils().getLIST_RATES();
-		replyKeyboardMarkup = createKeyboard("");
+		this.rateKeyboardMarkup = createRateKeyboard();
 	}
 
 	public void onUpdateReceived(Update update) {
@@ -58,8 +60,19 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
 		sendMessage.setChatId(chatId);
 		sendMessage.setText(message);
 		try {
-			replyKeyboardMarkup = createKeyboard(message);
-			sendMessage.setReplyMarkup(replyKeyboardMarkup);
+			execute(sendMessage);
+		} catch (TelegramApiException e) {
+			logger.error("Не удалось отправить сообщение!", e);
+		}
+	}
+
+	@Override
+	public void sendMessageWithRateKeyboard(Long chatId, String message) {
+		SendMessage sendMessage = new SendMessage();
+		sendMessage.setChatId(chatId);
+		sendMessage.setText(message);
+		try {
+			sendMessage.setReplyMarkup(rateKeyboardMarkup);
 			execute(sendMessage);
 		} catch (TelegramApiException e) {
 			logger.error("Не удалось отправить сообщение!", e);
@@ -79,14 +92,13 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
 	}
 
 	/**
-	 * Создание клавиатуры
+	 * Создание клавиатуры с оценками
 	 *
-	 * @param message сообщение бота
-	 * @return Клавиатура
+	 * @return клавиатура с оценками
 	 */
-	private ReplyKeyboardMarkup createKeyboard(String message) {
+	private ReplyKeyboardMarkup createRateKeyboard() {
+		List<String> listRate = new KeyboardUtils().getListRates();
 		ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-		List<KeyboardRow> nullKeyboardRows = new ArrayList<>();
 		List<KeyboardRow> keyboardRows = new ArrayList<>();
 		KeyboardRow row = new KeyboardRow();
 		for (String button : listRate) {
@@ -96,9 +108,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
 		keyboardMarkup.setKeyboard(keyboardRows);
 		keyboardMarkup.setResizeKeyboard(true);
 		keyboardMarkup.setOneTimeKeyboard(true);
-		if (!message.startsWith("Анекдот №")) {
-			keyboardMarkup.setKeyboard(nullKeyboardRows);
-		}
+
 		return keyboardMarkup;
 	}
 }

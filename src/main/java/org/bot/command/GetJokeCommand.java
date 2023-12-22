@@ -55,7 +55,7 @@ public class GetJokeCommand implements BotCommand {
                 ? "\nРейтинг анекдота: " + averageRating.get()
                 : "";
 
-        bot.sendMessage(chatId, "Анекдот №" + joke.getId() +
+        bot.sendMessageWithRateKeyboard(chatId, "Анекдот №" + joke.getId() +
                 "\n" + joke.getText() + ratingString);
     }
 }

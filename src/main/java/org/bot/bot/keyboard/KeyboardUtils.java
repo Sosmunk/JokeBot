@@ -9,7 +9,12 @@ import java.util.List;
 public class KeyboardUtils {
 	private static final List<String> LIST_RATES = Arrays.asList("1☆", "2☆", "3☆", "4☆", "5☆");
 
-	public List<String> getLIST_RATES() {
+	/**
+	 * Получить список звезд для клавиатуры
+	 *
+	 * @return список звезд для клавиатуры
+	 */
+	public List<String> getListRates() {
 		return LIST_RATES;
 	}
 
