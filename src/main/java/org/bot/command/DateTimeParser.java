@@ -14,18 +14,18 @@ public class DateTimeParser {
 	 * @return Date указанного времени
 	 */
 	public Instant parserArgsToDate(String args) {
-		if (args == null) {
+		if (args == null || args.isEmpty()) {
 			return null;
 		}
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 		LocalTime localTime = LocalTime.parse(args, formatter);
-		LocalDate localDate = LocalDate.now(Clock.systemUTC());
+		LocalDate localDate = LocalDate.now(Clock.systemDefaultZone());
 		if (localTime.isBefore(LocalTime.now())) {
 			localDate = localDate.plusDays(1);
 		}
 		LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
 
-		return localDateTime.toInstant(ZoneOffset.of("+5"));
+		return localDateTime.atZone(ZoneId.systemDefault()).toInstant();
 	}
 }
