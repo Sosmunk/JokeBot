@@ -20,7 +20,15 @@ import java.util.Optional;
  * Планировщик отправки анекдотов по расписанию
  */
 public class JokeScheduler {
+
+    /**
+     * Планировщик событий
+     */
     private final Scheduler scheduler;
+
+    /**
+     * Задача, которая должна выполняться при каждом запуске scheduler
+     */
     private final RecurringTask<ChatData> subscribeTask;
 
     public JokeScheduler(Map<String, Bot> botMap, JokeService jokeService, RatingService ratingService) {
