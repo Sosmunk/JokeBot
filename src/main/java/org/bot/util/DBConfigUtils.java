@@ -44,16 +44,15 @@ public class DBConfigUtils {
 
             PGSimpleDataSource pgSimpleDataSource = new PGSimpleDataSource();
             pgSimpleDataSource.setDatabaseName(properties.getProperty("db.name"));
-            pgSimpleDataSource.setPortNumber(Integer.parseInt(properties.getProperty("db.port")));
+            pgSimpleDataSource.setPortNumbers(new int[]{Integer.parseInt(properties.getProperty("db.port"))});
             pgSimpleDataSource.setUser(properties.getProperty("db.user"));
             pgSimpleDataSource.setPassword(properties.getProperty("db.password"));
 
             return pgSimpleDataSource;
 
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("Не найтден файл конфигурации");
+            throw new RuntimeException("Не найден файл конфигурации");
         } catch (IOException e) {
-            // TODO: exception
             throw new RuntimeException(e);
         }
     }
