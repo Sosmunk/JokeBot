@@ -1,5 +1,6 @@
 package org.bot;
 
+import org.bot.bot.Bot;
 import org.bot.bot.TelegramBot;
 import org.bot.bot.VkBot;
 import org.bot.command.CommandProcessor;
@@ -9,8 +10,11 @@ import org.bot.service.JokeService;
 import org.bot.service.JokeServiceImpl;
 import org.bot.service.RatingService;
 import org.bot.service.RatingServiceImpl;
-import org.bot.util.HibernateUtils;
+import org.bot.util.DBConfigUtils;
 import org.hibernate.SessionFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Класс, для запуска программы
@@ -18,7 +22,7 @@ import org.hibernate.SessionFactory;
 
 public class Main {
     public static void main(String[] args) {
-        SessionFactory sessionFactory = new HibernateUtils().createSessionFactory();
+        SessionFactory sessionFactory = new DBConfigUtils().createSessionFactory();
         JokeDAO jokeDAO = new JokeDAO(sessionFactory);
         RatingDAO ratingDAO = new RatingDAO(sessionFactory);
 
@@ -29,6 +33,13 @@ public class Main {
 
         TelegramBot telegramJokeBot = new TelegramBot(commandProcessor);
         VkBot vkJokeBot = new VkBot(commandProcessor);
+        Map<String, Bot> botMap = new HashMap<>();
+        botMap.put(telegramJokeBot.getChatPlatform(), telegramJokeBot);
+        botMap.put(vkJokeBot.getChatPlatform(), vkJokeBot);
+
+        JokeScheduler jokeScheduler = new JokeScheduler(botMap, jokeService, ratingService);
+
+        commandProcessor.enableJokeSchedulingForBots(jokeScheduler);
 
         telegramJokeBot.start();
         vkJokeBot.start();

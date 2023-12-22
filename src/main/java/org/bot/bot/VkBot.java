@@ -89,6 +89,11 @@ public class VkBot extends LongPollBot implements Bot {
 		}
 	}
 
+	@Override
+	public String getChatPlatform() {
+		return "VK";
+	}
+
 	/**
 	 * Запуск бота
 	 */
