@@ -11,11 +11,12 @@ import org.bot.service.JokeServiceImpl;
 import org.bot.service.RatingService;
 import org.bot.service.RatingServiceImpl;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 /**
@@ -34,7 +35,7 @@ public class CommandProcessorTest {
 	private final FakeBot fakeBot = new FakeBot();
 
 	private final Joke testJoke = new Joke(FIRST_JOKE);
-	private final Joke joke2 = new Joke(SECOND_JOKE);
+	private final Joke secondTestJoke = new Joke(SECOND_JOKE);
 
 	private final static String FIRST_JOKE = """
 			— Заходит программист в лифт, а ему надо на 12—й этаж.
@@ -49,12 +50,7 @@ public class CommandProcessorTest {
 
 	public CommandProcessorTest() {
 		this.testJoke.setId(1);
-		this.joke2.setId(2);
-	}
-
-	@Before
-	public void setUp() throws Exception {
-
+		this.secondTestJoke.setId(2);
 		commandProcessor.enableJokeSchedulingForBots(mockScheduler);
 	}
 
@@ -217,7 +213,7 @@ public class CommandProcessorTest {
 	@Test
 	public void testRateExistingJoke() {
 		Mockito.when(jokeService.getJoke(2))
-				.thenReturn(joke2);
+				.thenReturn(secondTestJoke);
 
 		commandProcessor.runCommand("/rate 2 1", chatId, fakeBot);
 		Assert.assertEquals("Анекдот оценен", fakeBot.getLastMessageText());
@@ -234,7 +230,7 @@ public class CommandProcessorTest {
 	@Test
 	public void testRateCorrectPrint() {
 		Mockito.when(jokeService.getJoke(2))
-				.thenReturn(joke2);
+				.thenReturn(secondTestJoke);
 
 		Mockito.when(mockRatingDao.findAverageStarsForJoke(2))
 				.thenReturn(Optional.of(1.0));
@@ -242,7 +238,7 @@ public class CommandProcessorTest {
 
 		commandProcessor.runCommand("/getJoke 2", chatId, fakeBot);
 
-		Assert.assertEquals("Анекдот №2\n" + joke2.getText()
+		Assert.assertEquals("Анекдот №2\n" + secondTestJoke.getText()
 						+ "\n" + "Рейтинг анекдота: 1.0",
 				fakeBot.getLastMessageText());
 
@@ -251,7 +247,7 @@ public class CommandProcessorTest {
 
 		commandProcessor.runCommand("/getJoke 2", chatId, fakeBot);
 
-		Assert.assertEquals("Анекдот №2\n" + joke2.getText()
+		Assert.assertEquals("Анекдот №2\n" + secondTestJoke.getText()
 						+ "\n" + "Рейтинг анекдота: 1.5",
 				fakeBot.getLastMessageText());
 
@@ -260,7 +256,7 @@ public class CommandProcessorTest {
 
 		commandProcessor.runCommand("/getJoke 2", chatId, fakeBot);
 
-		Assert.assertEquals("Анекдот №2\n" + joke2.getText(),
+		Assert.assertEquals("Анекдот №2\n" + secondTestJoke.getText(),
 				fakeBot.getLastMessageText());
 
 		Assert.assertEquals(chatId, fakeBot.getLastMessageChatId());
@@ -305,7 +301,7 @@ public class CommandProcessorTest {
 	public void testRateIncorrectNumberArguments() {
 		String invalidArgs = "Неверное количество аргументов";
 		Mockito.when(jokeService.getJoke(2))
-				.thenReturn(joke2);
+				.thenReturn(secondTestJoke);
 
 		commandProcessor.runCommand("/rate 2 1 1 1 1 1 1 1", chatId, fakeBot);
 		Assert.assertEquals(invalidArgs, fakeBot.getLastMessageText());
@@ -324,7 +320,7 @@ public class CommandProcessorTest {
 		Rate rate = new Rate(chatId, (byte) 1, null);
 
 		Mockito.when(jokeService.getJoke(2))
-				.thenReturn(joke2);
+				.thenReturn(secondTestJoke);
 
 		Mockito.when(mockRatingDao.findRating(2, chatId))
 				.thenReturn(rate);
@@ -392,13 +388,13 @@ public class CommandProcessorTest {
 				chatId,
 				fakeBot);
 		Mockito.when(jokeService.getJoke(2))
-				.thenReturn(joke2);
+				.thenReturn(secondTestJoke);
 
-		commandProcessor.runCommand("/getJoke " + joke2.getId(),
+		commandProcessor.runCommand("/getJoke " + secondTestJoke.getId(),
 				chatId,
 				fakeBot);
 
-		Assert.assertEquals(jokeService.getLastJokeId(chatId), joke2.getId());
+		Assert.assertEquals(jokeService.getLastJokeId(chatId), secondTestJoke.getId());
 		Assert.assertNotEquals(jokeService.getLastJokeId(chatId), testJoke.getId());
 		Assert.assertEquals(chatId, fakeBot.getLastMessageChatId());
 	}
@@ -406,24 +402,38 @@ public class CommandProcessorTest {
 	/**
 	 * Тест на команду /subscribe
 	 */
+	// К сожалению отложенную отправку тестировать не получится, так как она тесно связана с БД.
 	@Test
 	public void testSubscribe() {
 
 		commandProcessor.runCommand("/subscribe 12:00", chatId, fakeBot);
 
-		// TODO: Проверить, что планировка в нужный инстант
+		Mockito.verify(mockScheduler).schedule(fakeBot.getChatPlatform(), chatId,
+				Instant.now().atZone(ZoneOffset.of("+5"))
+						.withHour(12)
+						.withMinute(0)
+						.truncatedTo(ChronoUnit.MINUTES)
+						.toInstant());
+		Assert.assertEquals("Теперь вы будете получать анекдот в 12:00", fakeBot.getLastMessageText());
 
-		Mockito.verify(mockScheduler).schedule(fakeBot.getChatPlatform(), chatId, Instant.now());
-		//TODO: получение уведомления о том что мы подписаны на анекдоты
-		Assert.assertEquals("TODO", fakeBot.getLastMessageText());
+		commandProcessor.runCommand("/subscribe aaaaaa", chatId, fakeBot);
+		Assert.assertEquals("Ошибка при парсинге времени", fakeBot.getLastMessageText());
+
+		commandProcessor.runCommand("/subscribe 33:33", chatId, fakeBot);
+		Assert.assertEquals("Ошибка при парсинге времени", fakeBot.getLastMessageText());
+
+		commandProcessor.runCommand("/subscribe 8:00", chatId, fakeBot);
+		Assert.assertEquals("Ошибка при парсинге времени", fakeBot.getLastMessageText());
+
 
 	}
 
+	/**
+	 * Тест команды /unsubscribe
+	 */
 	@Test
 	public void testUnsubscribe() {
 		commandProcessor.runCommand("/unsubscribe", chatId, fakeBot);
-
-		//TODO: получение уведомления что мы отписались от анекдотов
-		Assert.assertEquals("TODO", fakeBot.getLastMessageText());
+		Assert.assertEquals("Теперь вы не будете получать ежедневные анекдоты", fakeBot.getLastMessageText());
 	}
 }
