@@ -79,6 +79,11 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
 		}
 	}
 
+	@Override
+	public String getChatPlatform() {
+		return "TELEGRAM";
+	}
+
 	/**
 	 * Запуск бота
 	 */

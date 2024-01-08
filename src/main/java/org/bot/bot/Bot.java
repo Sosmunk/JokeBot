@@ -19,4 +19,11 @@ public interface Bot {
      * @param message сообщение
      */
     void sendMessageWithRateKeyboard(Long chatId, String message);
+
+    /**
+     * Вернуть чат платформу бота
+     *
+     * @return чат платформа бота
+     */
+    String getChatPlatform();
 }

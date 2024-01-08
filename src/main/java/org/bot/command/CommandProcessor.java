@@ -1,5 +1,6 @@
 package org.bot.command;
 
+import org.bot.JokeScheduler;
 import org.bot.bot.Bot;
 import org.bot.command.data.CommandData;
 import org.bot.service.JokeService;
@@ -57,5 +58,17 @@ public class CommandProcessor {
         } else {
             botCommand.execute(commandData.args(), chatId, bot);
         }
+    }
+
+    /**
+     * Включить /subscribe и /unsubscribe
+     *
+     * @param jokeScheduler планировщик отправки анекдотов
+     */
+    public void enableJokeSchedulingForBots(JokeScheduler jokeScheduler) {
+        commandMap.put("/subscribe",
+                new SubscribeCommand(jokeScheduler));
+        commandMap.put("/unsubscribe",
+                new UnsubscribeCommand(jokeScheduler));
     }
 }
