@@ -1,13 +1,14 @@
 package org.bot.command;
 
+import org.bot.bot.Bot;
+
 /**
  * Команда /start
- * Получить приветствие
+ * Отправить приветствие
  */
-
 public class StartCommand implements BotCommand {
     @Override
-    public String execute(String args) {
-        return "Привет, я бот - любитель анекдотов. Чтобы получить справку о работе со мной напишите /help.";
+    public void execute(String args, Long chatId, Bot bot) {
+        bot.sendMessage(chatId, "Привет, я бот - любитель анекдотов. Чтобы получить справку о работе со мной напишите /help.");
     }
 }

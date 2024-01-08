@@ -28,4 +28,20 @@ public interface JokeService {
      * @param joke анекдот
      */
     void saveJoke(Joke joke);
+
+    /**
+     * Получить id последнего анекдота в чате
+     *
+     * @param chatId id чата
+     * @return id последнего анекдота в чате
+     */
+    Integer getLastJokeId(Long chatId);
+
+    /**
+     * Сохранить последний анекдот отправленный пользователю в чат
+     *
+     * @param chatId id чата
+     * @param jokeId id анекдота
+     */
+    void saveLastJoke(Long chatId, Integer jokeId);
 }
